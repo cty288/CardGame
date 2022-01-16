@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ea5148c72b81444fa714ce8e94961e4, type: 3}
+  m_Name: CardProperties
+  m_EditorClassIdentifier: 
+  CardDatas:
+  - ID: 0
+    CardType: 4
+    NameKey: TestCharacter
+    Cost: 0
+    rarity: 0
+    CardDisplayInfo:
+      CardIllustration: {fileID: 2800000, guid: f6324512da6a9ca4185df6cf892b2b22, type: 3}
+      IllustrationPos: {x: 21, y: 41, z: 0}
+      IllustrationSize: {x: 800, y: 800}
+    CharacterProperties:
+      CharacterType: 0
+      Strength: 4
+      Attack: 5
+      Health: 11
+    CardScriptType: TestCharacter
+  - ID: 1
+    CardType: 0
+    NameKey: 
+    Cost: 0
+    rarity: 0
+    CardDisplayInfo:
+      CardIllustration: {fileID: 0}
+      IllustrationPos: {x: 0, y: 0, z: 0}
+      IllustrationSize: {x: 0, y: 0}
+    CharacterProperties:
+      CharacterType: 0
+      Strength: 0
+      Attack: 0
+      Health: 0
+    CardScriptType: 
+  - ID: 
+    CardType: 0
+    NameKey: 
+    Cost: 0
+    rarity: 0
+    CardDisplayInfo:
+      CardIllustration: {fileID: 0}
+      IllustrationPos: {x: 0, y: 0, z: 0}
+      IllustrationSize: {x: 0, y: 0}
+    CharacterProperties:
+      CharacterType: 0
+      Strength: 0
+      Attack: 0
+      Health: 0
+    CardScriptType: 
+  - ID: 
+    CardType: 0
+    NameKey: 
+    Cost: 0
+    rarity: 0
+    CardDisplayInfo:
+      CardIllustration: {fileID: 0}
+      IllustrationPos: {x: 0, y: 0, z: 0}
+      IllustrationSize: {x: 0, y: 0}
+    CharacterProperties:
+      CharacterType: 0
+      Strength: 0
+      Attack: 0
+      Health: 0
+    CardScriptType: 

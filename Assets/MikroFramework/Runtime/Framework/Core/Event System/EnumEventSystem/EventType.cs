@@ -8,8 +8,8 @@ namespace MikroFramework.Event {
         None,
         Test,
         Test1,
-        OnPlayerStart
-
+        OnPlayerStart,
+        OnDrawCard
     }
 }
 

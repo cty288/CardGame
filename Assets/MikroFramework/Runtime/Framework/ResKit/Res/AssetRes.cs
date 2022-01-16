@@ -54,6 +54,7 @@ namespace MikroFramework.ResKit
                     string[] assetPaths = 
                         UnityEditor.AssetDatabase.GetAssetPathsFromAssetBundleAndAssetName(ownerBundleName, nameInAB);
                     Asset = UnityEditor.AssetDatabase.LoadAssetAtPath<Object>(assetPaths[0]);
+                    
                     State = ResState.Loaded;
 #endif
                 }

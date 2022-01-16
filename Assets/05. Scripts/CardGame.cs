@@ -16,15 +16,21 @@ namespace MainGame
             this.RegisterModel<IGameTimeConfigModel>(new GameTimeConfigModel());
             this.RegisterModel<IGameTimeModel>(new GameTimeModel());
             this.RegisterModel<IGameStateModel>(new GameStateModel());
+            this.RegisterModel<IKeywordConfigModel>(new KeywordConfigModel());
+            this.RegisterModel<ICardConfigModel>(new CardConfigModel());
+            this.RegisterModel<IGameCardDeckModel>(new GameCardDeckModel());
 
             this.RegisterSystem<ISeedSystem>(new SeedSystem());
             this.RegisterSystem<ISaveSystem>(new SaveSystem());
             this.RegisterSystem<ITimeSystem>(new TimeSystem());
             this.RegisterSystem<IGameMapSystem>(new GameMapSystem());
             this.RegisterSystem<IGameTimeSystem>(new GameTimeSystem());
+            this.RegisterSystem<IBattleCardDeckSystem>(new BattleCardDeckSystem());
+            this.RegisterSystem<IBattleEventControlSystem>(new BattleEventControlSystem());
+            this.RegisterSystem<IBattleSystem>(new BattleSystem());
             //this.RegisterSystem<ISelectionSystem>(new SelectionSystem());
-           
-            
+
+
         }
     }
 }

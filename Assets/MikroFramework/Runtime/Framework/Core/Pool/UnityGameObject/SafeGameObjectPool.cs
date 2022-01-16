@@ -145,6 +145,7 @@ namespace MikroFramework.Pool
                 createdObj.transform.SetParent(this.transform);
                 createdObj.SetActive(true);
                 createdObj.GetComponent<PoolableGameObject>().Pool = this;
+                createdObj.GetComponent<PoolableGameObject>().OnInit();
             }
             else
             {

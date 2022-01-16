@@ -67,7 +67,6 @@ namespace MainGame
                 }
                 else
                 {
-                    Debug.Log($"OnLevelSelected {newNode.ConnectedByNodes.Count}");
                     if (newNode.ConnectedByNodes.Count > 0) {
                         newNode.ConnectedByNodes.ForEach(node => {UpdateMapFogForNode(newNode, node);});
                     }

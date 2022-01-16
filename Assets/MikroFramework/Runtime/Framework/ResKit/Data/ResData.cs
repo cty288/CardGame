@@ -60,6 +60,7 @@ namespace MikroFramework.ResKit {
 
         public string[] GetDirectDependencies(string bundleName) {
             if (ResManager.IsSimulationModeLogic) {
+                Debug.Log(bundleName);
                 return AssetBundleDatas.Find(abData => abData.Name == bundleName)
                     .DependencyBundleNames;
             }

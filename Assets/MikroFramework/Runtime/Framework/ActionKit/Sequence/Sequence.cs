@@ -58,6 +58,12 @@ namespace MikroFramework.ActionKit
             return this;
         }
 
+        public MikroAction RemoveAction(MikroAction action) {
+            actions.Remove(action);
+            recordedActions.Remove(action);
+            return action;
+        }
+
         public Sequence AddAction(List<MikroAction> actions) {
             this.actions.AddRange(actions);
             recordedActions.AddRange(actions);

@@ -12,7 +12,7 @@ using Random = System.Random;
 namespace MainGame
 {
     public interface ISeedSystem : ISystem {
-        public Random GeneralRandom { get; }
+        public Random RandomGeneratorRandom { get; }
         public Random MapRandom { get; }
         public Random GameRandom { get; }
 
@@ -23,18 +23,18 @@ namespace MainGame
     {
         protected override void OnInit() {
             Seed = this.RegisterAndLoadFromSavedData("game_seed", new BindableProperty<int>(UnityEngine.Random.Range(-2100000000, 2100000000)));
-            GeneralRandom = this.RegisterAndLoadFromSavedData("general_random", new Random(Seed), SaveType.Binary);
+            RandomGeneratorRandom = this.RegisterAndLoadFromSavedData("general_random", new Random(Seed), SaveType.Binary);
             MapRandom = this.RegisterAndLoadFromSavedData("map_random",
-                new Random(GeneralRandom.Next(-2100000000, 2100000000)), SaveType.Binary);
+                new Random(RandomGeneratorRandom.Next(-2100000000, 2100000000)), SaveType.Binary);
             GameRandom = this.RegisterAndLoadFromSavedData("game_random",
-                new Random(GeneralRandom.Next(-2100000000, 2100000000)), SaveType.Binary);
+                new Random(RandomGeneratorRandom.Next(-2100000000, 2100000000)), SaveType.Binary);
            
         }
 
-        public Random GeneralRandom { get; set; }
-        public Random MapRandom { get; set; } = new Random();
-        public Random GameRandom { get; set; }
-        public BindableProperty<int> Seed { get; set; }
+        public Random RandomGeneratorRandom { get; private set; }
+        public Random MapRandom { get;  private set; } = new Random();
+        public Random GameRandom { get; private set; }
+        public BindableProperty<int> Seed { get; private set; }
        
     } 
 }

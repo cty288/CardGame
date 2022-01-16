@@ -21,14 +21,12 @@ MonoBehaviour:
   customDocument:
     docsId: 1YqR3ByIIuJ0fkEnO2UHjxaSXQvydUgdzLw_7ZfuY6NU
     sheetId: 296134756
-    format: 1
-    textAsset: {fileID: 4900000, guid: 78c8c6dee3519ac4f943c0176ffea61c, type: 3}
+    format: 0
+    textAsset: {fileID: 4900000, guid: 0bfa546b8155096489cf71c004de3fe9, type: 3}
     downloadOnStart: 1
   inputFiles:
-  - textAsset: {fileID: 4900000, guid: c4dc0d059266d8d47862f46460cf8f31, type: 3}
-    format: 1
-  - textAsset: {fileID: 4900000, guid: cb0017c2ae1d29742b5501bf293f4a97, type: 3}
-    format: 1
+  - textAsset: {fileID: 4900000, guid: 0bfa546b8155096489cf71c004de3fe9, type: 3}
+    format: 0
   supportedLanguages: 000000001100000012000000
   selectedLanguage: 0
   fallbackLanguage: 0

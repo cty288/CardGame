@@ -26,6 +26,12 @@ namespace MainGame {
                 .UnRegisterWhenGameObjectDestroyed(gameObject);
             this.GetModel<IGameTimeModel>().CurentDay.RegisterWithInitValue(OnDayChange)
                 .UnRegisterWhenGameObjectDestroyed(gameObject);
+            this.GetModel<IGameStateModel>().GameState.RegisterOnValueChaned(OnGameStateChange)
+                .UnRegisterWhenGameObjectDestroyed(gameObject);
+        }
+
+        private void OnGameStateChange(GameState prevState, GameState curState) {
+            ImgSwitchSceneBG.gameObject.GetComponent<Animation>().Play();
         }
 
         private void Update() {
