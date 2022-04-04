@@ -49,7 +49,7 @@ namespace MainGame
     }
 
     [ES3Serializable]
-    public abstract class CardInfo : ICanSendCommand {
+    public abstract class CardInfo : ICanSendCommand, ICanRegisterEvent {
         [ES3Serializable]
         public int ID;
 
@@ -70,23 +70,50 @@ namespace MainGame
         [ES3Serializable]
         public Rarity CardRarity { get; protected set; }
 
-        public CardInfo() { }
+        public CardInfo() {
+            this.RegisterEvent<OnEnterBattleScene>(OnEnterBattleScene);
+            this.RegisterEvent<OnLeaveBattleScene>(OnLeaveBattleScene);
+        }
 
         public CardInfo(CardProperties attributes) {
             CostProperty = new CardAlterableProperty<int>(attributes.Cost);
             CardRarity = attributes.rarity;
             CardType = attributes.CardType;
             NameKey = attributes.NameKey;
-           
+          
+
             SetInitialEffects();
             SetInitialPrimitiveBuffEffects();
 
             SetEffectsToPrimitive();
         }
 
-       
+        private void OnLeaveBattleScene(OnLeaveBattleScene obj) {
+            ResetToPrimitive();
+        }
+
+        /// <summary>
+        /// Let effects register battle events
+        /// </summary>
+        /// <param name="obj"></param>
+        protected void OnEnterBattleScene(OnEnterBattleScene obj) {
+            EffectsProperty.CurrentValue.Value.ForEach(cmd => {
+                if (cmd.CardBelongTo == null) cmd.CardBelongTo = this;
+                cmd.RegisterBattleEventListeners();
+            });
+
+            BuffEffectProperty.CurrentValue.Value.ForEach(cmd => {
+                if (cmd.CardBelongTo == null) cmd.CardBelongTo = this;
+                cmd.RegisterBattleEventListeners();
+            });
+        }
+
+
         protected void SetEffectsToPrimitive()
         {
+            EffectsProperty.CurrentValue.Value.ForEach(cmd => {
+                cmd.UnregisterBattleEventListeners();
+            });
             if (EffectsProperty.CurrentValue.Value == EffectsProperty.PrimitiveValue)
             {
                 EffectsProperty.CurrentValue.Value = new List<EffectCommand>();
@@ -99,9 +126,15 @@ namespace MainGame
 
 
             EffectsProperty.PrimitiveValue.ForEach(value => {
-                EffectsProperty.CurrentValue.Value.Add(value.Clone());
+                EffectCommand cmd = value.Clone();
+                cmd.CardBelongTo = this;
+                EffectsProperty.CurrentValue.Value.Add(cmd);
+
             });
 
+            BuffEffectProperty.CurrentValue.Value.ForEach(cmd => {
+                cmd.UnregisterBattleEventListeners();
+            });
             if (BuffEffectProperty.CurrentValue.Value == BuffEffectProperty.PrimitiveValue) {
                 BuffEffectProperty.CurrentValue.Value = new List<EffectCommand>();
             }
@@ -111,7 +144,9 @@ namespace MainGame
             }
 
             BuffEffectProperty.PrimitiveValue.ForEach(value => {
-                BuffEffectProperty.CurrentValue.Value.Add(value.Clone());
+                EffectCommand cmd = value.Clone();
+                cmd.CardBelongTo = this;
+                BuffEffectProperty.CurrentValue.Value.Add(cmd);
             });
         }
 
@@ -120,6 +155,7 @@ namespace MainGame
 
         public virtual string GetLocalizedDescription() {
             string description = "";
+            //buff effect: keywords
             for (int i = 0; i < BuffEffectProperty.PrimitiveValue.Count; i++) {
                 description += BuffEffectProperty.PrimitiveValue[i].LocalizedEffectText;
                 if (i != BuffEffectProperty.PrimitiveValue.Count - 1) {
@@ -129,7 +165,7 @@ namespace MainGame
 
             description += "\n";
             foreach (EffectCommand effectCommand in EffectsProperty.PrimitiveValue) {
-                description += effectCommand.LocalizedEffectText;
+                description += effectCommand.LocalizedEffectText + Localization.Get("Period");
             }
 
             return description;

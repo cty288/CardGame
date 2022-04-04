@@ -1292,7 +1292,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1235555583}
-  - component: {fileID: 1235555584}
   m_Layer: 0
   m_Name: MapScene
   m_TagString: Untagged
@@ -1320,26 +1319,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1235555584
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1235555582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cfcc9ceea0bf419cb3bcaf548c2600d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  saveLayer: 1
-  saveTag: 1
-  saveName: 1
-  saveHideFlags: 1
-  saveActive: 1
-  saveChildren: 0
-  componentsToSave:
-  - {fileID: 1235555583}
 --- !u!1 &1319815340
 GameObject:
   m_ObjectHideFlags: 0
@@ -1349,7 +1328,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1319815341}
-  - component: {fileID: 1319815342}
   m_Layer: 0
   m_Name: NodeParent
   m_TagString: Untagged
@@ -1371,26 +1349,6 @@ Transform:
   m_Father: {fileID: 1235555583}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1319815342
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1319815340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cfcc9ceea0bf419cb3bcaf548c2600d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  saveLayer: 1
-  saveTag: 1
-  saveName: 1
-  saveHideFlags: 1
-  saveActive: 1
-  saveChildren: 0
-  componentsToSave:
-  - {fileID: 1319815341}
 --- !u!1 &1388975452
 GameObject:
   m_ObjectHideFlags: 0
@@ -1463,7 +1421,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 20.18747
+  orthographic size: 22.497847
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2

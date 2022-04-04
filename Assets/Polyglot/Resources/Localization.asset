@@ -22,10 +22,14 @@ MonoBehaviour:
     docsId: 1YqR3ByIIuJ0fkEnO2UHjxaSXQvydUgdzLw_7ZfuY6NU
     sheetId: 296134756
     format: 0
-    textAsset: {fileID: 4900000, guid: 0bfa546b8155096489cf71c004de3fe9, type: 3}
+    textAsset: {fileID: 4900000, guid: 5424283b7584b9848b031c291d699ef1, type: 3}
     downloadOnStart: 1
   inputFiles:
-  - textAsset: {fileID: 4900000, guid: 0bfa546b8155096489cf71c004de3fe9, type: 3}
+  - textAsset: {fileID: 4900000, guid: c3a64705c712bf74baefa1b9de4eac69, type: 3}
+    format: 0
+  - textAsset: {fileID: 4900000, guid: 455e8381d0af5c64a9c7fcdde175d3e6, type: 3}
+    format: 0
+  - textAsset: {fileID: 4900000, guid: 5424283b7584b9848b031c291d699ef1, type: 3}
     format: 0
   supportedLanguages: 000000001100000012000000
   selectedLanguage: 0

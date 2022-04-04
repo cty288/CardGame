@@ -19,7 +19,7 @@ namespace MainGame
         }
 
         public List<KeywordInfo> KeyWordInfos { get; } = new List<KeywordInfo>() {
-
+            new KeywordInfo(){LocalizationKey = "TestKeyword1", DescriptionKey = "TestKeyword1"}
         };
     }
 }

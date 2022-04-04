@@ -66,7 +66,8 @@ namespace MainGame
 
         public List<Type> BattleEventTypes = new List<Type>() {
             typeof(OnDrawCard),
-            typeof(OnEnterBattleScene)
+            typeof(OnEnterBattleScene),
+            typeof(OnCardDealt)
         };
 
         private Dictionary<Type, Action<IBattleEvent>> eventCallbackDic;
@@ -81,6 +82,7 @@ namespace MainGame
             this.RegisterEvent<IBattleEvent>(OnBattleEvent);
         }
 
+        //battle end -> reset
         private void ResetBattleEvent() {
             eventCallbackDic.Clear();
             if (sequence != null) {
@@ -123,7 +125,11 @@ namespace MainGame
         }
 
         public void UnRegisterEffectFromBattleEvent(Type evenType, Action<IBattleEvent> callback) {
-            eventCallbackDic[evenType] -= callback;
+            Debug.Log(eventCallbackDic == null);
+            if (eventCallbackDic != null) {
+                eventCallbackDic[evenType] -= callback;
+            }
+           
         }
 
         
@@ -131,13 +137,8 @@ namespace MainGame
             Debug.Log($"Event control: battle event {e.GetType().ToString()}");
             if (this.GetModel<IGameStateModel>().GameState.Value == GameState.Battle) {
                 
-              
-                 
                 eventCallbackDic[e.GetType()]?.Invoke(e);
                
-
-                
-
             }
            
         }

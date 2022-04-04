@@ -53,7 +53,7 @@ namespace MainGame
         public Transform startLocation;
 
         
-        private void Awake()
+        private void Start()
         {
             this.RegisterEvent<OnNewMapGenerated>(OnNewMapGenerated).UnRegisterWhenGameObjectDestroyed(gameObject);
             

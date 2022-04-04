@@ -11,7 +11,10 @@ namespace MainGame
         }
         
         public override void SetInitialEffects() {
-            EffectsProperty = new CardAlterableProperty<List<EffectCommand>>(new List<EffectCommand>());
+            EffectsProperty = new CardAlterableProperty<List<EffectCommand>>(new List<EffectCommand>() {
+                new DealDamageToSelf(10),
+                new DealDamageToSelf(20)
+            });
         }
 
         public override void SetInitialPrimitiveBuffEffects() {
