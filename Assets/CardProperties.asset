@@ -28,6 +28,7 @@ MonoBehaviour:
       Attack: 5
       Health: 11
     CardScriptType: TestCharacter
+    CardScriptObject: {fileID: 11500000, guid: d4eeb53807e4d874c802bfa9a1e277b5, type: 3}
   - ID: 1
     CardType: 0
     NameKey: 
@@ -43,6 +44,7 @@ MonoBehaviour:
       Attack: 0
       Health: 0
     CardScriptType: 
+    CardScriptObject: {fileID: 0}
   - ID: 
     CardType: 0
     NameKey: 
@@ -58,6 +60,7 @@ MonoBehaviour:
       Attack: 0
       Health: 0
     CardScriptType: 
+    CardScriptObject: {fileID: 0}
   - ID: 
     CardType: 0
     NameKey: 
@@ -73,3 +76,4 @@ MonoBehaviour:
       Attack: 0
       Health: 0
     CardScriptType: 
+    CardScriptObject: {fileID: 0}

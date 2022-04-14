@@ -24,7 +24,7 @@ namespace MainGame
         public CharacterCardProperties CharacterProperties;
         public string CardScriptType;
         public Object CardScriptObject;
-
+        public GameObject CharacterCardPrefab;
         public int GetID() {
             return int.Parse(ID);
         }

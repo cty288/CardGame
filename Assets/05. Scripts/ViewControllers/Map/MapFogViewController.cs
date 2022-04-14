@@ -104,7 +104,8 @@ namespace MainGame
             }
             else {
                 for (int i = 0; i < vertices.Length; i++) {
-                    float distance = HandleUtility.DistancePointLine(vertices[i],
+                    float distance = 
+                        HandleUtility.DistancePointLine(vertices[i],
                         fromNode.LevelObject.gameObject.transform.position,
                         toNode.LevelObject.gameObject.transform.position);
 

@@ -32,6 +32,7 @@ namespace MainGame
         public Vector2 IllustrationSize;
 
         public Object scriptType;
+        public GameObject characterIdentityPrefab;
 
         public CardBasicProperties CardProperties;
 
@@ -65,6 +66,7 @@ namespace MainGame
                     IllustrationPos = IllustrationPos,
                     IllustrationSize = IllustrationSize
                 };
+                card.CharacterCardPrefab = characterIdentityPrefab;
             }
             else
             {
@@ -121,6 +123,9 @@ namespace MainGame
             switch (script.CardType) {
                 case CardType.Character:
                     EditorGUILayout.PropertyField(characterProperties, new GUIContent("Character Properties"));
+                    script.characterIdentityPrefab = (GameObject) EditorGUILayout.ObjectField(
+                        "Character Card Identity Prefab", script.characterIdentityPrefab,
+                        typeof(GameObject));
                     break;
                 default:
                     break;
@@ -169,9 +174,11 @@ namespace MainGame
                 script.CardIllustration = loadedCardProperties.CardDisplayInfo.CardIllustration;
                 script.transform.Find("CardIllustrationMask/CardIllustraion").GetComponent<RawImage>().texture
                     = script.CardIllustration;
+                script.characterIdentityPrefab = loadedCardProperties.CharacterCardPrefab;
                 RectTransform rect = script.gameObject.GetComponentInChildren<RawImage>().GetComponent<RectTransform>();
                 rect.localPosition = loadedCardProperties.CardDisplayInfo.IllustrationPos;
                 rect.sizeDelta = loadedCardProperties.CardDisplayInfo.IllustrationSize;
+                
             }
 
             serializedObject.ApplyModifiedProperties();

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using MikroFramework.ActionKit;
 using MikroFramework.Architecture;
 using MikroFramework.BindableProperty;
 using MikroFramework.Pool;
@@ -62,7 +63,10 @@ namespace MainGame
         public CardAlterableProperty<List<EffectCommand>> EffectsProperty;
 
         [ES3Serializable] public CardAlterableProperty<List<EffectCommand>> BuffEffectProperty;
-       
+        
+        [ES3NonSerializable]
+        public abstract List<MikroAction> InitialEffectOverrideAnimation { get; protected set; }
+
 
         [ES3Serializable]
         public CardType CardType { get; protected set; }
@@ -70,9 +74,13 @@ namespace MainGame
         [ES3Serializable]
         public Rarity CardRarity { get; protected set; }
 
+        [ES3NonSerializable] public CardDisplay CardDisplayBelongTo { get; set; }
+
         public CardInfo() {
-            this.RegisterEvent<OnEnterBattleScene>(OnEnterBattleScene);
-            this.RegisterEvent<OnLeaveBattleScene>(OnLeaveBattleScene);
+            this.RegisterEvent<IBattleEvent>(OnEnterBattleScene);
+            this.RegisterEvent<IBattleEvent>(OnLeaveBattleScene);
+            //InitialEffectAnimationOverride();
+            Debug.Log("OnEnterBattleScene Event Registered");
         }
 
         public CardInfo(CardProperties attributes) {
@@ -80,37 +88,63 @@ namespace MainGame
             CardRarity = attributes.rarity;
             CardType = attributes.CardType;
             NameKey = attributes.NameKey;
-          
+            this.RegisterEvent<IBattleEvent>(OnEnterBattleScene);
+            this.RegisterEvent<IBattleEvent>(OnLeaveBattleScene);
+            // this.RegisterEvent<OnEnterBattleScene>(OnEnterBattleScene);
+            // this.RegisterEvent<OnLeaveBattleScene>(OnLeaveBattleScene);
 
             SetInitialEffects();
+            
             SetInitialPrimitiveBuffEffects();
 
             SetEffectsToPrimitive();
         }
 
-        private void OnLeaveBattleScene(OnLeaveBattleScene obj) {
-            ResetToPrimitive();
+        private void InitialEffectAnimationOverride() {
+            if (InitialEffectOverrideAnimation != null && InitialEffectOverrideAnimation.Count > 0) {
+                for (int i = 0; i < EffectsProperty.PrimitiveValue.Count; i++) {
+                    if (i < InitialEffectOverrideAnimation.Count) {
+                        // EffectsProperty.p
+                        EffectsProperty.PrimitiveValue[i]
+                            .OverrideExecuteAnimationEffect(InitialEffectOverrideAnimation[i]);
+                    }
+                }
+            }
+           
+        }
+
+        private void OnLeaveBattleScene(IBattleEvent e) {
+            if (e is OnLeaveBattleScene) {
+                ResetToPrimitive();
+            }
+          
         }
 
         /// <summary>
         /// Let effects register battle events
         /// </summary>
         /// <param name="obj"></param>
-        protected void OnEnterBattleScene(OnEnterBattleScene obj) {
-            EffectsProperty.CurrentValue.Value.ForEach(cmd => {
-                if (cmd.CardBelongTo == null) cmd.CardBelongTo = this;
-                cmd.RegisterBattleEventListeners();
-            });
+        protected void OnEnterBattleScene(IBattleEvent e) {
+            if (e is OnEnterBattleScene) {
+                ResetToPrimitive();
+                Debug.Log("Enter Battle Scene");
+                EffectsProperty.CurrentValue.Value.ForEach(cmd => {
+                    if (cmd.CardBelongTo == null) cmd.CardBelongTo = this;
+                    cmd.RegisterBattleEventListeners();
+                });
 
-            BuffEffectProperty.CurrentValue.Value.ForEach(cmd => {
-                if (cmd.CardBelongTo == null) cmd.CardBelongTo = this;
-                cmd.RegisterBattleEventListeners();
-            });
+                BuffEffectProperty.CurrentValue.Value.ForEach(cmd => {
+                    if (cmd.CardBelongTo == null) cmd.CardBelongTo = this;
+                    cmd.RegisterBattleEventListeners();
+                });
+            }
+          
         }
 
 
         protected void SetEffectsToPrimitive()
         {
+            InitialEffectAnimationOverride();
             EffectsProperty.CurrentValue.Value.ForEach(cmd => {
                 cmd.UnregisterBattleEventListeners();
             });
@@ -132,6 +166,10 @@ namespace MainGame
 
             });
 
+
+
+
+             
             BuffEffectProperty.CurrentValue.Value.ForEach(cmd => {
                 cmd.UnregisterBattleEventListeners();
             });
@@ -170,17 +208,17 @@ namespace MainGame
 
             return description;
         }
-        /*
-        public void DealCard() {
-            foreach (Effect concreteEffect in ConcreteEffects) {
-                this.SendCommand(concreteEffect.EffectCommand);
-                concreteEffect.Callback?.Invoke();
-            }
-            OnCardDealt();
+        
+        public void TryDealCard() {
+            Debug.Log("Try Deal Card");
+            this.SendCommand<TryDealCardCommand>(new TryDealCardCommand(this));
+          
         }
 
-        public abstract void OnCardDealt();
-        */
+        public abstract void OnCardDealtSuccess();
+
+       
+        
 
         /// <summary>
         /// When the battle is ended

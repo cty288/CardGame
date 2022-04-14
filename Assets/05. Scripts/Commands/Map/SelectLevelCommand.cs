@@ -24,9 +24,9 @@ namespace MainGame
                                                                        LevelType.Enemy
                                                                        || LevelObject.Node.NodeType.Value ==
                                                                        LevelType.Boss) {
-                    this.GetModel<IGameStateModel>().GameState.Value = GameState.Battle;
+                   // this.GetModel<IGameStateModel>().GameState.Value = GameState.Battle;
                     this.GetSystem<ITimeSystem>().AddDelayTask(0.3f, () => {
-                        this.SendEvent<IBattleEvent>(new OnEnterBattleScene());
+                        //this.SendEvent<IBattleEvent>(new OnEnterBattleScene());
                         this.RecycleToCache();
                     });
                 }

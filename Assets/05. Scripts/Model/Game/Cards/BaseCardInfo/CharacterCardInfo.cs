@@ -43,5 +43,9 @@ namespace MainGame
             Attack.ResetToPrimitive();
             
         }
+
+        public override void OnCardDealtSuccess() {
+            //spawn character
+        }
     }
 }

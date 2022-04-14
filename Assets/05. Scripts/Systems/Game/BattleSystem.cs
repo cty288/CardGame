@@ -20,6 +20,7 @@ namespace MainGame
             this.RegisterEvent<IBattleEvent>(OnEnterBattleScene);
 
             if (gameStateModel.GameState.Value == GameState.Battle) {
+                Debug.Log("Sending Enter Battle Scene Event");
                 this.SendEvent<IBattleEvent>(new OnEnterBattleScene()); //first enter game
             }
 

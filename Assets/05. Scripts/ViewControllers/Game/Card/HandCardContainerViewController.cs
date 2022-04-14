@@ -35,7 +35,7 @@ namespace MainGame
         }
 
         private void OnEnterBattleSceneDrawCards(IBattleEvent e) {
-            
+           
             Sequence drawCardAnimationSequence = Sequence.Allocate();
             Debug.Log("OnEnterBattleSceneDrawCards Creating Sequence");
 
@@ -43,6 +43,8 @@ namespace MainGame
                 Debug.Log("OnEnterBattleSceneDrawCards");
                 GameObject characterHandCard = characterHandCardPool.Allocate();
                 characterHandCard.GetComponent<CardDisplay>().CardInfo.Value = ((OnDrawCard) e).cardDraw;
+                characterHandCard.GetComponent<CardDisplay>().CardInfo.Value.CardDisplayBelongTo =
+                    characterHandCard.GetComponent<CardDisplay>();
                 Debug.Log(characterHandCard.GetComponent<CardDisplay>().CardDisplayInfo.CardIllustration.name);
                 characterHandCard.gameObject.transform.position = characterHandCardSpawnPosition.position;
                 characterHandCard.transform.SetParent(transform);

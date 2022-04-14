@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using MikroFramework;
+using MikroFramework.ActionKit;
 using MikroFramework.Architecture;
 using MikroFramework.Pool;
 using Polyglot;
@@ -10,14 +11,22 @@ using UnityEngine;
 namespace MainGame
 {
 
-    public enum EffectBattleEventTriggerType {
-        TriggerWhenDealt,
-        TriggerByOtherEventsAfterDealt,
-        AlwaysTriggerByOtherEvents
+
+
+    public interface ITriggeredWhenDealt {
+
+    }
+
+    public interface IAlwaysTriggeredByOtherEvents {
+        public List<IBattleEvent> TriggeredBy { get; }
+    }
+
+    public interface ITriggeredByEventsWhenDealt {
+        public List<IBattleEvent> TriggeredBy { get; }
     }
 
     [ES3Serializable]
-    public abstract class EffectCommand : ICommand, ICanRegisterEvent
+    public abstract class EffectCommand :  ICommand, ICanRegisterEvent
     {
         //Register Effect effective event
         
@@ -25,6 +34,16 @@ namespace MainGame
         [ES3NonSerializable]
         public CardInfo CardBelongTo;
 
+
+        [ES3NonSerializable]
+        protected MikroAction executeAnimationEffect;
+
+        public CardDisplay GetCardDisplayBelongTo() {
+            return CardBelongTo.CardDisplayBelongTo;
+        }
+        public void OverrideExecuteAnimationEffect(MikroAction effect) {
+            this.executeAnimationEffect = effect;
+        }
         public List<KeywordInfo> GetAllKeywords() {
             //Activator.CreateInstance(typeof(CardInfo))
             string localizedText = GetLocalizedTextWithoutBold();
@@ -52,52 +71,68 @@ namespace MainGame
         }
 
         public void UnregisterBattleEventListeners() {
-            switch (BattleEventTriggerType)
+
+            if (this is ITriggeredWhenDealt)
             {
-                case EffectBattleEventTriggerType.TriggerWhenDealt:
-                    this.GetSystem<IBattleEventControlSystem>()
-                        .UnRegisterEffectFromBattleEvent(typeof(OnCardDealt), OnCardDealt);
-                    break;
-                case EffectBattleEventTriggerType.TriggerByOtherEventsAfterDealt:
-                    this.UnRegisterEvent<IBattleEvent>(OnRegisteredBattleEventTriggered);
-                    break;
-                case EffectBattleEventTriggerType.AlwaysTriggerByOtherEvents:
-                    this.UnRegisterEvent<IBattleEvent>(OnRegisteredBattleEventTriggered);
-                    break;
+                this.GetSystem<IBattleEventControlSystem>()
+                    .UnRegisterEffectFromBattleEvent(typeof(OnCardDealt), OnCardDealt);
+            }
+
+            if (this is ITriggeredByEventsWhenDealt)
+            {
+                this.UnRegisterEvent<IBattleEvent>(OnRegisteredBattleEventTriggered);
+            }
+
+            if (this is IAlwaysTriggeredByOtherEvents)
+            {
+                this.UnRegisterEvent<IBattleEvent>(OnRegisteredBattleEventTriggered);
             }
         }
 
         public void RegisterBattleEventListeners() {
-            switch (BattleEventTriggerType) {
-                case EffectBattleEventTriggerType.TriggerWhenDealt:
-                    this.GetSystem<IBattleEventControlSystem>()
-                        .RegisterEffectToBattleEvent(typeof(OnCardDealt), OnCardDealt);
-                    break;
-                case EffectBattleEventTriggerType.TriggerByOtherEventsAfterDealt:
-                    this.GetSystem<IBattleEventControlSystem>()
-                        .RegisterEffectToBattleEvent(typeof(OnCardDealt), OnCardDealt);
-                    break;
-                case EffectBattleEventTriggerType.AlwaysTriggerByOtherEvents:
-                    this.RegisterEvent<IBattleEvent>(OnRegisteredBattleEventTriggered);
-                    break;
+            if (this is ITriggeredWhenDealt) {
+                this.GetSystem<IBattleEventControlSystem>()
+                    .RegisterEffectToBattleEvent(typeof(OnCardDealt), OnCardDealt);
+            }
+
+            if (this is ITriggeredByEventsWhenDealt dealt) {
+                this.GetSystem<IBattleEventControlSystem>()
+                    .RegisterEffectToBattleEvent(typeof(OnCardDealt), OnCardDealt);
+            }
+
+            if (this is IAlwaysTriggeredByOtherEvents) {
+                this.RegisterEvent<IBattleEvent>(OnRegisteredBattleEventTriggered);
             }
         }
 
         private void OnCardDealt(IBattleEvent e) {
+            Debug.Log("On Card Dealt");
             if (((OnCardDealt) e).CardDealt == CardBelongTo) {
-                if (BattleEventTriggerType == EffectBattleEventTriggerType.TriggerWhenDealt) {
-                    OnExecute();
+                if (this is ITriggeredWhenDealt) {
+                    Execute();
                 }
 
-                if (BattleEventTriggerType == EffectBattleEventTriggerType.TriggerByOtherEventsAfterDealt) {
+                if (this is ITriggeredByEventsWhenDealt listener) 
+                {
                     this.RegisterEvent<IBattleEvent>(OnRegisteredBattleEventTriggered);
                 }
             }
         }
 
         private void OnRegisteredBattleEventTriggered(IBattleEvent e) {
-            if (e.GetType() == BattleEventTypeRegister) {
-                OnExecute();
+            if (this is ITriggeredByEventsWhenDealt listener) {
+                foreach (IBattleEvent battleEvent in listener.TriggeredBy) {
+                    if (battleEvent.GetType() == e.GetType()) {
+                        Execute();
+                    }
+                }
+            }
+            if (this is IAlwaysTriggeredByOtherEvents listener2) {
+                foreach (IBattleEvent battleEvent in listener2.TriggeredBy) {
+                    if (battleEvent.GetType() == e.GetType()) {
+                        Execute();
+                    }
+                }
             }
         }
 
@@ -106,26 +141,32 @@ namespace MainGame
             OnExecute();
         }
 
+        protected void Execute() {
+            this.GetSystem<IBattleEventControlSystem>().RegisterAnimationToSequence(executeAnimationEffect);
+            OnExecute();
+        }
+
 
         public virtual EffectCommand Clone() {
             EffectCommand cloned = OnCloned();
-            cloned.BattleEventTriggerType = BattleEventTriggerType;
-            cloned.BattleEventTypeRegister = BattleEventTypeRegister;
+            cloned.executeAnimationEffect = this.executeAnimationEffect;
             return cloned;
         }
 
         public abstract EffectCommand OnCloned();
 
-        [ES3Serializable]
-        public abstract EffectBattleEventTriggerType BattleEventTriggerType { get; protected set; }
 
-        /// <summary>
-        /// This is only valid when the effect is trigged by other events. If this effect is not triggered by other events, use null instead
-        /// </summary>
-        [ES3NonSerializable]
-        public abstract Type BattleEventTypeRegister { get; protected set; } 
 
-        public EffectCommand(){}
+
+
+        public EffectCommand() {
+            if (executeAnimationEffect == null) {
+                executeAnimationEffect = this.GetExecuteAnimationEffect();
+            }
+           
+        }
+
+        public abstract MikroAction GetExecuteAnimationEffect();
 
         public abstract string GetLocalizedTextWithoutBold();
 

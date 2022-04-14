@@ -16,6 +16,10 @@ namespace MainGame {
 
     public struct OnLeaveBattleScene: IBattleEvent{}
 
+    public class OnCardTryDealt : IBattleEvent {
+        public bool DealSuccess;
+        public CardInfo CardInfo;
+    }
     public struct OnCardDealt : IBattleEvent {
         public CardInfo CardDealt;
     }

@@ -67,7 +67,8 @@ namespace MainGame
         public List<Type> BattleEventTypes = new List<Type>() {
             typeof(OnDrawCard),
             typeof(OnEnterBattleScene),
-            typeof(OnCardDealt)
+            typeof(OnCardDealt),
+            typeof(OnLeaveBattleScene),
         };
 
         private Dictionary<Type, Action<IBattleEvent>> eventCallbackDic;

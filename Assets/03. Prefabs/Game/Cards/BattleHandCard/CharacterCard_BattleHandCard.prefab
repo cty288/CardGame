@@ -85,6 +85,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2211734576451760551}
   - component: {fileID: 2211734576451760548}
+  - component: {fileID: 8584697272056921134}
+  - component: {fileID: 4694123057960074903}
+  - component: {fileID: 2293579375930230795}
+  - component: {fileID: 5837629200488110106}
   m_Layer: 5
   m_Name: CharacterCard_BattleHandCard
   m_TagString: Untagged
@@ -134,6 +138,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Pool: {fileID: 0}
   CardType: 4
+  CardDisplayInfo:
+    CardIllustration: {fileID: 0}
+    IllustrationPos: {x: 0, y: 0, z: 0}
+    IllustrationSize: {x: 0, y: 0}
   CardID: 0
   CostText: {fileID: 0}
   CardNameText: {fileID: 0}
@@ -153,6 +161,83 @@ MonoBehaviour:
   - {fileID: 21300000, guid: f6324512da6a9ca4185df6cf892b2b22, type: 3}
   CardStrengthSlider: {fileID: 2211734578063355245}
   CardTypeText: {fileID: 0}
+--- !u!61 &8584697272056921134
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2211734576451760550}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 6.6}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 178.54, y: 253.65}
+  m_EdgeRadius: 0
+--- !u!50 &4694123057960074903
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2211734576451760550}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!114 &2293579375930230795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2211734576451760550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52a7f5503a2505a49aca73bf2063239a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TargetLayers:
+    serializedVersion: 2
+    m_Bits: 64
+  maxDistance: 100
+  detectTime: 1
+  colliders: []
+--- !u!114 &5837629200488110106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2211734576451760550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a798c360b980f9498587fbe65976a28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2211734576644530630
 GameObject:
   m_ObjectHideFlags: 0
