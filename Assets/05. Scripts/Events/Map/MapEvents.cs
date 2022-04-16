@@ -6,12 +6,27 @@ namespace MainGame
 {
     public struct OnNewMapGenerated
     {
-        public List<List<PathNode>> NodeTree;
+        public Graph PathGraph;
     }
 
     public struct OnLevelSelected : IGameTimeUpdateEvent
     {
         public LevelObject LevelObject;
         public int TimePassed { get; set; }
+    }
+
+    public struct OnAddNode {
+        public GraphVertex AddedNode;
+    }
+
+    public struct OnRemoveNode
+    {
+        public GraphVertex RemovedNode;
+    }
+
+    public struct OnAddDirectedEdge
+    {
+        public GraphVertex Start;
+        public GraphVertex End;
     }
 }

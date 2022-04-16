@@ -900,8 +900,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cellXInterval: 5
   cellYInterval: 9.75
-  xOffset: 0.2
-  yOffset: 0.8
+  xOffset: 10
+  yOffset: 20
   levelObjectPrefab: {fileID: 4235452250506236627, guid: cc106e0770b84b843b3210a13f05eb4c, type: 3}
   line: {fileID: 7281199564805236970, guid: 041efa67276cdfe4aad7bbda8ef1f327, type: 3}
   pathParent: {fileID: 1319815341}
@@ -1586,7 +1586,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 20.903788
+  orthographic size: 24.809689
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2

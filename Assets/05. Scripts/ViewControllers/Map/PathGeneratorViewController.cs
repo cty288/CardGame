@@ -16,6 +16,10 @@ namespace MainGame
 {
     public class PathGeneratorViewController : AbstractMikroController<CardGame>, ISingleton
     {
+        public void OnSingletonInit()
+        {
+
+        }
         public static PathGeneratorViewController Singleton {
             get {
                 return SingletonProperty<PathGeneratorViewController>.Singleton;
@@ -91,75 +95,91 @@ namespace MainGame
 
         private void OnNewMapGenerated(OnNewMapGenerated e) {
             Debug.Log("Event received");
-            CreatePathRoutine(e.NodeTree);
+            CreatePathRoutine(e.PathGraph);
             //Floor0Stage();
         }
 
-        void CreatePathRoutine(List<List<PathNode>> nodeTree)
+        void CreatePathRoutine(Graph graph)
         {
-            float YPos = startLocation.position.y;
-            int pathDepth = this.GetModel<IMapGenerationConfigModel>().PathDepth;
-            int pathWidth = this.GetModel<IMapGenerationConfigModel>().PathWidth;
             Random random = this.GetSystem<ISeedSystem>().MapRandom;
-            for (int i = pathDepth; i >= 0; i--)
+            Dictionary<GraphVertex, Vector3> vertexRealPos = new Dictionary<GraphVertex, Vector3>();
+            int pathDepth = this.GetModel<IMapGenerationModel>().PathDepth;
+            for (int i = 0; i < graph.Vertices.Count; ++i)
             {
-                float XPos = startLocation.position.x;
 
-                for (int j = 0; j < pathWidth; j++)
-                {
-                    if (nodeTree[i][j] != null)
-                    {
-                        PathNode node = nodeTree[i][j];
+                Vector3 pos = Vector3.zero;
+                pos.x = (graph.Vertices[i].Value.PointOnMap.x+ (float)((random.NextDouble() * 2 - 1)) * 0.5f) * xOffset;
+                pos.y = (pathDepth-  graph.Vertices[i].Value.PointOnMap.y + (float)((random.NextDouble() * 2 - 1)) * 0.5f) * yOffset;
+                pos.z = 0.0f;
+                vertexRealPos.Add(graph.Vertices[i], new Vector3(pos.x, pos.y, -0.1f));
 
-                        Vector3 pos;
-                        if (node.NodeType == LevelType.Boss)
-                        {//add a bit offset
-                            pos = new Vector3(XPos + (float)(random.NextDouble() * 2 - 1) * xOffset,
-                                (YPos + 1 + ((float)random.NextDouble() * 2 - 1) * yOffset));
-                        }
-                        else
-                        {
-                            //add a bit offset
-                            pos = new Vector3(XPos + (float)(random.NextDouble() * 2 - 1) * xOffset,
-                                (YPos + ((float)random.NextDouble() * 2 - 1) * yOffset));
-                        }
+                GameObject obj = GameObjectPoolManager.Singleton.Allocate(levelObjectPrefab);
 
-
-                        node.PositionOnMap = pos;
-
-                        GameObject obj = GameObjectPoolManager.Singleton.Allocate(levelObjectPrefab);
-
-                        obj.transform.position = pos;
-                        obj.transform.SetParent(pathParent);
-                        
-
-                        node.LevelObject = obj;
-                        obj.GetComponent<LevelObject>().LevelType = node.NodeType;
-                        node.ConnectedNodes.ForEach(connectedNodes => {
-                            connectedNodes.ConnectedByLevelObject.Add(obj);
-                        });
-                        obj.GetComponent<LevelObject>().Node = node;
-                     
-                    }
-
-                    XPos += cellXInterval;
-                }
-
-                YPos += cellYInterval;
+                obj.transform.position = pos;
+                obj.transform.SetParent(pathParent);
+                obj.GetComponent<LevelObject>().Node = graph.Vertices[i];
+                obj.GetComponent<LevelObject>().LevelType = graph.Vertices[i].Value.LevelType;
+                graph.Vertices[i].Value.LevelObject = obj;
+                
+               
             }
 
 
+            for (int i = 0; i < graph.Vertices.Count; ++i) {
+                if (graph.Vertices[i].NodeNeighbours.Count > 0) {
+                    GraphVertex vertex = graph.Vertices[i];
+                    GraphVertex[] vertices = vertex.Neighbours.ToArray();
 
-            //draw connection
-            for (int i = 0; i < nodeTree.Count; i++)
-            {
-                for (int j = 0; j < nodeTree[i].Count; j++)
-                {
-                    if (nodeTree[i][j] != null)
-                    {
-                        if (nodeTree[i][j].ConnectedNodes.Count > 0)
+                    foreach (GraphVertex toNode in vertices) {
+                        Vector3 fromPos = vertexRealPos[vertex];
+                        Vector3 toPos = vertexRealPos[toNode];
+
+                        if (toNode.Value.PointOnMap.y != vertex.Value.PointOnMap.y) {
+                            if (toNode.Value.PointOnMap.y > vertex.Value.PointOnMap.y) {
+                               
+                                fromPos +=  new Vector3(0, - 1.8f, 0);
+                                toPos += new Vector3(0, 1.8f, 0); 
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                        }
+                        else
                         {
-                            PathNode node = nodeTree[i][j];
+                            if (toNode.Value.PointOnMap.x> vertex.Value.PointOnMap.x)
+                            {
+                                fromPos += new Vector3(1.8f, 0, 0);
+                                toPos += new Vector3(-1.8f, 0, 0);
+                                
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                        }
+
+
+                        LineRenderer line = GameObjectPoolManager.Singleton.Allocate(this.line).GetComponent<LineRenderer>();
+                        line.SetPositions(new Vector3[] {
+                                fromPos,
+                                toPos,
+                            });
+                        line.transform.SetParent(connectionParent);
+                    }
+                }
+            }
+
+            /*
+            for (int i = 0; i < graph.Count; i++)
+            {
+                for (int j = 0; j < graph[i].Count; j++)
+                {
+                    if (graph[i][j] != null)
+                    {
+                        if (graph[i][j].ConnectedNodes.Count > 0)
+                        {
+                            PathNode node = graph[i][j];
 
 
                             PathNode[] ToNodes = node.ConnectedNodes.ToArray();
@@ -220,7 +240,63 @@ namespace MainGame
 
                         }
                     }
+                }*/
+                /*
+                float YPos = startLocation.position.y;
+                int pathDepth = this.GetModel<IMapGenerationConfigModel>().PathDepth;
+                int pathWidth = this.GetModel<IMapGenerationConfigModel>().PathWidth;
+
+                for (int i = pathDepth; i >= 0; i--)
+                {
+                    float XPos = startLocation.position.x;
+
+                    for (int j = 0; j < pathWidth; j++)
+                    {
+                        if (graph[i][j] != null)
+                        {
+                            PathNode node = graph[i][j];
+
+                            Vector3 pos;
+                            if (node.NodeType == LevelType.Boss)
+                            {//add a bit offset
+                                pos = new Vector3(XPos + (float)(random.NextDouble() * 2 - 1) * xOffset,
+                                    (YPos + 1 + ((float)random.NextDouble() * 2 - 1) * yOffset));
+                            }
+                            else
+                            {
+                                //add a bit offset
+                                pos = new Vector3(XPos + (float)(random.NextDouble() * 2 - 1) * xOffset,
+                                    (YPos + ((float)random.NextDouble() * 2 - 1) * yOffset));
+                            }
+
+
+                            node.PositionOnMap = pos;
+
+                            GameObject obj = GameObjectPoolManager.Singleton.Allocate(levelObjectPrefab);
+
+                            obj.transform.position = pos;
+                            obj.transform.SetParent(pathParent);
+
+
+                            node.LevelObject = obj;
+                            obj.GetComponent<LevelObject>().LevelType = node.NodeType;
+                            node.ConnectedNodes.ForEach(connectedNodes => {
+                                connectedNodes.ConnectedByLevelObject.Add(obj);
+                            });
+                            obj.GetComponent<LevelObject>().Node = node;
+
+                        }
+
+                        XPos += cellXInterval;
+                    }
+
+                    YPos += cellYInterval;
                 }
+
+                */
+
+                //draw connection
+
             }
           
         }
@@ -237,9 +313,7 @@ namespace MainGame
             }
         }*/
 
-        public void OnSingletonInit() {
-            
-        }
+
     }
 
-}
+

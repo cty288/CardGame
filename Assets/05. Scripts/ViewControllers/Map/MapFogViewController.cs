@@ -48,18 +48,18 @@ namespace MainGame
         }
 
 
-        private void OnLevelSelected(PathNode prevNode, PathNode newNode) {
+        private void OnLevelSelected(GraphVertex prevNode, GraphVertex newNode) {
             this.GetSystem<ITimeSystem>().AddDelayTask(0.06f, () => {
                 if (newNode == null)
                 { //floor 0 or loaded
-                    List<PathNode> floor0Nodes = this.GetSystem<IGameMapSystem>().GetPathNodeAtDepth(this.GetModel<IMapGenerationModel>().PathDepth);
+                    List<GraphVertex> floor0Nodes = this.GetSystem<IGameMapSystem>().GetPathNodeAtDepth(this.GetModel<IMapGenerationModel>().PathDepth);
                     floor0Nodes.ForEach(node=>{UpdateMapFogForNode(null, node);});
 
-                    List<PathNode> allNodes = this.GetSystem<IGameMapSystem>().GetAllAvailableNodes();
+                    List<GraphVertex> allNodes = this.GetSystem<IGameMapSystem>().GetAllAvailableNodes();
                     if (allNodes.Count > 0) {
                         allNodes.ForEach(node => {
-                            if (node.Visited) {
-                                node.ConnectedByNodes.ForEach(n => UpdateMapFogForNode(node, n));
+                            if (node.Value. Visited) {
+                                node.Neighbours.ForEach(n => UpdateMapFogForNode(node, n));
                             }
                           
                         });
@@ -67,8 +67,8 @@ namespace MainGame
                 }
                 else
                 {
-                    if (newNode.ConnectedByNodes.Count > 0) {
-                        newNode.ConnectedByNodes.ForEach(node => {UpdateMapFogForNode(newNode, node);});
+                    if (newNode.Neighbours.Count > 0) {
+                        newNode.Neighbours.ForEach(node => {UpdateMapFogForNode(newNode, node);});
                     }
                 }
               
@@ -84,8 +84,8 @@ namespace MainGame
             mesh.colors = colors;
         }
 
-        private void UpdateMapFogForNode(PathNode fromNode, PathNode toNode) {
-            Vector3 targetObjPos = toNode.LevelObject.gameObject.transform.position;
+        private void UpdateMapFogForNode(GraphVertex fromNode, GraphVertex toNode) {
+            Vector3 targetObjPos = toNode.Value.LevelObject.gameObject.transform.position;
             if (fromNode == null) {
                 for (int i = 0; i < vertices.Length; i++)
                 {
@@ -106,8 +106,8 @@ namespace MainGame
                 for (int i = 0; i < vertices.Length; i++) {
                     float distance = 
                         HandleUtility.DistancePointLine(vertices[i],
-                        fromNode.LevelObject.gameObject.transform.position,
-                        toNode.LevelObject.gameObject.transform.position);
+                        fromNode.Value. LevelObject.gameObject.transform.position,
+                        toNode.Value.LevelObject.gameObject.transform.position);
 
 
                     if (distance < radius * Random.Range(0.8f, 1.2f))

@@ -18,7 +18,7 @@ public class LevelObject : AbstractMikroController<CardGame> {
     }
 
     [HideInInspector]
-    public PathNode Node;
+    public GraphVertex Node;
 
     private Animator animator;
 
@@ -33,32 +33,32 @@ public class LevelObject : AbstractMikroController<CardGame> {
     private void Start() {
         this.GetModel<IMapStateModel>().CurNode.RegisterWithInitValue(OnALevelSelected)
             .UnRegisterWhenGameObjectDestroyed(gameObject);
-        Node.NodeType.RegisterWithInitValue(OnNodeTypeChange).UnRegisterWhenGameObjectDestroyed(gameObject);
+        Node.Value.LevelType.RegisterWithInitValue(OnNodeTypeChange).UnRegisterWhenGameObjectDestroyed(gameObject);
     }
 
     private void OnNodeTypeChange(LevelType prevType, LevelType curType) {
         this.GetComponent<SpriteRenderer>().sprite = levelTypeSirSprites[(int) curType];
     }
 
-    private void OnALevelSelected(PathNode prevNode, PathNode newSelectedLevel) {
+    private void OnALevelSelected(GraphVertex prevNode, GraphVertex newSelectedLevel) {
         if (newSelectedLevel == null){ //floor 0 or load save data
-            if (Node.Depth == this.GetModel<IMapGenerationModel>().PathDepth) {
+            if (Node.Value.PointOnMap.y == this.GetModel<IMapGenerationModel>().PathDepth) {
                 OnPlayerMeet();
             }
         }
         else {
             if (prevNode == null && newSelectedLevel!=Node) { //floor 0 selected
                 //OnPlayerLeave();
-                if (Node.Depth == this.GetModel<IMapGenerationModel>().PathDepth) {
+                if (Node.Value.PointOnMap.y == this.GetModel<IMapGenerationModel>().PathDepth) {
                     OnPlayerLeave();
                 }
             }
 
             if (prevNode == Node) {
-                Node.ConnectedByNodes.ForEach(node => {
+                Node.Neighbours.ForEach(node => {
                     if (node != newSelectedLevel)
                     {
-                        node.LevelObject.GetComponent<LevelObject>().OnPlayerLeave();
+                        node.Value.LevelObject.GetComponent<LevelObject>().OnPlayerLeave();
                     }
                 });
                 this.GetSystem<ITimeSystem>().AddDelayTask(0.02f, () => {
@@ -71,9 +71,9 @@ public class LevelObject : AbstractMikroController<CardGame> {
                 //selected this
                 OnPlayerSelect();
                 this.GetSystem<ITimeSystem>().AddDelayTask(0.05f, () => {
-                    Node.ConnectedByNodes.ForEach(node => {
+                    Node.Neighbours.ForEach(node => {
                         //Debug.Log($"Select:{gameObject.name}, Meet:{node.LevelObject.gameObject.name}");
-                        node.LevelObject.GetComponent<LevelObject>().OnPlayerMeet();
+                        node.Value.LevelObject.GetComponent<LevelObject>().OnPlayerMeet();
                     });
                 });
 
@@ -98,15 +98,15 @@ public class LevelObject : AbstractMikroController<CardGame> {
     private void OnPlayerLeave() {
         animator.SetBool("PlayerReach", false);
         animator.SetBool("PlayerComplete", false);
-        PathNode currentSelectedNode = this.GetModel<IMapStateModel>().CurNode;
+        GraphVertex currentSelectedNode = this.GetModel<IMapStateModel>().CurNode;
        
-        Interactable = Node.ConnectedByNodes.Contains(currentSelectedNode);
+        Interactable = Node.Neighbours.Contains(currentSelectedNode);
     }
 
     private void OnPlayerMoveToNext() {
         animator.SetBool("PlayerComplete", false);
-        PathNode currentSelectedNode = this.GetModel<IMapStateModel>().CurNode;
+        GraphVertex currentSelectedNode = this.GetModel<IMapStateModel>().CurNode;
 
-        Interactable = Node.ConnectedByNodes.Contains(currentSelectedNode);
+        Interactable = Node.Neighbours.Contains(currentSelectedNode);
     }
 }

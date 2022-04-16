@@ -14,15 +14,15 @@ namespace MainGame
         protected override void OnExecute() {
            
             if (LevelObject.Interactable) {
-                LevelObject.Node.Visited = true;
+                LevelObject.Node.Value.Visited = true;
                 this.GetModel<IMapStateModel>().CurNode.Value = LevelObject.Node;
                 this.SendEvent<IGameTimeUpdateEvent>(new OnSelectLevelTimePass() {
                     TimePassed = 15
                 });
 
-                if (LevelObject.Node.NodeType.Value == LevelType.Elite || LevelObject.Node.NodeType.Value ==
+                if (LevelObject.Node.Value.LevelType.Value == LevelType.Elite || LevelObject.Node.Value.LevelType.Value ==
                                                                        LevelType.Enemy
-                                                                       || LevelObject.Node.NodeType.Value ==
+                                                                       || LevelObject.Node.Value.LevelType.Value ==
                                                                        LevelType.Boss) {
                    // this.GetModel<IGameStateModel>().GameState.Value = GameState.Battle;
                     this.GetSystem<ITimeSystem>().AddDelayTask(0.3f, () => {
