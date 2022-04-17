@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using MikroFramework.Architecture;
@@ -7,7 +8,8 @@ using UnityEngine.UIElements;
 namespace MainGame
 {
     [ES3Serializable]
-    public class GraphVertex {
+    public class GraphVertex : IEquatable<GraphVertex>
+    {
         
         [ES3Serializable]
         private List<float> costs;
@@ -44,6 +46,29 @@ namespace MainGame
         }
         public GraphVertex(MapNode value) : this() {
             this.value = value;
+        }
+
+        public bool Equals(GraphVertex other) {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(value, other.value);
+        }
+
+        public override bool Equals(object obj) {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((GraphVertex) obj);
+        }
+
+        public override int GetHashCode() {
+            unchecked {
+                var hashCode = (costs != null ? costs.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (value != null ? value.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (neighbours != null ? neighbours.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (nodeNeighbours != null ? nodeNeighbours.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 
@@ -97,10 +122,12 @@ namespace MainGame
             AddVertex(new GraphVertex(node));
         }
         public void AddDirectedEdge(GraphVertex start, GraphVertex end, float cost) {
-            start.Neighbours.Add(end);
-            start.Costs.Add(cost);
-            start.NodeNeighbours.Add(end.Value);
-            this.SendEvent<OnAddDirectedEdge>(new OnAddDirectedEdge() {Start = start, End = end});
+            if (!start.Neighbours.Contains(end)) {
+                start.Neighbours.Add(end);
+                start.Costs.Add(cost);
+                start.NodeNeighbours.Add(end.Value);
+                this.SendEvent<OnAddDirectedEdge>(new OnAddDirectedEdge() { Start = start, End = end });
+            }
         }
 
         public void AddUnDirectedEdge(GraphVertex node1, GraphVertex node2, float cost1, float cost2)

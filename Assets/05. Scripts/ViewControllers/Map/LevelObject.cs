@@ -47,16 +47,16 @@ public class LevelObject : AbstractMikroController<CardGame> {
             }
         }
         else {
-            if (prevNode == null && newSelectedLevel!=Node) { //floor 0 selected
+            if (prevNode == null && !newSelectedLevel.Value.Equals(Node.Value)) { //floor 0 selected
                 //OnPlayerLeave();
                 if (Node.Value.PointOnMap.y == this.GetModel<IMapGenerationModel>().PathDepth) {
                     OnPlayerLeave();
                 }
             }
 
-            if (prevNode == Node) {
+            if (prevNode!=null && prevNode.Value.Equals(Node.Value)) {
                 Node.Neighbours.ForEach(node => {
-                    if (node != newSelectedLevel)
+                    if (!node.Value.Equals(newSelectedLevel.Value))
                     {
                         node.Value.LevelObject.GetComponent<LevelObject>().OnPlayerLeave();
                     }
@@ -67,7 +67,7 @@ public class LevelObject : AbstractMikroController<CardGame> {
 
             }
 
-            if (newSelectedLevel == Node) {
+            if (newSelectedLevel.Value.Equals(Node.Value)) {
                 //selected this
                 OnPlayerSelect();
                 this.GetSystem<ITimeSystem>().AddDelayTask(0.05f, () => {

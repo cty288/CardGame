@@ -101,11 +101,11 @@ public class MapCameraControl : AbstractMikroController<CardGame> {
         float heightRange = camera.orthographicSize;
 
         float minX = startLocation.x + widthRange - 5;
-        float maxX = startLocation.x + xInterval * mapModel.PathWidth - widthRange + 5;
+        float maxX = startLocation.x + xInterval * mapModel.PathWidth - widthRange + 130;
         xRange = new Vector2(minX, maxX);
 
         float minY = startLocation.y + heightRange - 15;
-        float maxY = startLocation.y + yInterval * mapModel.PathDepth - widthRange + 70;
+        float maxY = startLocation.y + yInterval * mapModel.PathDepth - widthRange + 100;
         yRange = new Vector2(minY, maxY);
     }
 }

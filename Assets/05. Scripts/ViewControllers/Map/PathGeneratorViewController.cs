@@ -108,8 +108,8 @@ namespace MainGame
             {
 
                 Vector3 pos = Vector3.zero;
-                pos.x = (graph.Vertices[i].Value.PointOnMap.x+ (float)((random.NextDouble() * 2 - 1)) * 0.5f) * xOffset;
-                pos.y = (pathDepth-  graph.Vertices[i].Value.PointOnMap.y + (float)((random.NextDouble() * 2 - 1)) * 0.5f) * yOffset;
+                pos.x = graph.Vertices[i].Value.PointOnMap.x * cellXInterval + ((float)((random.NextDouble() * 2 - 1)) ) * xOffset;
+                pos.y = (pathDepth-  graph.Vertices[i].Value.PointOnMap.y) * cellYInterval + ((float)((random.NextDouble() * 2 - 1)) ) * yOffset;
                 pos.z = 0.0f;
                 vertexRealPos.Add(graph.Vertices[i], new Vector3(pos.x, pos.y, -0.1f));
 

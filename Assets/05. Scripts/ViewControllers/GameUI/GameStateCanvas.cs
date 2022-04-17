@@ -29,7 +29,7 @@ namespace MainGame {
             this.GetModel<IGameStateModel>().GameState.RegisterOnValueChaned(OnGameStateChange)
                 .UnRegisterWhenGameObjectDestroyed(gameObject);
         }
-
+        
         private void OnGameStateChange(GameState prevState, GameState curState) {
             ImgSwitchSceneBG.gameObject.GetComponent<Animation>().Play();
         }

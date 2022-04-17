@@ -29,4 +29,10 @@ namespace MainGame
         public GraphVertex Start;
         public GraphVertex End;
     }
+
+    #region PathFinding
+
+    
+
+    #endregion
 }

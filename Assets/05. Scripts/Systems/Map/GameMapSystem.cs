@@ -42,7 +42,7 @@ namespace MainGame
                 Debug.Log("Load saved map");
             }
         }
-       
+       //TODO: 清理连接失败的node
 
       
 
@@ -57,10 +57,24 @@ namespace MainGame
                     //node generation part
                     bool generate = this.GetSystem<ISeedSystem>().MapRandom.Next(0,100) >= 50;
                     if (generate) {
-                        PathGraph.AddVertex(new MapNode(LevelType.Enemy, i, j));
+                        bool canGenerate = true;
+                        List<GraphVertex> generated = PathGraph.Vertices;
+                        foreach (GraphVertex graphVertex in generated) {
+                            if (Vector2.Distance(graphVertex.Value.PointOnMap, new Vector2(i, j)) <= 1) {
+                               
+                                canGenerate = this.GetSystem<ISeedSystem>().MapRandom.Next(0, 2) == 0 ;
+                            }
+                        }
+                        if (canGenerate) {
+                            PathGraph.AddVertex(new MapNode(LevelType.Enemy, i, j));
+                        }
+                      
                     }
                 }
             }
+
+            SetVertexLevelType();
+
             List<List<float>> distances = new List<List<float>>();
             List<List<float>> angles = new List<List<float>>();
 
@@ -83,21 +97,75 @@ namespace MainGame
                 List<int> indexes = sortedConnection.Select(x => x.Value).ToList();
 
                 List<float> angleOccuplied = new List<float>();
-                int maxNumConnect = this.GetSystem<ISeedSystem>().MapRandom.Next(2, 6);
-                int numConnected = 0;
+                GraphVertex currentVertex = PathGraph.Vertices[i];
 
-                for (int j = 1; j < dists.Count; j++) {
-                    if (!angleOccuplied.Contains(angles[i][indexes[j]])) {
-                        angleOccuplied.Add(angles[i][indexes[j]]);
-                        PathGraph.AddDirectedEdge(
-                            PathGraph.Vertices[i],
-                            PathGraph.Vertices[indexes[j]], dists[j]);
-                        numConnected++;
-                    }
+                int maxNumConnect;
 
-                    if (numConnected >= maxNumConnect) {
-                        break;
+                if (currentVertex.Value.Depth == 0 || currentVertex.Value.Depth == pathDepth) {
+                    maxNumConnect = 1;
+                }else {
+                    maxNumConnect = this.GetSystem<ISeedSystem>().MapRandom.Next(2, 5);
+                }
+                
+                
+
+                
+                int numConnected = currentVertex.Neighbours.Count;
+
+                if (numConnected < maxNumConnect) {
+                    for (int j = 1; j < dists.Count; j++)
+                    {
+                        //No connections on the same depth when the current vertex is on the first or last depth
+                        if ((currentVertex.Value.Depth == 0 || currentVertex.Value.Depth == pathDepth) &&
+                            PathGraph.Vertices[indexes[j]].Value.Depth == currentVertex.Value.Depth)
+                        {
+                            continue;
+                        }
+
+                        //no overlap angles and distance not too far away
+                        if (!angleOccuplied.Contains(angles[i][indexes[j]]) && 
+                            Vector2.Distance(currentVertex.Value.PointOnMap, PathGraph.Vertices[indexes[j]].Value.PointOnMap)<=5)
+                        {
+                            
+                            //angle limits
+                            float angle = angles[i][indexes[j]] * 180 / Mathf.PI;
+                            bool angleTooClose = false;
+                            foreach (float a in angleOccuplied) {
+                                if (Mathf.Abs(angle - a) < 45) {
+                                    angleTooClose = true;
+                                }
+                            }
+                            if(angleTooClose) continue;
+
+
+                            //not too tilted
+                            if ((Mathf.Abs(angle) % 90) <= this.GetSystem<ISeedSystem>().MapRandom.Next(15, 30)) {
+                                
+                                if (PathGraph.Vertices[indexes[j]].Neighbours.Count <= 4)
+                                {
+                                   
+                                    //eliminate road intersections
+                                    if (!HaveIntersectionWithOtherConnections(currentVertex.Value.PointOnMap,
+                                            PathGraph.Vertices[indexes[j]].Value.PointOnMap)) {
+                                        angleOccuplied.Add(angles[i][indexes[j]]);
+                                        PathGraph.AddUnDirectedEdge(
+                                            PathGraph.Vertices[i],
+                                            PathGraph.Vertices[indexes[j]], dists[j]);
+                                        numConnected++;
+                                    }
+                                 
+                                }
+                              
+                            }
+                           
+                        }
+
+                        if (numConnected >= maxNumConnect)
+                        {
+                            break;
+                        }
                     }
+                
                 }
             }
 
@@ -115,8 +183,97 @@ namespace MainGame
             return PathGraph;
             // StartCoroutine(CreatePathRoutine());
         }
+        bool HaveIntersectionWithOtherConnections(Vector2Int p1, Vector2Int p2)
+        {
+           
+           
+            foreach (GraphVertex vertex in PathGraph.Vertices) {
+                foreach (GraphVertex vertexNeighbour in vertex.Neighbours) {
+                    Vector2Int c =vertexNeighbour.Value.PointOnMap;
+                    Vector2Int d = vertex.Value.PointOnMap;
 
+                    if (p1 == c || p1 == d || p2 == c || p2 == d) {
+                        continue;
+                    }
+                    if (CheckCross(p1, p2, c, d) && CheckCross(c, d, p1, p2)) {
+                        return true;
+                    }
+                }
+            }
+           
 
+            return false;
+        }
+
+        
+        private bool CheckCross(Vector2Int a, Vector2Int b, Vector2Int c, Vector2Int d)
+        {
+            Vector2Int v1 = new Vector2Int();
+            Vector2Int v2 = new Vector2Int();
+            Vector2Int v3 = new Vector2Int();
+
+            v1.x = c.x - b.x;
+            v1.y = c.y - b.y;
+
+            v2.x = d.x- b.x;
+            v2.y =d.y -b.y;
+
+            v3.x = a.x - b.x;
+            v3.y = a.y -b.y;
+
+            return (CrossMul(v1, v3) * CrossMul(v2, v3) < 0);
+
+        }
+      
+      
+        private float CrossMul(Vector2Int pt1, Vector2Int pt2)
+        {
+            return pt1.x * pt2.y - pt1.y * pt2.x;
+        }
+
+      
+        private void SetVertexLevelType() {
+            List<GraphVertex> vertices = PathGraph.Vertices;
+            Random random = this.GetSystem<ISeedSystem>().MapRandom;
+            List<float> possibilities = mapGenerationModel.NormalLevelPossibilityValues;
+            foreach (GraphVertex graphVertex in vertices) {
+                LevelType type = LevelType.Nothing;
+                do {
+                    float lowerBound = 0;
+                    int levelChance = random.Next(0, 100);
+                    for (int i = 0; i < possibilities.Count; i++)
+                    {
+
+                        if (levelChance >= lowerBound && levelChance < lowerBound + possibilities[i])
+                        {
+                            type = mapGenerationModel.NormalLevelTypes[i];
+                            break;
+                        }
+
+                        lowerBound += possibilities[i];
+                    }
+                } while (!CheckNodeTypeValidity(graphVertex.Value.PointOnMap.x, graphVertex.Value.PointOnMap.y, type));
+
+                graphVertex.Value.LevelType.Value = type;
+            }
+           
+        }
+
+        private bool CheckNodeTypeValidity(int x, int y, LevelType type) {
+            if (type == LevelType.Enemy || type == LevelType.Nothing || type == LevelType.Rest ||
+                type == LevelType.Treasure) {
+                return true;
+            }
+
+            GraphVertex vertex = PathGraph.FindVertexByPos(x, y);
+            foreach (GraphVertex neighbour in vertex.Neighbours) {
+                if (vertex.Value.LevelType == type) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
         private void LoadSavedMap() {
             PathGraph.LoadSavedGraph();
             this.GetSystem<ITimeSystem>().AddDelayTask(0.1f, () => {
@@ -127,13 +284,13 @@ namespace MainGame
         public GraphVertex GetPathNodeAtDepthAndOrder(int depth, int order)
         {
             Debug.Log("GetPathNodeAtDepthAndOrder");
-            return PathGraph.FindVertexByPos(depth, order);
+            return PathGraph.FindVertexByPos(order, depth);
         }
 
         public List<GraphVertex> GetPathNodeAtDepth(int depth)
         {
             List<GraphVertex> allNodes = PathGraph.Vertices;
-
+             Random random = this.GetSystem<ISeedSystem>().MapRandom;
             List<GraphVertex> retResult = new List<GraphVertex>();
             foreach (GraphVertex pathNode in allNodes)
             {
