@@ -15,7 +15,8 @@ public enum LevelType {
     Treasure,
     Rest,
     Enemy,
-    Elite
+    Elite,
+    RestOccupiedByEnemy,
 }
 
 [Serializable]

@@ -17,7 +17,7 @@ public class LevelObject : AbstractMikroController<CardGame> {
         set => levelType = value;
     }
 
-    [HideInInspector]
+    [SerializeField]
     public GraphVertex Node;
 
     private Animator animator;

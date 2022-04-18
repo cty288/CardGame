@@ -13,6 +13,8 @@ namespace MainGame
         public List<float> NormalLevelPossibilityValues { get; }
         public List<LevelType> NormalLevelTypes { get; }
         public Dictionary<LevelType, float> NormalLevelPossibilities { get; }
+
+        public BindableProperty<int> EnemyMovePossibilityPerMinutePassed { get; }
     }
     public class MapGenerationModel : AbstractModel, IMapGenerationModel, ICanRegisterAndLoadSavedData {
         private IMapGenerationConfigModel configModel;
@@ -22,7 +24,8 @@ namespace MainGame
 
             PathDepth = this.RegisterAndLoadFromSavedData("path_depth", new BindableProperty<int>(configModel.PathDepth));
             PathWidth = this.RegisterAndLoadFromSavedData("path_width", new BindableProperty<int>(configModel.PathWidth));
-
+            EnemyMovePossibilityPerMinutePassed = this.RegisterAndLoadFromSavedData("enemy_move_chance",
+                new BindableProperty<int>(configModel.EnemyMovePossibilityPerMinutePassed));
             NormalLevelPossibilities = this.RegisterAndLoadFromSavedData<Dictionary<LevelType, float>>("normal_level_poss", new Dictionary<LevelType, float>());
 
             if (NormalLevelPossibilities.Count==0) {
@@ -72,5 +75,8 @@ namespace MainGame
         }
 
         public Dictionary<LevelType, float> NormalLevelPossibilities { get; private set; } = new Dictionary<LevelType, float>();
+
+        public BindableProperty<int> EnemyMovePossibilityPerMinutePassed { get; private set; } =
+            new BindableProperty<int>();
     }
 }

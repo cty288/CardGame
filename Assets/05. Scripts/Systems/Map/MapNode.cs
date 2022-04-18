@@ -7,11 +7,14 @@ using UnityEngine;
 
 namespace MainGame
 {
+    [Serializable]
     [ES3Serializable]
     public class MapNode : IEquatable<MapNode> {
+        [field: SerializeField]
         [ES3Serializable]
         public BindableProperty<LevelType> LevelType { get; set; } = new BindableProperty<LevelType>();
 
+        [field:SerializeField]
         [ES3Serializable]
         public Vector2Int PointOnMap { get; set; }
 
@@ -47,6 +50,15 @@ namespace MainGame
 
         public static float GetDistance(MapNode node1, MapNode node2) {
             return (node1.PointOnMap - node2.PointOnMap).magnitude;
+        }
+        public static float GetManhattanCost(MapNode a, MapNode b)
+        {
+            return Mathf.Abs(a.PointOnMap.x - b.PointOnMap.x) +
+                   Mathf.Abs(a.PointOnMap.y - b.PointOnMap.y);
+        }
+        public static float GetEuclideanCost(MapNode from, MapNode to)
+        {
+            return GetDistance(from, to);
         }
 
         public static float GetAngleInRadians(MapNode from, MapNode to) {

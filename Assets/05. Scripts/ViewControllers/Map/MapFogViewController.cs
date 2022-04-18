@@ -52,10 +52,10 @@ namespace MainGame
             this.GetSystem<ITimeSystem>().AddDelayTask(0.06f, () => {
                 if (newNode == null)
                 { //floor 0 or loaded
-                    List<GraphVertex> floor0Nodes = this.GetSystem<IGameMapSystem>().GetPathNodeAtDepth(this.GetModel<IMapGenerationModel>().PathDepth);
+                    List<GraphVertex> floor0Nodes = this.GetSystem<IGameMapGenerationSystem>().GetPathNodeAtDepth(this.GetModel<IMapGenerationModel>().PathDepth);
                     floor0Nodes.ForEach(node=>{UpdateMapFogForNode(null, node);});
 
-                    List<GraphVertex> allNodes = this.GetSystem<IGameMapSystem>().GetAllAvailableNodes();
+                    List<GraphVertex> allNodes = this.GetSystem<IGameMapGenerationSystem>().GetAllAvailableNodes();
                     if (allNodes.Count > 0) {
                         allNodes.ForEach(node => {
                             if (node.Value. Visited) {

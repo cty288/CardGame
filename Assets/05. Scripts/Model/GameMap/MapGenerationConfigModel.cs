@@ -10,6 +10,8 @@ namespace MainGame
         public int PathWidth { get; }
         public Dictionary<LevelType, float> NormalLevelPossibilities { get; }
 
+        public int EnemyMovePossibilityPerMinutePassed { get; }
+
     }
     public class MapGenerationConfigModel : AbstractModel, IMapGenerationConfigModel {
         public int PathDepth { get; } = 20;
@@ -22,8 +24,7 @@ namespace MainGame
             {LevelType.Elite, 3}
         };
 
-       
-
+        public int EnemyMovePossibilityPerMinutePassed { get; } = 1;
 
 
         protected override void OnInit() {

@@ -7,20 +7,26 @@ using UnityEngine.UIElements;
 
 namespace MainGame
 {
+    [Serializable]
     [ES3Serializable]
     public class GraphVertex : IEquatable<GraphVertex>
     {
         
+
         [ES3Serializable]
         private List<float> costs;
         public List<float> Costs => costs;
 
+
+
+        [SerializeField]
         [ES3Serializable]
         private MapNode value;
 
        
         public MapNode Value => value;
 
+        [NonSerialized]
         [ES3NonSerializable]
         private List<GraphVertex> neighbours;
         public List<GraphVertex> Neighbours => neighbours;

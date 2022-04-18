@@ -59,7 +59,7 @@ namespace MainGame
         
         private void Start()
         {
-            this.RegisterEvent<OnNewMapGenerated>(OnNewMapGenerated).UnRegisterWhenGameObjectDestroyed(gameObject);
+            this.RegisterEvent<OnMapLoaded>(OnNewMapGenerated).UnRegisterWhenGameObjectDestroyed(gameObject);
             
             
             GameObjectPoolManager.Singleton.CreatePool(levelObjectPrefab, 200, 500).NumObjDestroyPerFrame = 200;
@@ -93,7 +93,7 @@ namespace MainGame
             }
         }
 
-        private void OnNewMapGenerated(OnNewMapGenerated e) {
+        private void OnNewMapGenerated(OnMapLoaded e) {
             Debug.Log("Event received");
             CreatePathRoutine(e.PathGraph);
             //Floor0Stage();
@@ -106,20 +106,22 @@ namespace MainGame
             int pathDepth = this.GetModel<IMapGenerationModel>().PathDepth;
             for (int i = 0; i < graph.Vertices.Count; ++i)
             {
+                if (graph.Vertices[i].Value.Depth >= 0) {
+                    Vector3 pos = Vector3.zero;
+                    pos.x = graph.Vertices[i].Value.PointOnMap.x * cellXInterval + ((float)((random.NextDouble() * 2 - 1))) * xOffset;
+                    pos.y = (pathDepth - graph.Vertices[i].Value.PointOnMap.y) * cellYInterval + ((float)((random.NextDouble() * 2 - 1))) * yOffset;
+                    pos.z = 0.0f;
+                    vertexRealPos.Add(graph.Vertices[i], new Vector3(pos.x, pos.y, -0.1f));
 
-                Vector3 pos = Vector3.zero;
-                pos.x = graph.Vertices[i].Value.PointOnMap.x * cellXInterval + ((float)((random.NextDouble() * 2 - 1)) ) * xOffset;
-                pos.y = (pathDepth-  graph.Vertices[i].Value.PointOnMap.y) * cellYInterval + ((float)((random.NextDouble() * 2 - 1)) ) * yOffset;
-                pos.z = 0.0f;
-                vertexRealPos.Add(graph.Vertices[i], new Vector3(pos.x, pos.y, -0.1f));
+                    GameObject obj = GameObjectPoolManager.Singleton.Allocate(levelObjectPrefab);
 
-                GameObject obj = GameObjectPoolManager.Singleton.Allocate(levelObjectPrefab);
-
-                obj.transform.position = pos;
-                obj.transform.SetParent(pathParent);
-                obj.GetComponent<LevelObject>().Node = graph.Vertices[i];
-                obj.GetComponent<LevelObject>().LevelType = graph.Vertices[i].Value.LevelType;
-                graph.Vertices[i].Value.LevelObject = obj;
+                    obj.transform.position = pos;
+                    obj.transform.SetParent(pathParent);
+                    obj.GetComponent<LevelObject>().Node = graph.Vertices[i];
+                    obj.GetComponent<LevelObject>().LevelType = graph.Vertices[i].Value.LevelType;
+                    graph.Vertices[i].Value.LevelObject = obj;
+                }
+              
                 
                
             }
@@ -127,10 +129,17 @@ namespace MainGame
 
             for (int i = 0; i < graph.Vertices.Count; ++i) {
                 if (graph.Vertices[i].NodeNeighbours.Count > 0) {
+                    if (graph.Vertices[i].Value.Depth < 0) {
+                        continue;
+                    }
                     GraphVertex vertex = graph.Vertices[i];
                     GraphVertex[] vertices = vertex.Neighbours.ToArray();
 
                     foreach (GraphVertex toNode in vertices) {
+                        if (toNode.Value.Depth < 0) {
+                            continue;
+                        }
+
                         Vector3 fromPos = vertexRealPos[vertex];
                         Vector3 toPos = vertexRealPos[toNode];
 
@@ -304,7 +313,7 @@ namespace MainGame
         /*
         private void Floor0Stage() {
           //  yield return new WaitForSeconds(0.1f);
-            List<PathNode> level0Nodes = this.GetSystem<IGameMapSystem>()
+            List<PathNode> level0Nodes = this.GetSystem<IGameMapGenerationSystem>()
                 .GetPathNodeAtDepth(this.GetModel<IMapGenerationModel>().PathDepth);
               
             foreach (PathNode level0Node in level0Nodes) {

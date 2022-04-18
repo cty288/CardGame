@@ -21,7 +21,7 @@ namespace MainGame
                 if (CurNode.Value != null)
                 {
                     
-                    CurNode.Value = this.GetSystem<IGameMapSystem>()
+                    CurNode.Value = this.GetSystem<IGameMapGenerationSystem>()
                         .GetPathNodeAtDepthAndOrder(CurNode.Value.Value.Depth, CurNode.Value.Value.Order);
                     Debug.Log(CurNode.Value.Value.PointOnMap);
                 }

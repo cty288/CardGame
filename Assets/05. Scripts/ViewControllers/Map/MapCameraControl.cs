@@ -41,10 +41,10 @@ public class MapCameraControl : AbstractMikroController<CardGame> {
 
     private void Start() {
         mapModel = this.GetModel<IMapGenerationModel>();
-        this.RegisterEvent<OnNewMapGenerated>(OnMapGenerated).UnRegisterWhenGameObjectDestroyed(gameObject);
+        this.RegisterEvent<OnMapLoaded>(OnMapGenerated).UnRegisterWhenGameObjectDestroyed(gameObject);
     }
 
-    private void OnMapGenerated(OnNewMapGenerated e) {
+    private void OnMapGenerated(OnMapLoaded e) {
         xInterval = PathGeneratorViewController.Singleton.CellXInterval;
         yInterval = PathGeneratorViewController.Singleton.CellYInterval;
         startLocation = PathGeneratorViewController.Singleton.startLocation.position;

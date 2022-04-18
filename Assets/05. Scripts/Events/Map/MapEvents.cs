@@ -4,10 +4,16 @@ using UnityEngine;
 
 namespace MainGame
 {
-    public struct OnNewMapGenerated
+    public struct OnMapLoaded
     {
         public Graph PathGraph;
     }
+
+    public struct OnNewMapGenerated {
+        public Graph PathGraph;
+    }
+
+    
 
     public struct OnLevelSelected : IGameTimeUpdateEvent
     {

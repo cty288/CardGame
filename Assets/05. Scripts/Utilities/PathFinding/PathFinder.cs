@@ -82,7 +82,9 @@ namespace MainGame
             List<GraphVertex> neighbours = CurrentNode.Vertex.Neighbours;
 
             foreach (GraphVertex graphVertex in neighbours) {
-                AlgorithmImplementation(graphVertex);
+                if (AlgorithmSpecificIsValidNeighbourCheck(graphVertex)) {
+                    AlgorithmImplementation(graphVertex);
+                }
             }
 
             Status = PathFindingStatus.Running;
@@ -101,6 +103,7 @@ namespace MainGame
             Status = PathFindingStatus.Uninitialized;
         }
         public abstract void AlgorithmImplementation(GraphVertex vertex);
+        public abstract bool AlgorithmSpecificIsValidNeighbourCheck(GraphVertex vertex);
         public Func<MapNode, MapNode, float> HeuristicCost;
         public Func<MapNode, MapNode, float> NodeTraversalCost;
 
