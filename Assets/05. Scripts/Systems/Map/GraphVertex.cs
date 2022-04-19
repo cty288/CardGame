@@ -9,7 +9,7 @@ namespace MainGame
 {
     [Serializable]
     [ES3Serializable]
-    public class GraphVertex : IEquatable<GraphVertex>
+    public class GraphVertex
     {
         
 
@@ -54,28 +54,7 @@ namespace MainGame
             this.value = value;
         }
 
-        public bool Equals(GraphVertex other) {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return Equals(value, other.value);
-        }
-
-        public override bool Equals(object obj) {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((GraphVertex) obj);
-        }
-
-        public override int GetHashCode() {
-            unchecked {
-                var hashCode = (costs != null ? costs.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (value != null ? value.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (neighbours != null ? neighbours.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (nodeNeighbours != null ? nodeNeighbours.GetHashCode() : 0);
-                return hashCode;
-            }
-        }
+      
     }
 
     [ES3Serializable]
@@ -93,11 +72,13 @@ namespace MainGame
                     foreach (GraphVertex graphVertex in vertices) {
                         if (graphVertex.Value.Equals(mapNodeNeighbour)) {
                             vertex.Neighbours.Add(graphVertex);
+                            //Debug.Log("Load Graph Neighbour Add");
                             break;
                         }
                     }
                 }
             }
+            Debug.Log("Load Saved Graph Finished");
         }
         public float Count {
             get {

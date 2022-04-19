@@ -23,7 +23,10 @@ namespace MainGame
                     
                     CurNode.Value = this.GetSystem<IGameMapGenerationSystem>()
                         .GetPathNodeAtDepthAndOrder(CurNode.Value.Value.Depth, CurNode.Value.Value.Order);
-                    Debug.Log(CurNode.Value.Value.PointOnMap);
+                 
+                 
+                    Debug.Log(CurNode.Value.Neighbours.Count);
+                 
                 }
             });
             

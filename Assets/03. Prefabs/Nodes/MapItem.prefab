@@ -102,9 +102,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelType: 5
   Node:
-    NodeType:
-      value: 5
-    PositionOnMap: {x: 0, y: 0, z: 0}
+    value:
+      <LevelType>k__BackingField:
+        value: 0
+      <PointOnMap>k__BackingField: {x: 0, y: 0}
+      LevelObject: {fileID: 0}
+      Visited: 0
+  movingEnemySprite: {fileID: 1553002631687500115, guid: 0a1138768fa0b9740b0da11cc620494f, type: 3}
   Interactable: 0
   levelTypeSirSprites:
   - {fileID: 21300000, guid: 2896b6e8d6f7c1745b91723919fb013d, type: 3}

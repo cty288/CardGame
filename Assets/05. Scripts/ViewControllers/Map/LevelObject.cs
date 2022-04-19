@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening.Plugins.Core.PathCore;
 using MainGame;
+using MikroFramework;
 using MikroFramework.Architecture;
 using MikroFramework.Event;
 using MikroFramework.Pool;
@@ -20,24 +21,49 @@ public class LevelObject : AbstractMikroController<CardGame> {
     [SerializeField]
     public GraphVertex Node;
 
+    [SerializeField] private GameObject movingEnemySprite;
+    private SafeGameObjectPool movingEnemyPool;
+
     private Animator animator;
 
     public bool Interactable = false;
 
     [SerializeField] private Sprite[] levelTypeSirSprites;
 
-    private void Awake() {
-        animator = GetComponent<Animator>();
+    private void Awake()
+    {
+         animator = GetComponent<Animator>();
+         movingEnemyPool = GameObjectPoolManager.Singleton.GetOrCreatePool(movingEnemySprite);
+
     }
 
     private void Start() {
         this.GetModel<IMapStateModel>().CurNode.RegisterWithInitValue(OnALevelSelected)
             .UnRegisterWhenGameObjectDestroyed(gameObject);
-        Node.Value.LevelType.RegisterWithInitValue(OnNodeTypeChange).UnRegisterWhenGameObjectDestroyed(gameObject);
+        //Node.Value.LevelType.RegisterWithInitValue(OnNodeTypeChange).UnRegisterWhenGameObjectDestroyed(gameObject);
+         UpdateNodeSprite();
+        this.RegisterEvent<OnEnemyNodeMoveToNewVertex>(OnEnemyNodeMoveToNewVertex)
+            .UnRegisterWhenGameObjectDestroyed(gameObject);
     }
 
+    private void OnEnemyNodeMoveToNewVertex(OnEnemyNodeMoveToNewVertex e) {
+        //move from this node
+        if (e.OldVertex == Node) {
+            UpdateNodeSprite();
+            //Spawn A "Enemy" and let it move 
+            GameObject enemy = movingEnemyPool.Allocate();
+            enemy.transform.position = transform.position;
+            enemy.GetComponent<MovingEnemy>().targetMoveVertex = e.NewVertex;
+        }
+    }
+
+
     private void OnNodeTypeChange(LevelType prevType, LevelType curType) {
-        this.GetComponent<SpriteRenderer>().sprite = levelTypeSirSprites[(int) curType];
+        //this.GetComponent<SpriteRenderer>().sprite = levelTypeSirSprites[(int) curType];
+    }
+
+    public void UpdateNodeSprite() {
+        this.GetComponent<SpriteRenderer>().sprite = levelTypeSirSprites[(int)Node.Value.LevelType.Value];
     }
 
     private void OnALevelSelected(GraphVertex prevNode, GraphVertex newSelectedLevel) {

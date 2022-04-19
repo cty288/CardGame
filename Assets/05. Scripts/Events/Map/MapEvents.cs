@@ -36,6 +36,10 @@ namespace MainGame
         public GraphVertex End;
     }
 
+    public struct OnEnemyNodeMoveToNewVertex {
+        public GraphVertex OldVertex;
+        public GraphVertex NewVertex;
+    }
     #region PathFinding
 
     

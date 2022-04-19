@@ -18,11 +18,16 @@ namespace MainGame
             this.currentGraphVertex = location;
         }
 
+        public void RefreshVertex() {
+            currentGraphVertex = this.GetSystem<IGameMapGenerationSystem>().GetPathNodeAtDepthAndOrder(
+                currentGraphVertex.Value.Depth,
+                currentGraphVertex.Value.Order);
+        }
         public void OnMapTimePassed(int timePassed) {
             timeSinceLastMove += timePassed;
             if (this.GetSystem<ISeedSystem>().RandomGeneratorRandom.Next(0, 100) <=
                 this.GetModel<IMapGenerationModel>().EnemyMovePossibilityPerMinutePassed * timeSinceLastMove) {
-                timeSinceLastMove = 0;
+                
                 //Debug.Log("Enemy move");
 
 
@@ -44,7 +49,7 @@ namespace MainGame
                             availablePlaces.Add(graphVertex);
                         }
                     }
-
+                    //Debug.Log($"Available Places Empty: {availablePlaces.Count}");
                     if (availablePlaces.Count > 0) {
                         EnemyMoveDestination(
                             availablePlaces[
@@ -52,7 +57,6 @@ namespace MainGame
                     }
                 }
 
-              
             }
          
         }
@@ -84,8 +88,14 @@ namespace MainGame
                     return;
                 }
 
+
+                timeSinceLastMove = 0;
                 Debug.Log(
                     $"Enemy: {currentGraphVertex.Value.PointOnMap} Move to {newVertex.Value.PointOnMap}");
+                this.SendEvent<OnEnemyNodeMoveToNewVertex>(new OnEnemyNodeMoveToNewVertex() {
+                    NewVertex = newVertex,
+                    OldVertex = currentGraphVertex
+                });
                 currentGraphVertex = newVertex;
             }else if (status == PathFindingStatus.Failed) {
                 Debug.Log(

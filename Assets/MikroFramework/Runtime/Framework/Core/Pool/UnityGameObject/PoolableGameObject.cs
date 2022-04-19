@@ -24,7 +24,8 @@ namespace MikroFramework.Pool
 
         public abstract void OnInit();
 
-        
+
+
         /// <summary>
         /// Triggered after recycled back to the pool, or after calling Recycle()
         /// </summary>
