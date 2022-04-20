@@ -44,6 +44,13 @@ public class LevelObject : AbstractMikroController<CardGame> {
          UpdateNodeSprite();
         this.RegisterEvent<OnEnemyNodeMoveToNewVertex>(OnEnemyNodeMoveToNewVertex)
             .UnRegisterWhenGameObjectDestroyed(gameObject);
+        this.RegisterEvent<OnMapEnemyKilled>(OnEnemyKilled).UnRegisterWhenGameObjectDestroyed(gameObject);
+    }
+
+    private void OnEnemyKilled(OnMapEnemyKilled e) {
+        if (e.EnemyVertex.Value.Equals(Node.Value)) {
+            UpdateNodeSprite();
+        }
     }
 
     private void OnEnemyNodeMoveToNewVertex(OnEnemyNodeMoveToNewVertex e) {

@@ -70,7 +70,7 @@ namespace MainGame
         public bool Equals(MapNode other) {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return Equals(LevelType.Value, other.LevelType.Value) && PointOnMap.Equals(other.PointOnMap);
+            return PointOnMap.Equals(other.PointOnMap);
         }
 
         public override bool Equals(object obj) {

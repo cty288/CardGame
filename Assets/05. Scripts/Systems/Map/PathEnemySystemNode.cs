@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Antlr.Runtime.Misc;
 using MikroFramework.Architecture;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ namespace MainGame
 
         [ES3Serializable]
         private GraphVertex currentGraphVertex;
+
+        public GraphVertex CurrentGraphVertex => currentGraphVertex;
 
         public PathEnemySystemNode(){}
 
@@ -78,6 +81,8 @@ namespace MainGame
                     path.Enqueue(pathFinder.CurrentNode.Vertex);
                     currentPathFindingNode = currentPathFindingNode.Parent;
                 }
+
+               
 
                 GraphVertex newVertex = path.Dequeue();
                 //TODO: maybe true in the future, then start battle automatically

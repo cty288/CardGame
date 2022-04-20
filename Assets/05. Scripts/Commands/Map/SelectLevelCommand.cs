@@ -25,6 +25,9 @@ namespace MainGame
                                                                        || LevelObject.Node.Value.LevelType.Value ==
                                                                        LevelType.Boss) {
                    // this.GetModel<IGameStateModel>().GameState.Value = GameState.Battle;
+                   //kill enemy for now
+                   this.SendEvent<OnMapEnemyKilled>(new OnMapEnemyKilled(){EnemyVertex = LevelObject.Node});
+
                     this.GetSystem<ITimeSystem>().AddDelayTask(0.3f, () => {
                         //this.SendEvent<IBattleEvent>(new OnEnterBattleScene());
                         this.RecycleToCache();

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Dreamteck.Splines;
 using MainGame;
 using MikroFramework;
 using MikroFramework.Architecture;
@@ -71,7 +72,10 @@ namespace MainGame
         }
 
         private void Update() {
-            CheckClick();
+            if (!this.GetSystem<IMapAnimationControlSystem>().IsBlockable) {
+                CheckClick();
+            }
+            
         }
 
         private void CheckClick() {
@@ -101,12 +105,16 @@ namespace MainGame
 
         void CreatePathRoutine(Graph graph)
         {
-            Random random = this.GetSystem<ISeedSystem>().MapRandom;
+            Random random = this.GetSystem<ISeedSystem>().RandomGeneratorRandom;
             Dictionary<GraphVertex, Vector3> vertexRealPos = new Dictionary<GraphVertex, Vector3>();
             int pathDepth = this.GetModel<IMapGenerationModel>().PathDepth;
+            Dictionary<GraphVertex, List<GraphVertex>> graphWithAlreadyConnectedNodes =
+                new Dictionary<GraphVertex, List<GraphVertex>>();
+
             for (int i = 0; i < graph.Vertices.Count; ++i)
             {
                 if (graph.Vertices[i].Value.Depth >= 0) {
+                    graphWithAlreadyConnectedNodes.Add(graph.Vertices[i], new List<GraphVertex>());
                     Vector3 pos = Vector3.zero;
                     pos.x = graph.Vertices[i].Value.PointOnMap.x * cellXInterval + ((float)((random.NextDouble() * 2 - 1))) * xOffset;
                     pos.y = (pathDepth - graph.Vertices[i].Value.PointOnMap.y) * cellYInterval + ((float)((random.NextDouble() * 2 - 1))) * yOffset;
@@ -134,15 +142,22 @@ namespace MainGame
                     }
                     GraphVertex vertex = graph.Vertices[i];
                     GraphVertex[] vertices = vertex.Neighbours.ToArray();
-
+                    //set x/y offset according to direction
                     foreach (GraphVertex toNode in vertices) {
                         if (toNode.Value.Depth < 0) {
                             continue;
                         }
 
+                        if (graphWithAlreadyConnectedNodes[graph.Vertices[i]].Contains(toNode)) {
+                            continue;
+                        }
+
+                        graphWithAlreadyConnectedNodes[graph.Vertices[i]].Add(toNode);
+                        graphWithAlreadyConnectedNodes[toNode].Add(graph.Vertices[i]);
+
                         Vector3 fromPos = vertexRealPos[vertex];
                         Vector3 toPos = vertexRealPos[toNode];
-
+                        /*
                         if (toNode.Value.PointOnMap.y != vertex.Value.PointOnMap.y) {
                             if (toNode.Value.PointOnMap.y > vertex.Value.PointOnMap.y) {
                                
@@ -168,13 +183,19 @@ namespace MainGame
                             }
                         }
 
-
-                        LineRenderer line = GameObjectPoolManager.Singleton.Allocate(this.line).GetComponent<LineRenderer>();
-                        line.SetPositions(new Vector3[] {
-                                fromPos,
-                                toPos,
-                            });
+                        */
+                        SplineComputer line = GameObjectPoolManager.Singleton.Allocate(this.line).GetComponent<SplineComputer>();
+                        
+                        line.SetPoints(new SplinePoint[] {
+                            new SplinePoint(fromPos),
+                            new SplinePoint(toPos)
+                        });
+                        for (int j = 0; j < line.pointCount; j++) {
+                            line.SetPointSize(j,0.3f);
+                        }
                         line.transform.SetParent(connectionParent);
+                        line.transform.localPosition = new Vector3(line.transform.localPosition.x,
+                            line.transform.localPosition.y, -11.3f);
                     }
                 }
             }

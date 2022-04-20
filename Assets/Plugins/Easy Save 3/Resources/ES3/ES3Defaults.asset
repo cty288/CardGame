@@ -33,14 +33,18 @@ MonoBehaviour:
     - MikroFramework
     - ES
     - MainGame
+    - Dreamteck.Utilities
+    - Dreamteck.Splines
     - Playground
     - Polyglot.Scripts
     - Tests
     - Assembly-CSharp
     - Assembly-CSharp-firstpass
+    - Dreamteck.Splines.Editor
     - VSSettingsProvider
     - PsdPlugin
     - Polyglot.Editor
+    - Dreamteck.Utilities.Editor
     - EditModeTests
     showAdvancedSettings: 1
   addMgrToSceneAutomatically: 0

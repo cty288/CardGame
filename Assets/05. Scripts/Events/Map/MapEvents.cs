@@ -40,6 +40,10 @@ namespace MainGame
         public GraphVertex OldVertex;
         public GraphVertex NewVertex;
     }
+
+    public struct OnMapEnemyKilled {
+        public GraphVertex EnemyVertex;
+    }
     #region PathFinding
 
     

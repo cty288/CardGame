@@ -7,6 +7,7 @@ using MikroFramework;
 using TMPro;
 using MikroFramework.Architecture;
 using MikroFramework.Event;
+using Polyglot;
 
 namespace MainGame {
 	public partial class GameStateCanvas : AbstractMikroController<CardGame> {
@@ -37,7 +38,13 @@ namespace MainGame {
         private void Update() {
             string hourDisplayText = hourDisplay < 10 ? $"0{hourDisplay}" : hourDisplay.ToString();
             string minuteDisplayText = minuteDisplay < 10 ? $"0{minuteDisplay}" : minuteDisplay.ToString();
-            TextGameTime.text = $"Day {dayDisplay} - {hourDisplayText}:{minuteDisplayText}";
+            TextGameTime.text = $"{Localization.GetFormat("map_day_num", dayDisplay)} - {hourDisplayText}:{minuteDisplayText}";
+            if (this.GetSystem<IMapAnimationControlSystem>().IsBlockable) {
+                TextGameState.text = Localization.Get("wait_enemy_move");
+            }
+            else {
+                TextGameState.text = "";
+            }
         }
 
         private void OnDayChange(int prevDay, int curDay) {

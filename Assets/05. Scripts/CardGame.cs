@@ -23,6 +23,7 @@ namespace MainGame
             this.RegisterSystem<ISeedSystem>(new SeedSystem());
             this.RegisterSystem<ISaveSystem>(new SaveSystem());
             this.RegisterSystem<ITimeSystem>(new TimeSystem());
+            this.RegisterSystem<IMapAnimationControlSystem>(new MapAnimationControlSystem());
             this.RegisterSystem<IGameMapControlSystem>(new GameMapControlSystem());
             this.RegisterSystem<IGameMapGenerationSystem>(new GameMapGenerationGenerationSystem());
             this.RegisterSystem<IGameTimeSystem>(new GameTimeSystem());

@@ -5,6 +5,7 @@ using MikroFramework;
 using MikroFramework.ActionKit;
 using MikroFramework.Architecture;
 using MikroFramework.Event;
+using MikroFramework.Examples;
 using UnityEngine;
 using EventType = MikroFramework.Event.EventType;
 
@@ -76,8 +77,6 @@ namespace MainGame
 
         protected override void OnInit() {
             eventCallbackDic = new Dictionary<Type, Action<IBattleEvent>>();
-            
-            
             ResetBattleEvent();
 
             this.RegisterEvent<IBattleEvent>(OnBattleEvent);

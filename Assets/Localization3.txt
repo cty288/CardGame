@@ -5,6 +5,6 @@ LANGUAGE_DIRECTION,ltr or rtl (text direction used by game code),ltr,ltr,ltr,ltr
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Polyglot,100,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 CONTEXT_CHARACTER_CLASS,[Noun] Character class,Class,Classe,Clase,Klasse,Classe,Classe,Classe,Класс,Κλάση,Sınıf,Klasse,Klasse,Klass,Klasse,Klasa,Luokka,クラス,角色种类,角色類,직업,Třída,Osztály,Clasă,คลาส,Клас,טיפוס,فئة,Klasa
-TestCharacter,,Test Character Name,,,,,,,,,,,,,,,,,测试卡牌名称,测试卡牌名称,,,,,,,,,
-TestKeyword1,,Battlecry,,,,,,,,,,,,,,,,,战吼,,,,,,,,,,
-TestEffect1,,Battlecry: Deal {0} damage to self,,,,,,,,,,,,,,,,,战吼：对自身造成 {0} 点伤害,,,,,,,,,,
+Comma,,",",,,,,,,,,,,,,,,,,，,，,,,,,,,,,
+Period,,. ,,,,,,,,,,,,,,,,,。,。,,,,,,,,,
+map_day_num,,Day {0},,,,,,,,,,,,,,,,,第{0}天,,,,,,,,,,

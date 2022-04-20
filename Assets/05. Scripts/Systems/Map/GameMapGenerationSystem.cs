@@ -124,7 +124,7 @@ namespace MainGame
 
                         //no overlap angles and distance not too far away
                         if (!angleOccuplied.Contains(angles[i][indexes[j]]) && 
-                            Vector2.Distance(currentVertex.Value.PointOnMap, pathGraph.Vertices[indexes[j]].Value.PointOnMap)<=5)
+                            Vector2.Distance(currentVertex.Value.PointOnMap, pathGraph.Vertices[indexes[j]].Value.PointOnMap)<= this.GetSystem<ISeedSystem>().MapRandom.Next(2, 5))
                         {
                             
                             //angle limits
@@ -135,11 +135,14 @@ namespace MainGame
                                     angleTooClose = true;
                                 }
                             }
+
+                           
+                            
                             if(angleTooClose) continue;
 
 
                             //not too tilted
-                            if ((Mathf.Abs(angle) % 90) <= this.GetSystem<ISeedSystem>().MapRandom.Next(15, 30)) {
+                            if ((Mathf.Abs(angle) % 90) <= this.GetSystem<ISeedSystem>().MapRandom.Next(15, 25)) {
                                 
                                 if (pathGraph.Vertices[indexes[j]].Neighbours.Count <= 4)
                                 {

@@ -24,6 +24,12 @@ namespace MainGame
             this.RegisterEvent<OnMapLoaded>(OnMapLoaded);
             this.RegisterEvent<IGameTimeUpdateEvent>(OnGameTimeUpdate);
             this.RegisterEvent<OnEnemyNodeMoveToNewVertex>(OnEnemyNodeMoveToNewPlace);
+            this.RegisterEvent<OnMapEnemyKilled>(OnEnemyKilled);
+        }
+
+        private void OnEnemyKilled(OnMapEnemyKilled e) {
+            enemyNodes.Remove(enemyNodes.Find(node => node.CurrentGraphVertex.Value.Equals(e.EnemyVertex.Value)));
+            e.EnemyVertex.Value.LevelType.Value = LevelType.Nothing;
         }
 
         private void OnMapLoaded(OnMapLoaded obj) {

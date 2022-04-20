@@ -62,7 +62,7 @@ namespace MainGame
 
 
         [ES3Serializable]
-        private List<GraphVertex> vertices;
+        private List<GraphVertex> vertices = new List<GraphVertex>();
 
         public List<GraphVertex> Vertices => vertices;
 
@@ -86,7 +86,7 @@ namespace MainGame
             }
         }
 
-        public Graph(): this(null) {
+        public Graph() {
 
         }
 

@@ -11,5 +11,6 @@ namespace MainGame {
 		[SerializeField] private Image ImgBar;
 		[SerializeField] private TMP_Text TextGameTime;
 		[SerializeField] private Image ImgSwitchSceneBG;
+		[SerializeField] private TMP_Text TextGameState;
 	}
 }
