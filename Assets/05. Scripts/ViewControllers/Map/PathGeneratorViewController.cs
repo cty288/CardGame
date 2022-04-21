@@ -142,6 +142,10 @@ namespace MainGame
                     }
                     GraphVertex vertex = graph.Vertices[i];
                     GraphVertex[] vertices = vertex.Neighbours.ToArray();
+                    if (graph.Vertices[i].Value.Depth == 0) {
+                        DrawConnectionLine(vertexRealPos[vertex], vertexRealPos[vertex] + new Vector3(0,100,0));
+                    }
+                   
                     //set x/y offset according to direction
                     foreach (GraphVertex toNode in vertices) {
                         if (toNode.Value.Depth < 0) {
@@ -157,6 +161,8 @@ namespace MainGame
 
                         Vector3 fromPos = vertexRealPos[vertex];
                         Vector3 toPos = vertexRealPos[toNode];
+                        toPos += (toPos - fromPos).normalized * 1f;
+                        fromPos += (fromPos - toPos).normalized * 1f;
                         /*
                         if (toNode.Value.PointOnMap.y != vertex.Value.PointOnMap.y) {
                             if (toNode.Value.PointOnMap.y > vertex.Value.PointOnMap.y) {
@@ -184,152 +190,46 @@ namespace MainGame
                         }
 
                         */
-                        SplineComputer line = GameObjectPoolManager.Singleton.Allocate(this.line).GetComponent<SplineComputer>();
-                        
-                        line.SetPoints(new SplinePoint[] {
-                            new SplinePoint(fromPos),
-                            new SplinePoint(toPos)
-                        });
-                        for (int j = 0; j < line.pointCount; j++) {
-                            line.SetPointSize(j,0.3f);
-                        }
-                        line.transform.SetParent(connectionParent);
-                        line.transform.localPosition = new Vector3(line.transform.localPosition.x,
-                            line.transform.localPosition.y, -11.3f);
-                    }
+                        DrawConnectionLine(fromPos, toPos);
+                     }
                 }
             }
 
-            /*
-            for (int i = 0; i < graph.Count; i++)
-            {
-                for (int j = 0; j < graph[i].Count; j++)
-                {
-                    if (graph[i][j] != null)
-                    {
-                        if (graph[i][j].ConnectedNodes.Count > 0)
-                        {
-                            PathNode node = graph[i][j];
-
-
-                            PathNode[] ToNodes = node.ConnectedNodes.ToArray();
-
-
-                            foreach (PathNode toNode in ToNodes)
-                            {
-                                Vector3 fromPos = Vector3.zero;
-                                Vector3 toPos = Vector3.zero;
-
-                                if (toNode.Depth != node.Depth)
-                                {
-                                    if (toNode.Depth > node.Depth)
-                                    {
-                                        if (node.NodeType == LevelType.Boss)
-                                        {
-                                            fromPos = new Vector3(node.PositionOnMap.x,
-                                                node.PositionOnMap.y - 1f, -0.1f);
-                                        }
-                                        else
-                                        {
-                                            fromPos = new Vector3(node.PositionOnMap.x,
-                                                node.PositionOnMap.y - 1.4f, -0.1f);
-                                        }
-
-                                        toPos = new Vector3(toNode.PositionOnMap.x,
-                                            toNode.PositionOnMap.y + 1.4f, -0.1f);
-                                    }
-                                    else
-                                    {
-                                        continue;
-                                    }
-                                }
-                                else
-                                {
-                                    if (toNode.Order > node.Order)
-                                    {
-                                        fromPos = new Vector3(node.PositionOnMap.x + 1.4f,
-                                            node.PositionOnMap.y, -0.1f);
-
-                                        toPos = new Vector3(toNode.PositionOnMap.x - 1.4f,
-                                            toNode.PositionOnMap.y, -0.1f);
-                                    }
-                                    else
-                                    {
-                                        continue;
-                                    }
-                                }
-
-
-                                LineRenderer line = GameObjectPoolManager.Singleton.Allocate(this.line).GetComponent<LineRenderer>();
-                                line.SetPositions(new Vector3[] {
-                                fromPos,
-                                toPos,
-                            });
-                                line.transform.SetParent(connectionParent);
-                            }
-
-                        }
-                    }
-                }*/
-                /*
-                float YPos = startLocation.position.y;
-                int pathDepth = this.GetModel<IMapGenerationConfigModel>().PathDepth;
-                int pathWidth = this.GetModel<IMapGenerationConfigModel>().PathWidth;
-
-                for (int i = pathDepth; i >= 0; i--)
-                {
-                    float XPos = startLocation.position.x;
-
-                    for (int j = 0; j < pathWidth; j++)
-                    {
-                        if (graph[i][j] != null)
-                        {
-                            PathNode node = graph[i][j];
-
-                            Vector3 pos;
-                            if (node.NodeType == LevelType.Boss)
-                            {//add a bit offset
-                                pos = new Vector3(XPos + (float)(random.NextDouble() * 2 - 1) * xOffset,
-                                    (YPos + 1 + ((float)random.NextDouble() * 2 - 1) * yOffset));
-                            }
-                            else
-                            {
-                                //add a bit offset
-                                pos = new Vector3(XPos + (float)(random.NextDouble() * 2 - 1) * xOffset,
-                                    (YPos + ((float)random.NextDouble() * 2 - 1) * yOffset));
-                            }
-
-
-                            node.PositionOnMap = pos;
-
-                            GameObject obj = GameObjectPoolManager.Singleton.Allocate(levelObjectPrefab);
-
-                            obj.transform.position = pos;
-                            obj.transform.SetParent(pathParent);
-
-
-                            node.LevelObject = obj;
-                            obj.GetComponent<LevelObject>().LevelType = node.NodeType;
-                            node.ConnectedNodes.ForEach(connectedNodes => {
-                                connectedNodes.ConnectedByLevelObject.Add(obj);
-                            });
-                            obj.GetComponent<LevelObject>().Node = node;
-
-                        }
-
-                        XPos += cellXInterval;
-                    }
-
-                    YPos += cellYInterval;
-                }
-
-                */
-
-                //draw connection
-
-            }
-          
         }
+
+        private void DrawConnectionLine(Vector3 fromPos, Vector3 toPos) {
+            Random random = this.GetSystem<ISeedSystem>().RandomGeneratorRandom;
+            SplineComputer line = GameObjectPoolManager.Singleton.Allocate(this.line).GetComponent<SplineComputer>();
+            int numMiddleNodes = random.Next(1, 4);
+            float progress = 0;
+            float progressPerStep = 1 / (numMiddleNodes + 1f);
+            float curve = 0;
+            List<SplinePoint> points = new List<SplinePoint>();
+
+            points.Add(new SplinePoint(fromPos));
+            for (int j = 0; j < numMiddleNodes; j++)
+            {
+                progress += progressPerStep;
+                curve += ((float)(random.NextDouble() * 2) - 1f) * 0.5f;
+                curve = Mathf.Clamp(curve, -1f, 1f);
+                Vector2 curvePoint = (toPos - fromPos) * (progress) + fromPos;
+
+                points.Add(new SplinePoint(curvePoint +
+                                           Vector2.Perpendicular((toPos - fromPos).normalized) * curve));
+            }
+            points.Add(new SplinePoint(toPos));
+            line.SetPoints(points.ToArray());
+
+            for (int j = 0; j < line.pointCount; j++)
+            {
+                line.SetPointSize(j, 0.3f);
+            }
+            line.transform.SetParent(connectionParent);
+            line.transform.localPosition = new Vector3(line.transform.localPosition.x,
+                line.transform.localPosition.y, -11.95f);
+        }
+        }
+    
 
         /*
         private void Floor0Stage() {

@@ -302,6 +302,7 @@ GameObject:
   - component: {fileID: 2161728342701067096}
   - component: {fileID: 2161728342701067097}
   - component: {fileID: -2072850570491581398}
+  - component: {fileID: 8413820437534955051}
   m_Layer: 0
   m_Name: ConnectingRoad
   m_TagString: Untagged
@@ -379,14 +380,14 @@ MonoBehaviour:
       m_RotationOrder: 4
     sampleRate: 10
   _rawSamples:
-  - position: {x: 0, y: 0, z: -28.7}
+  - position: {x: 0, y: 0, z: -45.099995}
     up: {x: 0, y: 1, z: 0}
     forward: {x: 0, y: 0, z: 1}
     color: {r: 1, g: 1, b: 1, a: 1}
     size: 1
     percent: 0
   _transformedSamples:
-  - position: {x: 0, y: 0, z: -32.8}
+  - position: {x: 0, y: 0, z: -49.199993}
     up: {x: 0, y: 1, z: 0}
     forward: {x: 0, y: 0, z: 1}
     color: {r: 1, g: 1, b: 1, a: 1}
@@ -394,7 +395,7 @@ MonoBehaviour:
     percent: 0
   sampleCollection:
     samples:
-    - position: {x: 0, y: 0, z: -32.8}
+    - position: {x: 0, y: 0, z: -49.199993}
       up: {x: 0, y: 1, z: 0}
       forward: {x: 0, y: 0, z: 1}
       color: {r: 1, g: 1, b: 1, a: 1}
@@ -495,7 +496,7 @@ MonoBehaviour:
     keys: []
   sampleCollection:
     samples:
-    - position: {x: 0, y: 0, z: -32.8}
+    - position: {x: 0, y: 0, z: -49.199993}
       up: {x: 0, y: 1, z: 0}
       forward: {x: 0, y: 0, z: 1}
       color: {r: 1, g: 1, b: 1, a: 1}
@@ -507,14 +508,14 @@ MonoBehaviour:
     clipTo: 1
     loopSamples: 0
   clipFromSample:
-    position: {x: 0, y: 0, z: -32.8}
+    position: {x: 0, y: 0, z: -49.199993}
     up: {x: 0, y: 1, z: 0}
     forward: {x: 0, y: 0, z: 1}
     color: {r: 1, g: 1, b: 1, a: 1}
     size: 1
     percent: 0
   clipToSample:
-    position: {x: 0, y: 0, z: -32.8}
+    position: {x: 0, y: 0, z: -49.199993}
     up: {x: 0, y: 1, z: 0}
     forward: {x: 0, y: 0, z: 1}
     color: {r: 1, g: 1, b: 1, a: 1}
@@ -548,7 +549,7 @@ MonoBehaviour:
   _uvOffset: {x: 0, y: 0}
   _uvRotation: 0
   _meshIndexFormat: 0
-  meshCollider: {fileID: 0}
+  meshCollider: {fileID: 8413820437534955051}
   filter: {fileID: 2161728342701067099}
   meshRenderer: {fileID: 2161728342701067096}
   mesh: {fileID: 0}
@@ -581,6 +582,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Pool: {fileID: 0}
+--- !u!64 &8413820437534955051
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2161728342701067092}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1 &2161728342841326495
 GameObject:
   m_ObjectHideFlags: 0

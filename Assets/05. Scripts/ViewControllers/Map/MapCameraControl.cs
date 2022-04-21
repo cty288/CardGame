@@ -22,7 +22,7 @@ public class MapCameraControl : AbstractMikroController<CardGame> {
     [SerializeField]
     private float scrollSpeed = 50;
 
-    private Vector2 targetPos;
+    private Vector3 targetPos;
 
     private float xInterval;
     private float yInterval;
@@ -35,7 +35,7 @@ public class MapCameraControl : AbstractMikroController<CardGame> {
 
 
     private void Awake() {
-        targetPos = transform.position;
+        targetPos = new Vector3(transform.position.x, transform.position.y, -30);
         camera = GetComponent<Camera>();
     }
 
@@ -50,62 +50,63 @@ public class MapCameraControl : AbstractMikroController<CardGame> {
         startLocation = PathGeneratorViewController.Singleton.startLocation.position;
         UpdateCameraPosRange();
 
-        targetPos = new Vector2((xRange.x + xRange.y) / 2, yRange.x);
+        targetPos = new Vector3((xRange.x + xRange.y) / 2, yRange.x,-30);
     }
 
     private void Update() {
         moveCamWhenScrollCooldown -= Time.deltaTime;
         if (Mathf.Abs(lastScroolValue) < 0.01f && lastScroolValue!= Input.GetAxis("Mouse ScrollWheel") && moveCamWhenScrollCooldown<=0) {
-            targetPos = camera.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 pos = camera.ScreenToWorldPoint(Input.mousePosition);
+            targetPos = new Vector3(pos.x, pos.y, targetPos.z);
             moveCamWhenScrollCooldown = 0.5f;
         }
 
         lastScroolValue = Input.GetAxis("Mouse ScrollWheel");
 
         if (lastScroolValue > 0) {
-            camera.orthographicSize -= Time.deltaTime * scrollSpeed;
+            targetPos -= new Vector3(0,0,Time.deltaTime * scrollSpeed);
             
         }
 
         if (lastScroolValue < 0)
         {
-            camera.orthographicSize += Time.deltaTime * scrollSpeed;
-           
+            targetPos += new Vector3(0, 0, Time.deltaTime * scrollSpeed);
+
         }
 
-        camera.orthographicSize = Mathf.Clamp(camera.orthographicSize, sizeRange.x, sizeRange.y);
+        camera.fieldOfView = Mathf.Clamp(camera.fieldOfView, sizeRange.x, sizeRange.y);
 
         UpdateCameraPosRange();
 
         if (Input.GetKey(KeyCode.W)) {
-            targetPos += new Vector2(0, cameraSpeed * Time.deltaTime);
+            targetPos += new Vector3(0, cameraSpeed * Time.deltaTime,0);
         } else if (Input.GetKey(KeyCode.S)) {
-            targetPos -= new Vector2(0, cameraSpeed * Time.deltaTime);
+            targetPos -= new Vector3(0, cameraSpeed * Time.deltaTime,0);
         } else if (Input.GetKey(KeyCode.A)) {
-            targetPos -= new Vector2(cameraSpeed * Time.deltaTime, 0);
+            targetPos -= new Vector3(cameraSpeed * Time.deltaTime, 0,0);
         } else if (Input.GetKey(KeyCode.D)) {
-            targetPos += new Vector2(cameraSpeed * Time.deltaTime, 0);
+            targetPos += new Vector3(cameraSpeed * Time.deltaTime, 0,0);
         }
 
-        targetPos = new Vector2(Mathf.Clamp(targetPos.x, xRange.x, xRange.y),
-            Mathf.Clamp(targetPos.y, yRange.x, yRange.y));
+        targetPos = new Vector3(Mathf.Clamp(targetPos.x, xRange.x, xRange.y),
+            Mathf.Clamp(targetPos.y, yRange.x, yRange.y), Mathf.Clamp(targetPos.z, -50,10));
 
        
 
         transform.position = Vector3.Lerp(transform.position,
-            new Vector3(targetPos.x, targetPos.y, -10), lerp);
+            targetPos, lerp);
     }
 
     private void UpdateCameraPosRange() {
-        float widthRange = camera.aspect * camera.orthographicSize;
-        float heightRange = camera.orthographicSize;
+        float widthRange = camera.aspect * camera.fieldOfView;
+        float heightRange = camera.fieldOfView;
 
         float minX = startLocation.x + widthRange - 5;
         float maxX = startLocation.x + xInterval * mapModel.PathWidth - widthRange + 130;
         xRange = new Vector2(minX, maxX);
 
-        float minY = startLocation.y + heightRange - 15;
-        float maxY = startLocation.y + yInterval * mapModel.PathDepth - widthRange + 100;
+        float minY = startLocation.y + heightRange - 45;
+        float maxY = startLocation.y + yInterval * mapModel.PathDepth - widthRange + 145;
         yRange = new Vector2(minY, maxY);
     }
 }
