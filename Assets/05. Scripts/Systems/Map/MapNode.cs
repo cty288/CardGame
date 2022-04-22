@@ -18,6 +18,8 @@ namespace MainGame
         [ES3Serializable]
         public Vector2Int PointOnMap { get; set; }
 
+        
+
         [ES3NonSerializable] public GameObject LevelObject;
 
         [ES3Serializable] public bool Visited = false;

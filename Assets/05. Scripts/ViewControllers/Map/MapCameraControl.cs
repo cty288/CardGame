@@ -5,6 +5,7 @@ using MainGame;
 using MikroFramework.Architecture;
 using MikroFramework.Event;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MapCameraControl : AbstractMikroController<CardGame> {
     [SerializeField] 
@@ -61,6 +62,10 @@ public class MapCameraControl : AbstractMikroController<CardGame> {
             moveCamWhenScrollCooldown = 0.5f;
         }
 
+        if (Input.GetKeyDown(KeyCode.R)) {
+            CardGame.Interface.ReBoot();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
         lastScroolValue = Input.GetAxis("Mouse ScrollWheel");
 
         if (lastScroolValue > 0) {

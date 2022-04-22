@@ -85,11 +85,13 @@ namespace MainGame
         }
 
         private void UpdateMapFogForNode(GraphVertex fromNode, GraphVertex toNode) {
-            Vector3 targetObjPos = toNode.Value.LevelObject.gameObject.transform.position;
+            if(toNode== null || toNode.Value==null || toNode.Value.LevelObject==null) {return;}
+
+            Vector2 targetObjPos = toNode.Value.LevelObject.gameObject.transform.position;
             if (fromNode == null) {
                 for (int i = 0; i < vertices.Length; i++)
                 {
-                    float distance = Vector3.SqrMagnitude(vertices[i] - targetObjPos);
+                    float distance = Vector2.SqrMagnitude(new Vector2( vertices[i].x, vertices[i].y) - targetObjPos);
 
                     if (distance < radius * radius * Random.Range(0.5f, 1.5f))
                     {

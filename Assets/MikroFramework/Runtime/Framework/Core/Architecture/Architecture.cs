@@ -21,6 +21,14 @@ namespace MikroFramework.Architecture
                 return architecture;
             }
         }
+
+        public void ReBoot(){
+            architecture = null;
+            models.Clear();
+            systems.Clear();
+            OnRegisterPatch = architecture1 => { };
+            container.Clear();
+        }
         /// <summary>
         /// Has inited?
         /// </summary>

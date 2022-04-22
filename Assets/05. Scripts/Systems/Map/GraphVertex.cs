@@ -39,10 +39,17 @@ namespace MainGame
         private List<MapNode> nodeNeighbours;
         public List<MapNode> NodeNeighbours => nodeNeighbours;
 
+        [ES3Serializable] 
+        [SerializeField]
+        private List<MapNode> temporaryBrokenConnections;
+
+        public List<MapNode> TemporaryBrokenConnections => temporaryBrokenConnections;
+
         public GraphVertex() {
             costs = new List<float>();
             neighbours = new List<GraphVertex>();
             nodeNeighbours = new List<MapNode>();
+            temporaryBrokenConnections = new List<MapNode>();
             this.value = null;
         }
 
@@ -145,6 +152,47 @@ namespace MainGame
 
             return null;
         }
+
+        public void TemoporaryRemoveConnectionUnDirected(GraphVertex from, GraphVertex to) {
+            TemporaryRemoveConnectionDirected(from,to);
+            TemporaryRemoveConnectionDirected(to, from);
+            this.SendEvent<OnTemporaryBlockedUnDirectedEdgeAdded>(new OnTemporaryBlockedUnDirectedEdgeAdded() {
+                fromNode = from.Value,
+                toNode = to.Value
+            });
+        }
+
+        public void TemporaryRemoveConnectionDirected(GraphVertex from, GraphVertex to) {
+            if (!from.Neighbours.Contains(to)) {
+                return;
+            }
+
+            if (!from.TemporaryBrokenConnections.Contains(to.Value)) {
+                from.TemporaryBrokenConnections.Add(to.Value);
+            }
+        }
+
+        public void TemoporaryRestoreConnectionUnDirected(GraphVertex from, GraphVertex to)
+        {
+            TemporaryRestoreConnectionDirected(from, to);
+            TemporaryRestoreConnectionDirected(to, from);
+            this.SendEvent<OnTemporaryBlockedUnDirectedEdgeRecovered>(new OnTemporaryBlockedUnDirectedEdgeRecovered()
+            {
+                fromNode = from.Value,
+                toNode = to.Value
+            });
+        }
+
+   
+        public void TemporaryRestoreConnectionDirected(GraphVertex from, GraphVertex to)
+        {
+
+            if (from.TemporaryBrokenConnections.Contains(to.Value))
+            {
+                from.TemporaryBrokenConnections.Remove(to.Value);
+            }
+        }
+
         public bool RemoveVertex(MapNode value)
         {
 

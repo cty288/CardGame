@@ -14,6 +14,14 @@ namespace MainGame
         protected override void OnExecute() {
            
             if (LevelObject.Interactable) {
+                if (this.GetModel<IMapStateModel>().CurNode.Value!=null && this.GetModel<IMapStateModel>().CurNode.Value.TemporaryBrokenConnections
+                    .Contains(LevelObject.Node.Value)) {
+                    this.SaveGame();
+                    this.RecycleToCache();
+                    return;
+                }
+
+
                 LevelObject.Node.Value.Visited = true;
                 this.GetModel<IMapStateModel>().CurNode.Value = LevelObject.Node;
                 this.SendEvent<IGameTimeUpdateEvent>(new OnSelectLevelTimePass() {

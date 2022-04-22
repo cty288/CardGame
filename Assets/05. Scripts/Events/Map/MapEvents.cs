@@ -36,6 +36,16 @@ namespace MainGame
         public GraphVertex End;
     }
 
+    public struct OnTemporaryBlockedUnDirectedEdgeAdded {
+        public MapNode fromNode;
+        public MapNode toNode;
+    }
+
+    public struct OnTemporaryBlockedUnDirectedEdgeRecovered {
+        public MapNode fromNode;
+        public MapNode toNode;
+    }
+
     public struct OnEnemyNodeMoveToNewVertex {
         public GraphVertex OldVertex;
         public GraphVertex NewVertex;

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Dreamteck.Splines;
 using MainGame;
 using MikroFramework;
@@ -100,7 +101,28 @@ namespace MainGame
         private void OnNewMapGenerated(OnMapLoaded e) {
             Debug.Log("Event received");
             CreatePathRoutine(e.PathGraph);
+            StartCoroutine(SpawnBuildings());
             //Floor0Stage();
+        }
+
+        [SerializeField] private List<GameObject> buildingPrefabs;
+        private IEnumerator SpawnBuildings() {
+            yield return null;
+            Random random = this.GetSystem<ISeedSystem>().RandomGeneratorRandom;
+            for (float i = -5; i < this.GetModel<IMapGenerationModel>().PathDepth * cellYInterval; i+= cellYInterval) {
+                for (float j = -15; j < this.GetModel<IMapGenerationModel>().PathWidth * cellXInterval; j+=cellXInterval) {
+                    int index = random.Next(0, buildingPrefabs.Count);
+                    GameObject randomPrefab = buildingPrefabs[index];
+                    float radius = randomPrefab.GetComponent<BoxCollider>().size.x / 2;
+                    radius *= randomPrefab.transform.localScale.x;
+                    //Debug.Log(radius);
+                    bool isCollide = Physics.OverlapSphere(new Vector3(i, j, 0), radius).ToList().Any();
+                    if (!isCollide ){
+                        Instantiate(randomPrefab, new Vector3(i, j, -0.18f), Quaternion.Euler(-90, 0, 0));
+                    }
+                }
+            }
+           
         }
 
         void CreatePathRoutine(Graph graph)
@@ -110,6 +132,7 @@ namespace MainGame
             int pathDepth = this.GetModel<IMapGenerationModel>().PathDepth;
             Dictionary<GraphVertex, List<GraphVertex>> graphWithAlreadyConnectedNodes =
                 new Dictionary<GraphVertex, List<GraphVertex>>();
+            Dictionary<GraphVertex, GameObject> vertex2LevelObj = new Dictionary<GraphVertex, GameObject>();
 
             for (int i = 0; i < graph.Vertices.Count; ++i)
             {
@@ -128,10 +151,9 @@ namespace MainGame
                     obj.GetComponent<LevelObject>().Node = graph.Vertices[i];
                     obj.GetComponent<LevelObject>().LevelType = graph.Vertices[i].Value.LevelType;
                     graph.Vertices[i].Value.LevelObject = obj;
+                    vertex2LevelObj.Add(graph.Vertices[i], obj);
                 }
-              
-                
-               
+
             }
 
 
@@ -141,6 +163,9 @@ namespace MainGame
                         continue;
                     }
                     GraphVertex vertex = graph.Vertices[i];
+                    LevelObject fromVertextLevelObj = vertex2LevelObj[vertex].GetComponent<LevelObject>();
+                    
+
                     GraphVertex[] vertices = vertex.Neighbours.ToArray();
                     if (graph.Vertices[i].Value.Depth == 0) {
                         DrawConnectionLine(vertexRealPos[vertex], vertexRealPos[vertex] + new Vector3(0,100,0));
@@ -155,7 +180,7 @@ namespace MainGame
                         if (graphWithAlreadyConnectedNodes[graph.Vertices[i]].Contains(toNode)) {
                             continue;
                         }
-
+                        LevelObject toVertextLevelObj = vertex2LevelObj[toNode].GetComponent<LevelObject>();
                         graphWithAlreadyConnectedNodes[graph.Vertices[i]].Add(toNode);
                         graphWithAlreadyConnectedNodes[toNode].Add(graph.Vertices[i]);
 
@@ -163,41 +188,20 @@ namespace MainGame
                         Vector3 toPos = vertexRealPos[toNode];
                         toPos += (toPos - fromPos).normalized * 1f;
                         fromPos += (fromPos - toPos).normalized * 1f;
-                        /*
-                        if (toNode.Value.PointOnMap.y != vertex.Value.PointOnMap.y) {
-                            if (toNode.Value.PointOnMap.y > vertex.Value.PointOnMap.y) {
-                               
-                                fromPos +=  new Vector3(0, - 1.8f, 0);
-                                toPos += new Vector3(0, 1.8f, 0); 
-                            }
-                            else
-                            {
-                                continue;
-                            }
-                        }
-                        else
-                        {
-                            if (toNode.Value.PointOnMap.x> vertex.Value.PointOnMap.x)
-                            {
-                                fromPos += new Vector3(1.8f, 0, 0);
-                                toPos += new Vector3(-1.8f, 0, 0);
-                                
-                            }
-                            else
-                            {
-                                continue;
-                            }
-                        }
+                        SplineComputer line = DrawConnectionLine(fromPos, toPos).GetComponent<SplineComputer>();
 
-                        */
-                        DrawConnectionLine(fromPos, toPos);
-                     }
+                        SplinePoint[] points = line.GetPoints();
+                        Vector3 midPoint = points[points.Length / 2].position;
+
+                        fromVertextLevelObj.Neighbours2ConnectionLineMidPoints.Add(toNode.Value, midPoint);
+                        toVertextLevelObj.Neighbours2ConnectionLineMidPoints.Add(vertex.Value, midPoint);
+                    }
                 }
             }
 
         }
 
-        private void DrawConnectionLine(Vector3 fromPos, Vector3 toPos) {
+        private GameObject DrawConnectionLine(Vector3 fromPos, Vector3 toPos) {
             Random random = this.GetSystem<ISeedSystem>().RandomGeneratorRandom;
             SplineComputer line = GameObjectPoolManager.Singleton.Allocate(this.line).GetComponent<SplineComputer>();
             int numMiddleNodes = random.Next(1, 4);
@@ -227,7 +231,9 @@ namespace MainGame
             line.transform.SetParent(connectionParent);
             line.transform.localPosition = new Vector3(line.transform.localPosition.x,
                 line.transform.localPosition.y, -11.95f);
+            return line.gameObject;
         }
+
         }
     
 

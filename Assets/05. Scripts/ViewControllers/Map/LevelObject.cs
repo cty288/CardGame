@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening.Plugins.Core.PathCore;
+using Dreamteck.Splines;
 using MainGame;
 using MikroFramework;
 using MikroFramework.Architecture;
@@ -29,22 +31,92 @@ public class LevelObject : AbstractMikroController<CardGame> {
     public bool Interactable = false;
 
     [SerializeField] private Sprite[] levelTypeSirSprites;
+    [SerializeField] private List<GameObject> obstaclePrefabs;
 
+    public Dictionary<MapNode, Vector3> Neighbours2ConnectionLineMidPoints = new Dictionary<MapNode, Vector3>();
+    private Dictionary<MapNode, GameObject> Connection2Obstacle = new Dictionary<MapNode, GameObject>();
     private void Awake()
     {
          animator = GetComponent<Animator>();
          movingEnemyPool = GameObjectPoolManager.Singleton.GetOrCreatePool(movingEnemySprite);
 
+      
+         //Node.Value.LevelType.RegisterWithInitValue(OnNodeTypeChange).UnRegisterWhenGameObjectDestroyed(gameObject);
+        
+
+    }
+
+    private void OnDisable() {
+        if (Neighbours2ConnectionLineMidPoints != null) {
+            Neighbours2ConnectionLineMidPoints.Clear();
+            Connection2Obstacle.Clear();
+        }
+       
     }
 
     private void Start() {
         this.GetModel<IMapStateModel>().CurNode.RegisterWithInitValue(OnALevelSelected)
             .UnRegisterWhenGameObjectDestroyed(gameObject);
-        //Node.Value.LevelType.RegisterWithInitValue(OnNodeTypeChange).UnRegisterWhenGameObjectDestroyed(gameObject);
-         UpdateNodeSprite();
+        UpdateNodeSprite();
         this.RegisterEvent<OnEnemyNodeMoveToNewVertex>(OnEnemyNodeMoveToNewVertex)
             .UnRegisterWhenGameObjectDestroyed(gameObject);
         this.RegisterEvent<OnMapEnemyKilled>(OnEnemyKilled).UnRegisterWhenGameObjectDestroyed(gameObject);
+        this.RegisterEvent<OnTemporaryBlockedUnDirectedEdgeAdded>(OnRoadBlocked)
+       .UnRegisterWhenGameObjectDestroyed(gameObject);
+        this.RegisterEvent<OnTemporaryBlockedUnDirectedEdgeRecovered>(OnRoadRecovered)
+            .UnRegisterWhenGameObjectDestroyed(gameObject);
+       Invoke(nameof(UpdateObstacleObj), 0.2f);
+    }
+
+
+    private void UpdateObstacleObj() {
+        Graph pathGraph= this.GetSystem<IGameMapGenerationSystem>().GetPathGraph();
+        Node.TemporaryBrokenConnections?.ForEach(node => {
+            Debug.Log(Neighbours2ConnectionLineMidPoints.Count);
+            Vector3 spawnPoint = Neighbours2ConnectionLineMidPoints[pathGraph.FindVertexByValue(node).Value];
+            spawnPoint = new Vector3(spawnPoint.x, spawnPoint.y, 0);
+            if (!Physics.OverlapSphere(spawnPoint, 1, LayerMask.NameToLayer("Obstacles")).Any()) {
+                GameObject obstacle = Instantiate(
+                    obstaclePrefabs[this.GetSystem<ISeedSystem>().GameRandom.Next(0, obstaclePrefabs.Count)],
+                    spawnPoint, Quaternion.identity);
+                Connection2Obstacle.Add(node, obstacle);
+            }
+          
+        });
+    }
+
+    private void OnRoadRecovered(OnTemporaryBlockedUnDirectedEdgeRecovered e) {
+        if (e.fromNode.Equals(Node.Value) ) {
+            if (Connection2Obstacle.ContainsKey(e.toNode))
+            {
+                Connection2Obstacle.Remove(e.toNode);
+            }
+            Vector3 spawnPoint = Neighbours2ConnectionLineMidPoints[e.toNode];
+            spawnPoint = new Vector3(spawnPoint.x, spawnPoint.y, 0);
+
+            foreach (Collider c in Physics.OverlapSphere(spawnPoint, 1))
+            {
+                if (c.gameObject.layer == LayerMask.NameToLayer("Obstacles")) {
+                    Debug.Log(c.gameObject.name);
+                    Destroy(c.transform.parent. gameObject);
+                }
+              
+            }
+        }
+
+        
+    }
+
+    private void OnRoadBlocked(OnTemporaryBlockedUnDirectedEdgeAdded e) {
+        if (e.fromNode.Equals(Node.Value) && !Connection2Obstacle.ContainsKey(e.toNode)) {
+            //Debug.Log($"Blocked at position: {Neighbours2ConnectionLineMidPoints[e.toNode]}");
+            Vector3 spawnPoint = Neighbours2ConnectionLineMidPoints[e.toNode];
+            spawnPoint = new Vector3(spawnPoint.x, spawnPoint.y, 0);
+            GameObject obstacle = Instantiate(
+                obstaclePrefabs[this.GetSystem<ISeedSystem>().GameRandom.Next(0, obstaclePrefabs.Count)],
+                spawnPoint, Quaternion.identity);
+            Connection2Obstacle.Add(e.toNode, obstacle);
+        }
     }
 
     private void OnEnemyKilled(OnMapEnemyKilled e) {
@@ -75,6 +147,7 @@ public class LevelObject : AbstractMikroController<CardGame> {
 
     private void OnALevelSelected(GraphVertex prevNode, GraphVertex newSelectedLevel) {
         if (newSelectedLevel == null){ //floor 0 or load save data
+            Debug.Log("Call OnPlayerMeet");
             if (Node.Value.PointOnMap.y == this.GetModel<IMapGenerationModel>().PathDepth) {
                 OnPlayerMeet();
             }
@@ -105,8 +178,11 @@ public class LevelObject : AbstractMikroController<CardGame> {
                 OnPlayerSelect();
                 this.GetSystem<ITimeSystem>().AddDelayTask(0.05f, () => {
                     Node.Neighbours.ForEach(node => {
-                        //Debug.Log($"Select:{gameObject.name}, Meet:{node.LevelObject.gameObject.name}");
-                        node.Value.LevelObject.GetComponent<LevelObject>().OnPlayerMeet();
+                        if (!Node.TemporaryBrokenConnections.Contains(node.Value)) {
+                            //Debug.Log($"Select:{gameObject.name}, Meet:{node.LevelObject.gameObject.name}");
+                            node.Value.LevelObject.GetComponent<LevelObject>().OnPlayerMeet();
+                        }
+                     
                     });
                 });
 
@@ -117,7 +193,7 @@ public class LevelObject : AbstractMikroController<CardGame> {
     }
 
     private void OnPlayerMeet() {
-      
+     
         animator.SetBool("PlayerReach", true);
         Interactable = true;
         //Debug.Log(gameObject.name +" "+  Interactable);

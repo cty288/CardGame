@@ -39,7 +39,9 @@ namespace MainGame
    }
 
     public class BasicAStarPathFinder : AbstractAStarPathFinder {
-        public override bool AlgorithmSpecificIsValidNeighbourCheck(GraphVertex vertex) {
+      
+
+        public override bool AlgorithmSpecificIsValidNeighbourCheck(GraphVertex currentVertex, GraphVertex checkingVertex) {
             return true;
         }
     }

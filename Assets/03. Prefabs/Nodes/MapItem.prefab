@@ -108,6 +108,7 @@ MonoBehaviour:
       <PointOnMap>k__BackingField: {x: 0, y: 0}
       LevelObject: {fileID: 0}
       Visited: 0
+    temporaryBrokenConnections: []
   movingEnemySprite: {fileID: 1553002631687500115, guid: 0a1138768fa0b9740b0da11cc620494f, type: 3}
   Interactable: 0
   levelTypeSirSprites:
@@ -118,6 +119,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: e122534b4723d354d8cd3099608aa11f, type: 3}
   - {fileID: 21300000, guid: 481f26cc62e34fe47a8b2e6a38737eb8, type: 3}
   - {fileID: 21300000, guid: 74628f4532ef34446b699e8ce7c10d54, type: 3}
+  obstaclePrefabs:
+  - {fileID: 4625140145082427063, guid: 0f0bfe5f34f96644083e9b4e23f44715, type: 3}
 --- !u!61 &-4420622106780920161
 BoxCollider2D:
   m_ObjectHideFlags: 0
