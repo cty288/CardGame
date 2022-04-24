@@ -69,6 +69,9 @@ namespace MainGame
                 //break roads
                 if (mapGraph != null) {
                     foreach (GraphVertex vertex in mapGraph.Vertices) {
+                        if (vertex.Value.Depth <= 0) {
+                            continue;
+                        }
                         //restore first
                         if (vertex.TemporaryBrokenConnections.Count > 0) {
                             foreach (MapNode brokenConn in vertex.TemporaryBrokenConnections) {

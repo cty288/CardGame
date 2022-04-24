@@ -6,9 +6,9 @@ using TMPro;
 #if  UNITY_EDITOR
 using MikroFramework.ResKit;
 using UnityEditor;
-using UnityEngine.UI;
-#endif
 
+#endif
+using UnityEngine.UI;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

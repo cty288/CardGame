@@ -301,8 +301,8 @@ GameObject:
   - component: {fileID: 2161728342701067099}
   - component: {fileID: 2161728342701067096}
   - component: {fileID: 2161728342701067097}
-  - component: {fileID: -2072850570491581398}
   - component: {fileID: 8413820437534955051}
+  - component: {fileID: 8908399053781110484}
   m_Layer: 0
   m_Name: ConnectingRoad
   m_TagString: Untagged
@@ -380,14 +380,14 @@ MonoBehaviour:
       m_RotationOrder: 4
     sampleRate: 10
   _rawSamples:
-  - position: {x: 0, y: 0, z: -45.099995}
+  - position: {x: 0, y: 0, z: -65.59999}
     up: {x: 0, y: 1, z: 0}
     forward: {x: 0, y: 0, z: 1}
     color: {r: 1, g: 1, b: 1, a: 1}
     size: 1
     percent: 0
   _transformedSamples:
-  - position: {x: 0, y: 0, z: -49.199993}
+  - position: {x: 0, y: 0, z: -69.69999}
     up: {x: 0, y: 1, z: 0}
     forward: {x: 0, y: 0, z: 1}
     color: {r: 1, g: 1, b: 1, a: 1}
@@ -395,7 +395,7 @@ MonoBehaviour:
     percent: 0
   sampleCollection:
     samples:
-    - position: {x: 0, y: 0, z: -49.199993}
+    - position: {x: 0, y: 0, z: -69.69999}
       up: {x: 0, y: 1, z: 0}
       forward: {x: 0, y: 0, z: 1}
       color: {r: 1, g: 1, b: 1, a: 1}
@@ -496,7 +496,7 @@ MonoBehaviour:
     keys: []
   sampleCollection:
     samples:
-    - position: {x: 0, y: 0, z: -49.199993}
+    - position: {x: 0, y: 0, z: -69.69999}
       up: {x: 0, y: 1, z: 0}
       forward: {x: 0, y: 0, z: 1}
       color: {r: 1, g: 1, b: 1, a: 1}
@@ -508,14 +508,14 @@ MonoBehaviour:
     clipTo: 1
     loopSamples: 0
   clipFromSample:
-    position: {x: 0, y: 0, z: -49.199993}
+    position: {x: 0, y: 0, z: -69.69999}
     up: {x: 0, y: 1, z: 0}
     forward: {x: 0, y: 0, z: 1}
     color: {r: 1, g: 1, b: 1, a: 1}
     size: 1
     percent: 0
   clipToSample:
-    position: {x: 0, y: 0, z: -49.199993}
+    position: {x: 0, y: 0, z: -69.69999}
     up: {x: 0, y: 1, z: 0}
     forward: {x: 0, y: 0, z: 1}
     color: {r: 1, g: 1, b: 1, a: 1}
@@ -569,19 +569,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _shapeExposure: 1
---- !u!114 &-2072850570491581398
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2161728342701067092}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5f870245e7796642b3a38ae058342c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Pool: {fileID: 0}
 --- !u!64 &8413820437534955051
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -596,6 +583,35 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &8908399053781110484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2161728342701067092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10749493a4ab6a643847c955a6421027, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Pool: {fileID: 0}
+  Vertex1:
+    value:
+      <LevelType>k__BackingField:
+        value: 0
+      <PointOnMap>k__BackingField: {x: 0, y: 0}
+      LevelObject: {fileID: 0}
+      Visited: 0
+    temporaryBrokenConnections: []
+  Vertex2:
+    value:
+      <LevelType>k__BackingField:
+        value: 0
+      <PointOnMap>k__BackingField: {x: 0, y: 0}
+      LevelObject: {fileID: 0}
+      Visited: 0
+    temporaryBrokenConnections: []
 --- !u!1 &2161728342841326495
 GameObject:
   m_ObjectHideFlags: 0

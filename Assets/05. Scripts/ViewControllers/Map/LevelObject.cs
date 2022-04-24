@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using DG.Tweening.Plugins.Core.PathCore;
 using Dreamteck.Splines;
 using MainGame;
@@ -35,6 +36,7 @@ public class LevelObject : AbstractMikroController<CardGame> {
 
     public Dictionary<MapNode, Vector3> Neighbours2ConnectionLineMidPoints = new Dictionary<MapNode, Vector3>();
     private Dictionary<MapNode, GameObject> Connection2Obstacle = new Dictionary<MapNode, GameObject>();
+   
     private void Awake()
     {
          animator = GetComponent<Animator>();
@@ -72,17 +74,32 @@ public class LevelObject : AbstractMikroController<CardGame> {
     private void UpdateObstacleObj() {
         Graph pathGraph= this.GetSystem<IGameMapGenerationSystem>().GetPathGraph();
         Node.TemporaryBrokenConnections?.ForEach(node => {
-            Debug.Log(Neighbours2ConnectionLineMidPoints.Count);
-            Vector3 spawnPoint = Neighbours2ConnectionLineMidPoints[pathGraph.FindVertexByValue(node).Value];
-            spawnPoint = new Vector3(spawnPoint.x, spawnPoint.y, 0);
-            if (!Physics.OverlapSphere(spawnPoint, 1, LayerMask.NameToLayer("Obstacles")).Any()) {
-                GameObject obstacle = Instantiate(
-                    obstaclePrefabs[this.GetSystem<ISeedSystem>().GameRandom.Next(0, obstaclePrefabs.Count)],
-                    spawnPoint, Quaternion.identity);
-                Connection2Obstacle.Add(node, obstacle);
+            if (node.Depth >= 0) {
+                //  Debug.Log(Neighbours2ConnectionLineMidPoints.Count);
+               // Debug.Log(node.PointOnMap);
+                Vector3 spawnPoint = Neighbours2ConnectionLineMidPoints[pathGraph.FindVertexByValue(node).Value];
+                spawnPoint = new Vector3(spawnPoint.x, spawnPoint.y, 0);
+
+
+
+                if (!Physics.OverlapSphere(spawnPoint, 1, LayerMask.NameToLayer("Obstacles")).Any()) {
+                    GameObject obstacle = SpawnRandomObstacle(spawnPoint);
+
+                    Connection2Obstacle.Add(node, obstacle);
+                }
             }
-          
         });
+    }
+
+    private GameObject SpawnRandomObstacle(Vector3 spawnPoint) {
+        GameObject obstacle = Instantiate(
+            obstaclePrefabs[this.GetSystem<ISeedSystem>().GameRandom.Next(0, obstaclePrefabs.Count)],
+            spawnPoint, Quaternion.identity);
+        Vector2 dir = (transform.position - spawnPoint).normalized;
+        dir = Vector2.Perpendicular(dir);
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        obstacle.transform.rotation = Quaternion.Euler(0, 0, angle);
+        return obstacle;
     }
 
     private void OnRoadRecovered(OnTemporaryBlockedUnDirectedEdgeRecovered e) {
@@ -112,10 +129,12 @@ public class LevelObject : AbstractMikroController<CardGame> {
             //Debug.Log($"Blocked at position: {Neighbours2ConnectionLineMidPoints[e.toNode]}");
             Vector3 spawnPoint = Neighbours2ConnectionLineMidPoints[e.toNode];
             spawnPoint = new Vector3(spawnPoint.x, spawnPoint.y, 0);
-            GameObject obstacle = Instantiate(
-                obstaclePrefabs[this.GetSystem<ISeedSystem>().GameRandom.Next(0, obstaclePrefabs.Count)],
-                spawnPoint, Quaternion.identity);
+            GameObject obstacle =SpawnRandomObstacle(spawnPoint);
+
+          
             Connection2Obstacle.Add(e.toNode, obstacle);
+            
+            
         }
     }
 
@@ -181,6 +200,9 @@ public class LevelObject : AbstractMikroController<CardGame> {
                         if (!Node.TemporaryBrokenConnections.Contains(node.Value)) {
                             //Debug.Log($"Select:{gameObject.name}, Meet:{node.LevelObject.gameObject.name}");
                             node.Value.LevelObject.GetComponent<LevelObject>().OnPlayerMeet();
+                        }
+                        else {
+                            node.Value.LevelObject.GetComponent<LevelObject>().OnPlayerLeave();
                         }
                      
                     });

@@ -188,7 +188,12 @@ namespace MainGame
                         Vector3 toPos = vertexRealPos[toNode];
                         toPos += (toPos - fromPos).normalized * 1f;
                         fromPos += (fromPos - toPos).normalized * 1f;
+
+
                         SplineComputer line = DrawConnectionLine(fromPos, toPos).GetComponent<SplineComputer>();
+                        line.GetComponent<ConnectionRoad>().Vertex1 = vertex;
+                        line.GetComponent<ConnectionRoad>().Vertex2 = toNode;
+
 
                         SplinePoint[] points = line.GetPoints();
                         Vector3 midPoint = points[points.Length / 2].position;
