@@ -11,8 +11,7 @@ using UnityEngine;
 namespace MainGame
 {
 
-
-
+  
     public interface ITriggeredWhenDealt {
 
     }
@@ -23,6 +22,21 @@ namespace MainGame
 
     public interface ITriggeredByEventsWhenDealt {
         public List<IBattleEvent> TriggeredBy { get; }
+    }
+
+    public interface IConcatableEffect : ICommand {
+        public Rarity Rarity { get; }
+        /// <summary>
+        /// Can be negative
+        /// </summary>
+        public int CostValue { get; }
+
+        /// <summary>
+        /// Before actually randomly generate this effect. This is usually used to setup some random factors for calculate the cost
+        /// </summary>
+        public void OnGenerationPrep();
+
+
     }
 
     [ES3Serializable]
@@ -192,7 +206,10 @@ namespace MainGame
 
         public abstract void RecycleToCache();
 
+       
     }
+
+    
 
     [ES3Serializable]
     public abstract class BuffEffect : EffectCommand {

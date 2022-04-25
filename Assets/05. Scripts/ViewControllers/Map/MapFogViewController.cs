@@ -45,16 +45,18 @@ namespace MainGame
             this.GetModel<IMapStateModel>().CurNode.RegisterOnValueChaned(OnLevelSelected)
                 .UnRegisterWhenGameObjectDestroyed(gameObject);
             OnLevelSelected(null,null);
+            //Debug.Log("MapFogViewController: Start");
         }
 
 
         private void OnLevelSelected(GraphVertex prevNode, GraphVertex newNode) {
-            this.GetSystem<ITimeSystem>().AddDelayTask(0.06f, () => {
+            this.GetSystem<ITimeSystem>().AddDelayTask(0.1f, () => {
+
                 if (newNode == null)
                 { //floor 0 or loaded
                     List<GraphVertex> floor0Nodes = this.GetSystem<IGameMapGenerationSystem>().GetPathNodeAtDepth(this.GetModel<IMapGenerationModel>().PathDepth);
                     floor0Nodes.ForEach(node=>{UpdateMapFogForNode(null, node);});
-
+                    Debug.Log("Count: " +floor0Nodes.Count);
                     List<GraphVertex> allNodes = this.GetSystem<IGameMapGenerationSystem>().GetAllAvailableNodes();
                     if (allNodes.Count > 0) {
                         allNodes.ForEach(node => {
@@ -89,6 +91,7 @@ namespace MainGame
 
             Vector2 targetObjPos = toNode.Value.LevelObject.gameObject.transform.position;
             if (fromNode == null) {
+                Debug.Log(vertices.Length);
                 for (int i = 0; i < vertices.Length; i++)
                 {
                     float distance = Vector2.SqrMagnitude(new Vector2( vertices[i].x, vertices[i].y) - targetObjPos);

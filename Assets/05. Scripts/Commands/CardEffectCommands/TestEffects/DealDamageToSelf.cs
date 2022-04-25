@@ -3,13 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using MikroFramework;
 using MikroFramework.ActionKit;
+using MikroFramework.Architecture;
 using MikroFramework.Pool;
 using UnityEngine;
 
 namespace MainGame
 {
     [ES3Serializable]
-    public class DealDamageToSelf : EffectCommand, ITriggeredWhenDealt {
+    public class DealDamageToSelf : EffectCommand, ITriggeredWhenDealt, IConcatableEffect {
         [ES3Serializable] public int DamageCount;
 
         public DealDamageToSelf() : base() {
@@ -22,7 +23,9 @@ namespace MainGame
 
 
         public override EffectCommand OnCloned() {
-            return this;
+            DealDamageToSelf cmd = SafeObjectPool<DealDamageToSelf>.Singleton.Allocate();
+            cmd.DamageCount = this.DamageCount;
+            return cmd;
         }
 
         public override MikroAction GetExecuteAnimationEffect() {
@@ -45,6 +48,20 @@ namespace MainGame
 
         public override void RecycleToCache() {
             SafeObjectPool<DealDamageToSelf>.Singleton.Recycle(this);
+        }
+
+        [ES3Serializable] public Rarity Rarity { get; private set; } = Rarity.Normal;
+
+
+        public int CostValue {
+            get {
+                return Mathf.CeilToInt(DamageCount / 5f);
+            }
+        }
+
+       
+        public void OnGenerationPrep() {
+            DamageCount = this.GetSystem<ISeedSystem>().RandomGeneratorRandom.Next(-20, 0);
         }
     }
 }

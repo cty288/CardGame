@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using MainGame;
 using MikroFramework.Architecture;
 using MikroFramework.Event;
+using Polyglot;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -62,10 +63,7 @@ public class MapCameraControl : AbstractMikroController<CardGame> {
             moveCamWhenScrollCooldown = 0.5f;
         }
 
-        if (Input.GetKeyDown(KeyCode.R)) {
-            CardGame.Interface.ReBoot();
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
+       
         lastScroolValue = Input.GetAxis("Mouse ScrollWheel");
 
         if (lastScroolValue > 0) {
@@ -106,10 +104,10 @@ public class MapCameraControl : AbstractMikroController<CardGame> {
         float widthRange = camera.aspect * camera.fieldOfView;
         float heightRange = camera.fieldOfView;
 
-        float minX = startLocation.x + widthRange - 5;
+        float minX = startLocation.x + widthRange - 50;
         float maxX = startLocation.x + xInterval * mapModel.PathWidth - widthRange + 130;
         xRange = new Vector2(minX, maxX);
-
+        
         float minY = startLocation.y + heightRange - 45;
         float maxY = startLocation.y + yInterval * mapModel.PathDepth - widthRange + 145;
         yRange = new Vector2(minY, maxY);

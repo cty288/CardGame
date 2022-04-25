@@ -23,12 +23,17 @@ namespace MikroFramework.Architecture
         }
 
         public void ReBoot(){
+            OnReboot();
             architecture = null;
             models.Clear();
             systems.Clear();
             OnRegisterPatch = architecture1 => { };
             container.Clear();
+          
+            container = new IOCContainer();
         }
+
+        public virtual void OnReboot(){}
         /// <summary>
         /// Has inited?
         /// </summary>

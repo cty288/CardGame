@@ -22,7 +22,8 @@ namespace MainGame
     public enum Rarity {
         Normal,
         Rare,
-        Epic
+        Epic,
+        Legend
     }
 
 

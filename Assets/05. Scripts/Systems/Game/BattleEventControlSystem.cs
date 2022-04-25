@@ -69,6 +69,7 @@ namespace MainGame
             typeof(OnDrawCard),
             typeof(OnEnterBattleScene),
             typeof(OnCardDealt),
+            typeof(OnEnemyLevelPassed),
             typeof(OnLeaveBattleScene),
         };
 

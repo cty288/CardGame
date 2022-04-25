@@ -12,5 +12,6 @@ namespace MainGame {
 		[SerializeField] private TMP_Text TextGameTime;
 		[SerializeField] private Image ImgSwitchSceneBG;
 		[SerializeField] private TMP_Text TextGameState;
+		[SerializeField] private Button BtnResetMap;
 	}
 }

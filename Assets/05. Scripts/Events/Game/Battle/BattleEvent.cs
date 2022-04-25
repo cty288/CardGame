@@ -16,6 +16,10 @@ namespace MainGame {
 
     public struct OnLeaveBattleScene: IBattleEvent{}
 
+    public struct OnEnemyLevelPassed : IBattleEvent {
+        public GraphVertex LevelVertex;
+    }
+
     public class OnCardTryDealt : IBattleEvent {
         public bool DealSuccess;
         public CardInfo CardInfo;

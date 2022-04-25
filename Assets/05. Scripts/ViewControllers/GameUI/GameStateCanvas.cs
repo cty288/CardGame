@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.IO;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,7 +8,9 @@ using MikroFramework;
 using TMPro;
 using MikroFramework.Architecture;
 using MikroFramework.Event;
+using MikroFramework.Utilities;
 using Polyglot;
+using UnityEngine.SceneManagement;
 
 namespace MainGame {
 	public partial class GameStateCanvas : AbstractMikroController<CardGame> {
@@ -29,8 +32,20 @@ namespace MainGame {
                 .UnRegisterWhenGameObjectDestroyed(gameObject);
             this.GetModel<IGameStateModel>().GameState.RegisterOnValueChaned(OnGameStateChange)
                 .UnRegisterWhenGameObjectDestroyed(gameObject);
+            BtnResetMap.onClick.AddListener(OnMapReset);
         }
-        
+
+        private void OnMapReset() {
+            CardGame.Interface.ReBoot();
+            var files = FileUtility.GetAllDirectoryFiles(Application.persistentDataPath, true, true);
+            //clear persistent data path
+            foreach (FileInfo fileInfo in files) {
+                FileUtility.DeleteFile(fileInfo);
+            }
+
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
         private void OnGameStateChange(GameState prevState, GameState curState) {
             ImgSwitchSceneBG.gameObject.GetComponent<Animation>().Play();
         }
@@ -45,6 +60,7 @@ namespace MainGame {
             else {
                 TextGameState.text = "";
             }
+            
         }
 
         private void OnDayChange(int prevDay, int curDay) {
