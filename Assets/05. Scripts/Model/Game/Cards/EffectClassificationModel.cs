@@ -50,6 +50,7 @@ namespace MainGame
 
         private void RegisterAllConcatableEffects() {
             RegisterConcatableEffectToTable<DealDamageToSelf>(CardType.Character);
+            RegisterConcatableEffectToTable<NormalAttackCommand>(CardType.Attack);
         }
 
 
@@ -77,7 +78,7 @@ namespace MainGame
             }
         }
         private void RegisterEffectToTable<T>(EffectTable effectTable) where T : EffectCommand, new() {
-            effectTable.Add(SafeObjectPool<T>.Singleton.Allocate());
+            effectTable.Add(EffectCommand.AllocateEffect<T>());
         }
 
         public EffectTable AllConcatableEffects { get; } = new EffectTable();

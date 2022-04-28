@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using MainGame;
 using MikroFramework.Architecture;
 using MikroFramework.Event;
+using MikroFramework.TimeSystem;
 using Polyglot;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -37,7 +38,7 @@ public class MapCameraControl : AbstractMikroController<CardGame> {
 
 
     private void Awake() {
-        targetPos = new Vector3(transform.position.x, transform.position.y, -30);
+      //  targetPos = new Vector3(transform.position.x, transform.position.y, -30);
         camera = GetComponent<Camera>();
     }
 
@@ -51,8 +52,19 @@ public class MapCameraControl : AbstractMikroController<CardGame> {
         yInterval = PathGeneratorViewController.Singleton.CellYInterval;
         startLocation = PathGeneratorViewController.Singleton.startLocation.position;
         UpdateCameraPosRange();
+        GraphVertex startVertex = this.GetModel<IMapStateModel>().CurNode.Value;
+        if (startVertex != null) {
+            this.GetSystem<ITimeSystem>().AddDelayTask(0.2f, () => {
+                Vector2 startPoint = startVertex.Value.LevelObject.gameObject.transform.position;
+                targetPos = new Vector3(startPoint.x, startPoint.y, -30);
+            });
+        }
+        else {
+            targetPos = new Vector3((xRange.x + xRange.y) / 2, yRange.x, -30);
+        }
 
-        targetPos = new Vector3((xRange.x + xRange.y) / 2, yRange.x,-30);
+        
+
     }
 
     private void Update() {

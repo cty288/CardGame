@@ -42,8 +42,14 @@ namespace MainGame
     [ES3Serializable]
     public abstract class EffectCommand :  ICommand, ICanRegisterEvent
     {
+        public static T AllocateEffect<T>() where T : EffectCommand, new() {
+            return SafeObjectPool<T>.Singleton.Allocate();
+        }
+        public static void RecycleEffect<T>(T cmd) where T : EffectCommand, new() {
+             SafeObjectPool<T>.Singleton.Recycle(cmd);
+        }
         //Register Effect effective event
-        
+
         private IArchitecture architectureModel;
         [ES3NonSerializable]
         public CardInfo CardBelongTo;

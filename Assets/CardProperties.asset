@@ -29,10 +29,11 @@ MonoBehaviour:
       Health: 11
     CardScriptType: TestCharacter
     CardScriptObject: {fileID: 11500000, guid: d4eeb53807e4d874c802bfa9a1e277b5, type: 3}
+    CharacterCardPrefab: {fileID: 0}
   - ID: 1
     CardType: 0
-    NameKey: 
-    Cost: 0
+    NameKey: Normal Attack
+    Cost: 1
     rarity: 0
     CardDisplayInfo:
       CardIllustration: {fileID: 0}
@@ -43,37 +44,6 @@ MonoBehaviour:
       Strength: 0
       Attack: 0
       Health: 0
-    CardScriptType: 
-    CardScriptObject: {fileID: 0}
-  - ID: 
-    CardType: 0
-    NameKey: 
-    Cost: 0
-    rarity: 0
-    CardDisplayInfo:
-      CardIllustration: {fileID: 0}
-      IllustrationPos: {x: 0, y: 0, z: 0}
-      IllustrationSize: {x: 0, y: 0}
-    CharacterProperties:
-      CharacterType: 0
-      Strength: 0
-      Attack: 0
-      Health: 0
-    CardScriptType: 
-    CardScriptObject: {fileID: 0}
-  - ID: 
-    CardType: 0
-    NameKey: 
-    Cost: 0
-    rarity: 0
-    CardDisplayInfo:
-      CardIllustration: {fileID: 0}
-      IllustrationPos: {x: 0, y: 0, z: 0}
-      IllustrationSize: {x: 0, y: 0}
-    CharacterProperties:
-      CharacterType: 0
-      Strength: 0
-      Attack: 0
-      Health: 0
-    CardScriptType: 
-    CardScriptObject: {fileID: 0}
+    CardScriptType: NormalAttack
+    CardScriptObject: {fileID: 11500000, guid: 5ef08d44c1defd04e832d386eed6d3d7, type: 3}
+    CharacterCardPrefab: {fileID: 0}

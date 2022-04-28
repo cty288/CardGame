@@ -39,13 +39,18 @@ namespace MainGame
                    this.GetModel<IGameStateModel>().TotalEnemyPassed.Value++;
                    this.SendEvent<IBattleEvent>(new OnEnemyLevelPassed() {LevelVertex = LevelObject.Node});
 
-                    this.GetSystem<ITimeSystem>().AddDelayTask(0.3f, () => {
-                        //this.SendEvent<IBattleEvent>(new OnEnterBattleScene());
-                        this.RecycleToCache();
-                    });
+                    
                 }
-                
+
+                if (LevelObject.Node.Value.LevelType.Value == LevelType.Unknown) {
+                    LevelObject.Node.Value.LevelType.Value = LevelType.Nothing;
+                    LevelObject.UpdateNodeSprite();
+                }
                 this.SaveGame();
+                this.GetSystem<ITimeSystem>().AddDelayTask(0.3f, () => {
+                    //this.SendEvent<IBattleEvent>(new OnEnterBattleScene());
+                    this.RecycleToCache();
+                });
             }
         }
 

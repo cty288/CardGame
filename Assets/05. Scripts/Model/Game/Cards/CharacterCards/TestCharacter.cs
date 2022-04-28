@@ -17,14 +17,14 @@ namespace MainGame
                 DelayAction.Allocate(2f, () => { Debug.Log("First delay override"); })
             };
 
-        public override void SetInitialEffects() {
-            EffectsProperty = new CardAlterableProperty<List<EffectCommand>>(new List<EffectCommand>() {
+        public override List<EffectCommand> SetInitialEffects() {
+            return new List<EffectCommand>() {
                 new DealDamageToSelf(10)
-            });
+            };
         }
 
-        public override void SetInitialPrimitiveBuffEffects() {
-            BuffEffectProperty = new CardAlterableProperty<List<EffectCommand>>(new List<EffectCommand>());
+        public override List<EffectCommand> SetInitialPrimitiveBuffEffects() {
+           return new List<EffectCommand>();
         }
     }
 }

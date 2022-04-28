@@ -12,31 +12,44 @@ namespace MainGame
 {
     public interface ICardConfigModel : IModel {
         CardInfo GetNewCardInfoFromID(int id);
+
+       IEnumerable<CardProperties> GetCardProperties(Func<CardProperties, bool> contition);
         CardDisplayInfo GetCardDisplayInfo(int id);
     }
 
    
     public class CardTable<T> : Table<CardProperties> where T: CardInfo { 
         public TableIndex<int, CardProperties> IDIndex { get; private set; }
+        public TableIndex<CardType, CardProperties> TypeIndex { get; private set; }
 
+        public TableIndex<Rarity, CardProperties> RarityIndex { get; private set; }
         public CardTable() {
             IDIndex = new TableIndex<int, CardProperties>(item => item.GetID());
+            TypeIndex = new TableIndex<CardType, CardProperties>(item => item.CardType);
+            RarityIndex = new TableIndex<Rarity, CardProperties>(item => item.rarity);
         }
         protected override void OnClear() {
             IDIndex.Clear();
+            TypeIndex.Clear();
+            RarityIndex.Clear();
         }
 
         public override void OnAdd(CardProperties item) {
             IDIndex.Add(item);
+            TypeIndex.Add(item);
+            RarityIndex.Add(item);
         }
 
         public override void OnRemove(CardProperties item) {
            IDIndex.Remove(item);
+           TypeIndex.Remove(item);
+           RarityIndex.Remove(item);
         }
 
         public CardProperties GetByID(int id) {
            return IDIndex.Get(id).FirstOrDefault();
         }
+
     }
 
     public class CardConfigModel : AbstractModel, ICardConfigModel {
@@ -67,7 +80,12 @@ namespace MainGame
                 if (cardProperties.CardType == CardType.Character) {
                     RegisterCharacterCardInfo(cardProperties);
                 }
+                AllCardInfos.Add(cardProperties);
             }
+        }
+
+        public IEnumerable<CardProperties> GetCardProperties(Func<CardProperties, bool> contition) {
+            return AllCardInfos.Get(contition);
         }
 
         public CardDisplayInfo GetCardDisplayInfo(int id) {
@@ -79,8 +97,12 @@ namespace MainGame
             return Activator.CreateInstance(cardAttributes.GetConcreteType(), cardAttributes) as CardInfo;
         }
 
+        public static CardInfo GetNewCardInfoFromCardProperty(CardProperties properties) {
+            return Activator.CreateInstance(properties.GetConcreteType(), properties) as CardInfo;
+        }
+
         private void RegisterCharacterCardInfo(CardProperties cardProperties) {
-            AllCardInfos.Add(cardProperties);
+            
             AllCharacterCardInfos.Add(cardProperties);
         }
 

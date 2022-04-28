@@ -94,9 +94,9 @@ namespace MainGame
             // this.RegisterEvent<OnEnterBattleScene>(OnEnterBattleScene);
             // this.RegisterEvent<OnLeaveBattleScene>(OnLeaveBattleScene);
 
-            SetInitialEffects();
-            
-            SetInitialPrimitiveBuffEffects();
+            EffectsProperty = new CardAlterableProperty<List<EffectCommand>>(SetInitialEffects());
+
+            BuffEffectProperty = new CardAlterableProperty<List<EffectCommand>>(SetInitialPrimitiveBuffEffects());
 
             SetEffectsToPrimitive();
         }
@@ -189,8 +189,8 @@ namespace MainGame
             });
         }
 
-        public abstract void SetInitialEffects();
-        public abstract void SetInitialPrimitiveBuffEffects();
+        public abstract List<EffectCommand> SetInitialEffects();
+        public abstract List<EffectCommand> SetInitialPrimitiveBuffEffects();
 
         public virtual string GetLocalizedDescription() {
             string description = "";
