@@ -34,7 +34,7 @@ namespace MainGame
         }
 
         public override string GetLocalizedTextWithoutBold() {
-            return Localization("TestEffect1", DamageCount.ToString());
+            return Localization("eff_deal_self_damage", DamageCount.ToString());
         }
 
         protected override void OnExecute() {
@@ -50,7 +50,7 @@ namespace MainGame
             SafeObjectPool<DealDamageToSelf>.Singleton.Recycle(this);
         }
 
-        [ES3Serializable] public Rarity Rarity { get; private set; } = Rarity.Normal;
+        [ES3Serializable] public Rarity Rarity { get;  set; } = Rarity.Normal;
 
 
         public int CostValue {

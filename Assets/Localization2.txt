@@ -6,4 +6,11 @@ LANGUAGE_DIRECTION,ltr or rtl (text direction used by game code),ltr,ltr,ltr,ltr
 Polyglot,100,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 CONTEXT_CHARACTER_CLASS,[Noun] Character class,Class,Classe,Clase,Klasse,Classe,Classe,Classe,Класс,Κλάση,Sınıf,Klasse,Klasse,Klass,Klasse,Klasa,Luokka,クラス,角色种类,角色類,직업,Třída,Osztály,Clasă,คลาส,Клас,טיפוס,فئة,Klasa
 TestKeyword1,,Battlecry,,,,,,,,,,,,,,,,,战吼,,,,,,,,,,
-TestEffect1,,Battlecry: Deal {0} damage to self,,,,,,,,,,,,,,,,,战吼：对自身造成 {0} 点伤害,,,,,,,,,,
+eff_deal_self_damage,,Roar: Deal {0} damage to self,,,,,,,,,,,,,,,,,咆哮：对自身造成 {0} 点伤害,咆哮：對自身造成 {0} 點傷害,,,,,,,,,
+eff_attack,,Attack,,,,,,,,,,,,,,,,,攻击,攻擊,,,,,,,,,
+eff_add_property,,Give a character {0}{1}/{2}{3},,,,,,,,,,,,,,,,,使一个角色获得{0}{1}/{2}{3},"
+使一個角色獲得{0}{1}/{2}{3}",,,,,,,,,
+eff_resurrection,,Revive your next dead character,,,,,,,,,,,,,,,,,复活你下一个死亡的角色,復活你下一個死亡的角色,,,,,,,,,
+eff_draw_cards,,Draw {0} card{1},,,,,,,,,,,,,,,,,抽{0}张牌,抽{0}張牌,,,,,,,,,
+eff_conditional_on_friendly_hurt,,"For the rest of the game, when your characters take damages",,,,,,,,,,,,,,,,,"在本局游戏的剩余时间内, 当你的角色受到伤害后","在本局遊戲的剩餘時間內, 當你的角色受到傷害後",,,,,,,,,
+eff_deal_damage_to_random_enemy,,Deal {0} damages to a random enemy,,,,,,,,,,,,,,,,,对随机敌人造成{0}点伤害,對隨機敵人造成{0}點傷害,,,,,,,,,

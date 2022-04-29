@@ -5,7 +5,10 @@ using UnityEngine;
 
 namespace MainGame
 {
+  
+    [ES3Serializable]
     public class NormalAttack : CardInfo {
+        
         public NormalAttack() { }
         public NormalAttack(CardProperties attributes) : base(attributes)
         {

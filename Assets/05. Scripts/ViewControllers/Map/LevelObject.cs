@@ -166,7 +166,7 @@ public class LevelObject : AbstractMikroController<CardGame> {
 
     private void OnALevelSelected(GraphVertex prevNode, GraphVertex newSelectedLevel) {
         if (newSelectedLevel == null){ //floor 0 or load save data
-            Debug.Log("Call OnPlayerMeet");
+           // Debug.Log("Call OnPlayerMeet");
             if (Node.Value.PointOnMap.y == this.GetModel<IMapGenerationModel>().PathDepth) {
                 OnPlayerMeet();
             }

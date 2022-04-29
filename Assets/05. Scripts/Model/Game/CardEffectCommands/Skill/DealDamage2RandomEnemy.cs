@@ -1,20 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using MikroFramework.ActionKit;
+using MikroFramework.Architecture;
 using UnityEngine;
 
 namespace MainGame
 {
     [ES3Serializable]
-    public class NormalAttackCommand : EffectCommand, ITriggeredWhenDealt, IConcatableEffect
-    {
-      
-        public NormalAttackCommand() : base()
+    public class DealDamage2RandomEnemy : EffectCommand, IConcatableEffect{
+        [ES3Serializable] public int Damage;
+        public DealDamage2RandomEnemy() : base()
         {
 
         }
+
+        public DealDamage2RandomEnemy(int damage) : base() {
+            this.Damage = damage;
+        }
+
         public override EffectCommand OnCloned() {
-            return EffectCommand.AllocateEffect<NormalAttackCommand>();
+            DealDamage2RandomEnemy cmd = EffectCommand.AllocateEffect<DealDamage2RandomEnemy>();
+            cmd.Damage = Damage;
+            return cmd;
         }
 
         public override MikroAction GetExecuteAnimationEffect() {
@@ -22,11 +29,11 @@ namespace MainGame
         }
 
         public override string GetLocalizedTextWithoutBold() {
-            return Localization("eff_attack");
+            return Localization("eff_deal_damage_to_random_enemy", Damage.ToString());
         }
 
         protected override void OnExecute() {
-            
+           
         }
 
         protected override void Revoke() {
@@ -38,9 +45,15 @@ namespace MainGame
         }
 
         public Rarity Rarity { get; set; } = Rarity.Normal;
-        public int CostValue { get; } = 1;
+
+        public int CostValue {
+            get {
+                return Damage / 3;
+            }
+        }
+
         public void OnGenerationPrep() {
-            
+            Damage = this.GetSystem<ISeedSystem>().RandomGeneratorRandom.Next(3, 20);
         }
     }
 }

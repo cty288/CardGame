@@ -23,7 +23,8 @@ namespace MainGame
         Normal,
         Rare,
         Epic,
-        Legend
+        Legend,
+        Multi
     }
 
 
@@ -194,8 +195,11 @@ namespace MainGame
 
         public virtual string GetLocalizedDescription() {
             string description = "";
-            //buff effect: keywords
+            //buff effect: keywords 
+        
             for (int i = 0; i < BuffEffectProperty.PrimitiveValue.Count; i++) {
+                Debug.Log(NameKey);
+                Debug.Log(BuffEffectProperty.PrimitiveValue[0] == null);
                 description += BuffEffectProperty.PrimitiveValue[i].LocalizedEffectText;
                 if (i != BuffEffectProperty.PrimitiveValue.Count - 1) {
                     description += Localization.Get("Comma");

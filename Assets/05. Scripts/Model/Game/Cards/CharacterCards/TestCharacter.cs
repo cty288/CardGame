@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace MainGame
 {
+    [ES3Serializable]
     public class TestCharacter : CharacterCardInfo
     {
         public TestCharacter() { }

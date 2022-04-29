@@ -15,7 +15,8 @@ namespace MikroFramework.CodeGen {
             "UnityEngine.UI",
             "MikroFramework",
             "TMPro", //comment this if you don't have TMP for this project
-            
+            "MikroFramework.ActionKit",
+            "System.Collections.Generic"
         };
     }
 }

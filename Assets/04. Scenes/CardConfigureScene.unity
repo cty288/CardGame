@@ -862,22 +862,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4625d5f46b410a34780adbff373aa472, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardID: 0
-  NameKey: TestCharacter
-  Cost: 0
+  CardID: 4
+  NameKey: thorns
+  CodeGenerationRootPath: D:/Unity Projects/CardGame/Assets/05. Scripts/Model/Game/Cards/SkillCards/
+  Cost: 3
   rarity: 0
-  CardScriptType: TestCharacter
-  CardType: 4
+  CardScriptType: Thorns
+  CardType: 3
   CharacterProperties:
     CharacterType: 0
     Strength: 4
     Attack: 5
     Health: 11
-  CardIllustration: {fileID: 2800000, guid: f6324512da6a9ca4185df6cf892b2b22, type: 3}
-  IllustrationPos: {x: 6.3207, y: -0.000015736, z: 0}
-  IllustrationSize: {x: 178.1501, y: 134.6205}
-  scriptType: {fileID: 11500000, guid: d4eeb53807e4d874c802bfa9a1e277b5, type: 3}
-  characterIdentityPrefab: {fileID: 2211734576451760550, guid: 578f0169f66d218479a3222b0df7d699, type: 3}
+  CardIllustration: {fileID: 0}
+  IllustrationPos: {x: 21, y: 41, z: 0}
+  IllustrationSize: {x: 800, y: 800}
+  scriptType: {fileID: 11500000, guid: 520df8f145f95e14f9b0675239f46085, type: 3}
+  characterIdentityPrefab: {fileID: 0}
   CardProperties: {fileID: 11400000, guid: 79ac8c6f03ea75e44b2fe544a19dccac, type: 2}
 --- !u!1 &1107298300
 GameObject:
@@ -936,7 +937,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Test Character Name
+  m_text: Thorns
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -963,7 +964,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 9.7
+  m_fontSize: 11
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1536,8 +1537,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6.3207, y: -0.000015736}
-  m_SizeDelta: {x: 178.1501, y: 134.6205}
+  m_AnchoredPosition: {x: 21, y: 41}
+  m_SizeDelta: {x: 800, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1793213393
 MonoBehaviour:
@@ -1559,7 +1560,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: f6324512da6a9ca4185df6cf892b2b22, type: 3}
+  m_Texture: {fileID: 0}
   m_UVRect:
     serializedVersion: 2
     x: 0

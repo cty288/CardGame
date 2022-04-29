@@ -7,6 +7,7 @@ using MikroFramework.Architecture;
 using MikroFramework.Pool;
 using Polyglot;
 using UnityEngine;
+using Random = System.Random;
 
 namespace MainGame
 {
@@ -17,15 +18,18 @@ namespace MainGame
     }
 
     public interface IAlwaysTriggeredByOtherEvents {
-        public List<IBattleEvent> TriggeredBy { get; }
+        public List<IBattleEvent> TriggeredBy { get; set; }
+        public List<EffectCommand> TriggeredEffects { get; set; }
     }
 
     public interface ITriggeredByEventsWhenDealt {
-        public List<IBattleEvent> TriggeredBy { get; }
+        public List<IBattleEvent> TriggeredBy { get; set; }
+        public List<EffectCommand> TriggeredEffects { get; set; }
     }
-
+    
     public interface IConcatableEffect : ICommand {
-        public Rarity Rarity { get; }
+        
+        public Rarity Rarity { get; set; }
         /// <summary>
         /// Can be negative
         /// </summary>
@@ -40,8 +44,8 @@ namespace MainGame
     }
 
     [ES3Serializable]
-    public abstract class EffectCommand :  ICommand, ICanRegisterEvent
-    {
+    public abstract class EffectCommand :  ICommand, ICanRegisterEvent {
+        [ES3Serializable] public int SerializeCode = UnityEngine.Random.Range(-10000000, 1000000);
         public static T AllocateEffect<T>() where T : EffectCommand, new() {
             return SafeObjectPool<T>.Singleton.Allocate();
         }
@@ -161,7 +165,7 @@ namespace MainGame
             OnExecute();
         }
 
-        protected void Execute() {
+        public void Execute() {
             this.GetSystem<IBattleEventControlSystem>().RegisterAnimationToSequence(executeAnimationEffect);
             OnExecute();
         }

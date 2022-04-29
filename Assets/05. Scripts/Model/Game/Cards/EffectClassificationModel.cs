@@ -17,6 +17,7 @@ namespace MainGame
         }
         protected override void OnClear()
         {
+            
             ConcatableRarityIndex.Clear();
         }
 
@@ -51,6 +52,11 @@ namespace MainGame
         private void RegisterAllConcatableEffects() {
             RegisterConcatableEffectToTable<DealDamageToSelf>(CardType.Character);
             RegisterConcatableEffectToTable<NormalAttackCommand>(CardType.Attack);
+            RegisterConcatableEffectToTable<AddPropertyValueEffect>(CardType.Area);
+            RegisterConcatableEffectToTable<NextCharResurrectionEffect>();
+            RegisterConcatableEffectToTable<DrawCardsEffect>(CardType.Skill);
+            RegisterConcatableEffectToTable<OnFriendlyCharacterHurtEffect>(CardType.Area);
+            RegisterConcatableEffectToTable<DealDamage2RandomEnemy>(CardType.Skill);
         }
 
 
@@ -68,13 +74,15 @@ namespace MainGame
         }
 
         /// <summary>
-        /// egister a concatable effect, this effect is applicable for all types
+        /// egister a concatable effect, this effect is applicable for all types except characters
         /// </summary>
         /// <typeparam name="T"></typeparam>
         private void RegisterConcatableEffectToTable<T>() where T:  EffectCommand, IConcatableEffect, new(){
             RegisterEffectToTable<T>(AllConcatableEffects);
             foreach (KeyValuePair<CardType, EffectTable> keyValuePair in ConcatableEffectsByCardType) {
-                RegisterConcatableEffectToTable<T>(keyValuePair.Key);
+                if (keyValuePair.Key != CardType.Character) {
+                    RegisterConcatableEffectToTable<T>(keyValuePair.Key);
+                }
             }
         }
         private void RegisterEffectToTable<T>(EffectTable effectTable) where T : EffectCommand, new() {
@@ -92,6 +100,11 @@ namespace MainGame
                 {CardType.Skill, new EffectTable()},
             };
 
+        /// <summary>
+        /// Include multi rarity
+        /// </summary>
+        /// <param name="rarity"></param>
+        /// <returns></returns>
         public IEnumerable<IConcatableEffect> GetAllConcatableEffectsByRarity(Rarity rarity) {
             return AllConcatableEffects.ConcatableRarityIndex.Get((effectRarity => effectRarity == rarity));
         }

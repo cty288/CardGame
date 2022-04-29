@@ -32,7 +32,7 @@ MonoBehaviour:
     CharacterCardPrefab: {fileID: 0}
   - ID: 1
     CardType: 0
-    NameKey: Normal Attack
+    NameKey: normal_attack
     Cost: 1
     rarity: 0
     CardDisplayInfo:
@@ -46,4 +46,89 @@ MonoBehaviour:
       Health: 0
     CardScriptType: NormalAttack
     CardScriptObject: {fileID: 11500000, guid: 5ef08d44c1defd04e832d386eed6d3d7, type: 3}
+    CharacterCardPrefab: {fileID: 0}
+  - ID: 2
+    CardType: 3
+    NameKey: resurrection_charm
+    Cost: 8
+    rarity: 3
+    CardDisplayInfo:
+      CardIllustration: {fileID: 10900, guid: 0000000000000000f000000000000000, type: 0}
+      IllustrationPos: {x: 21, y: 41, z: 0}
+      IllustrationSize: {x: 800, y: 800}
+    CharacterProperties:
+      CharacterType: 0
+      Strength: 4
+      Attack: 5
+      Health: 11
+    CardScriptType: ResurrectionCharmArea
+    CardScriptObject: {fileID: 11500000, guid: 5e11d96bc08278e4c9193ef4da0048af, type: 3}
+    CharacterCardPrefab: {fileID: 0}
+  - ID: 3
+    CardType: 2
+    NameKey: sprint
+    Cost: 3
+    rarity: 0
+    CardDisplayInfo:
+      CardIllustration: {fileID: 0}
+      IllustrationPos: {x: 21, y: 41, z: 0}
+      IllustrationSize: {x: 800, y: 800}
+    CharacterProperties:
+      CharacterType: 0
+      Strength: 4
+      Attack: 5
+      Health: 11
+    CardScriptType: Sprint
+    CardScriptObject: {fileID: 11500000, guid: 9d33640b46dc3e043bf82dd01e029646, type: 3}
+    CharacterCardPrefab: {fileID: 0}
+  - ID: 4
+    CardType: 3
+    NameKey: thorns
+    Cost: 3
+    rarity: 0
+    CardDisplayInfo:
+      CardIllustration: {fileID: 0}
+      IllustrationPos: {x: 21, y: 41, z: 0}
+      IllustrationSize: {x: 800, y: 800}
+    CharacterProperties:
+      CharacterType: 0
+      Strength: 4
+      Attack: 5
+      Health: 11
+    CardScriptType: Thorns
+    CardScriptObject: {fileID: 11500000, guid: 520df8f145f95e14f9b0675239f46085, type: 3}
+    CharacterCardPrefab: {fileID: 0}
+  - ID: 5
+    CardType: 2
+    NameKey: aim_shot
+    Cost: 3
+    rarity: 0
+    CardDisplayInfo:
+      CardIllustration: {fileID: 0}
+      IllustrationPos: {x: 21, y: 41, z: 0}
+      IllustrationSize: {x: 800, y: 800}
+    CharacterProperties:
+      CharacterType: 0
+      Strength: 4
+      Attack: 5
+      Health: 11
+    CardScriptType: AimShot
+    CardScriptObject: {fileID: 11500000, guid: 7972f2d5e372b4c45a54a6e28277b849, type: 3}
+    CharacterCardPrefab: {fileID: 0}
+  - ID: 6
+    CardType: 1
+    NameKey: blessing_ring
+    Cost: 3
+    rarity: 0
+    CardDisplayInfo:
+      CardIllustration: {fileID: 0}
+      IllustrationPos: {x: 21, y: 41, z: 0}
+      IllustrationSize: {x: 800, y: 800}
+    CharacterProperties:
+      CharacterType: 0
+      Strength: 4
+      Attack: 5
+      Health: 11
+    CardScriptType: BlessingRingArmor
+    CardScriptObject: {fileID: 11500000, guid: 5a15e55ee9f3be245a1377adb246e9a6, type: 3}
     CharacterCardPrefab: {fileID: 0}

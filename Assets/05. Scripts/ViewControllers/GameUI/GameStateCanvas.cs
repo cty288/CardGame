@@ -33,6 +33,14 @@ namespace MainGame {
             this.GetModel<IGameStateModel>().GameState.RegisterOnValueChaned(OnGameStateChange)
                 .UnRegisterWhenGameObjectDestroyed(gameObject);
             BtnResetMap.onClick.AddListener(OnMapReset);
+            BtnViewDeck.onClick.AddListener(OnViewDeckButtonClicked);
+        }
+
+        private void OnViewDeckButtonClicked() {
+            if (ObjDeckViewPage.activeInHierarchy) {
+                ObjDeckViewPage.GetComponent<DeckViewPage>().ClosePage();
+            }
+            ObjDeckViewPage.SetActive(!ObjDeckViewPage.activeInHierarchy);
         }
 
         private void OnMapReset() {

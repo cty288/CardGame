@@ -35,7 +35,11 @@ namespace MainGame
                 
             });
             CardsInDeck.Value = this.RegisterAndLoadFromSavedData("cards_deck", new List<CardInfo>() {
-
+                cardConfigModel.GetNewCardInfoFromID(1),
+                cardConfigModel.GetNewCardInfoFromID(2),
+                cardConfigModel.GetNewCardInfoFromID(3),
+                cardConfigModel.GetNewCardInfoFromID(4),
+                cardConfigModel.GetNewCardInfoFromID(5)
             });
         }
 
