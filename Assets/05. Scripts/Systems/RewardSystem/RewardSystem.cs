@@ -64,7 +64,7 @@ namespace MainGame
             if (e is OnEnemyLevelPassed ev) {
                 //generate rewards
                 int totalEnemyPassed = this.GetModel<IGameStateModel>().TotalEnemyPassed;
-                Debug.Log($"Total enemy passed: {totalEnemyPassed}");
+               // Debug.Log($"Total enemy passed: {totalEnemyPassed}");
                 UpdateCurrentRarityPossibility(totalEnemyPassed);
                 LevelType levelType = ev.LevelVertex.Value.LevelType;
                 //generate a couple of cards
@@ -104,6 +104,9 @@ namespace MainGame
 
                     }
                 }
+
+                this.SendEvent<OnCardRewardGenerated>(new OnCardRewardGenerated()
+                    { RewardCard =  rewardCards});
             }
            
         }
@@ -153,7 +156,7 @@ namespace MainGame
                 foreach (KeyValuePair<Rarity, float> valuePair in currentRarityPossibility) {
                     float growthRate = rarityPossibilityGrothRatePerLevelProgress[valuePair.Key];
                     newCurrentRarityPossibility.Add(valuePair.Key, initialRarityPossibility[valuePair.Key] + growthRate * totalEnemyPassed);
-                    Debug.Log(newCurrentRarityPossibility[valuePair.Key]);
+                    //Debug.Log(newCurrentRarityPossibility[valuePair.Key]);
                 }
                 currentRarityPossibility.Clear();
                 currentRarityPossibility = newCurrentRarityPossibility;

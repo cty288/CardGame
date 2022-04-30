@@ -116,7 +116,7 @@ public class MapCameraControl : AbstractMikroController<CardGame> {
         float widthRange = camera.aspect * camera.fieldOfView;
         float heightRange = camera.fieldOfView;
 
-        float minX = startLocation.x + widthRange - 50;
+        float minX = startLocation.x + widthRange - 150;
         float maxX = startLocation.x + xInterval * mapModel.PathWidth - widthRange + 130;
         xRange = new Vector2(minX, maxX);
         

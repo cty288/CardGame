@@ -27,4 +27,8 @@ namespace MainGame {
     public struct OnCardDealt : IBattleEvent {
         public CardInfo CardDealt;
     }
+
+    public struct OnCardRewardGenerated {
+        public List<CardInfo> RewardCard;
+    }
 }

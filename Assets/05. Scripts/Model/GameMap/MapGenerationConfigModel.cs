@@ -14,7 +14,7 @@ namespace MainGame
 
     }
     public class MapGenerationConfigModel : AbstractModel, IMapGenerationConfigModel {
-        public int PathDepth { get; } = 20;
+        public int PathDepth { get; } = 15;
         public int PathWidth { get; } = 20;
         public Dictionary<LevelType, float> NormalLevelPossibilities { get; } = new Dictionary<LevelType, float>() {
             {LevelType.Unknown, 19},

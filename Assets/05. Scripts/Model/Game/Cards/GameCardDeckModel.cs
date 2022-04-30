@@ -39,7 +39,8 @@ namespace MainGame
                 cardConfigModel.GetNewCardInfoFromID(2),
                 cardConfigModel.GetNewCardInfoFromID(3),
                 cardConfigModel.GetNewCardInfoFromID(4),
-                cardConfigModel.GetNewCardInfoFromID(5)
+                cardConfigModel.GetNewCardInfoFromID(5),
+                cardConfigModel.GetNewCardInfoFromID(6)
             });
         }
 

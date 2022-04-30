@@ -79,7 +79,7 @@ namespace MainGame
                                 if (restore <= timePassedInMapScene) {
                                     mapGraph.TemoporaryRestoreConnectionUnDirected(vertex,
                                         mapGraph.FindVertexByPos(brokenConn.Order, brokenConn.Depth));
-                                    Debug.Log("Restore");
+                                    //Debug.Log("Restore");
                                     break;
                                 }
                             }
@@ -111,7 +111,7 @@ namespace MainGame
                                 mapGraph.TemoporaryRestoreConnectionUnDirected(vertex,brokeVertex);
                             }
                             else {
-                                Debug.Log($"Break at: {vertex.Value.PointOnMap} to {brokeVertex.Value.PointOnMap}");
+                                //Debug.Log($"Break at: {vertex.Value.PointOnMap} to {brokeVertex.Value.PointOnMap}");
                             }
                         }
                     }

@@ -15,7 +15,7 @@ namespace MainGame
         }
 
         private void OnGameTimeUpdate(IGameTimeUpdateEvent e) {
-            Debug.Log($"Time Passed: {e.TimePassed}");
+            //Debug.Log($"Time Passed: {e.TimePassed}");
             this.GetModel<IGameTimeModel>().AddMinutes(e.TimePassed);
         }
     }

@@ -109,16 +109,18 @@ namespace MainGame
         private IEnumerator SpawnBuildings() {
             yield return null;
             Random random = this.GetSystem<ISeedSystem>().RandomGeneratorRandom;
-            for (float i = -5; i < this.GetModel<IMapGenerationModel>().PathDepth * cellYInterval; i+= cellYInterval) {
-                for (float j = -15; j < this.GetModel<IMapGenerationModel>().PathWidth * cellXInterval; j+=cellXInterval) {
+            for (float i = -5; i < (this.GetModel<IMapGenerationModel>().PathDepth+5) * cellYInterval; i+= cellYInterval) {
+                for (float j = -5; j < (this.GetModel<IMapGenerationModel>().PathWidth )* cellXInterval; j+=cellXInterval) {
                     int index = random.Next(0, buildingPrefabs.Count);
                     GameObject randomPrefab = buildingPrefabs[index];
                     float radius = randomPrefab.GetComponent<BoxCollider>().size.x / 2;
                     radius *= randomPrefab.transform.localScale.x;
                     //Debug.Log(radius);
-                    bool isCollide = Physics.OverlapSphere(new Vector3(i, j, 0), radius).ToList().Any();
+                    Vector3 pos = new Vector3(j, i, 0);
+                    pos += new Vector3(2* (float)(random.NextDouble() * 2 - 1), 2*(float)(random.NextDouble() * 2 - 1));
+                    bool isCollide = Physics.OverlapSphere(pos, radius).ToList().Any();
                     if (!isCollide ){
-                        Instantiate(randomPrefab, new Vector3(i, j, -0.18f), Quaternion.Euler(-90, 0, 0));
+                        Instantiate(randomPrefab, pos, Quaternion.Euler(-90, 0, 0));
                     }
                 }
             }

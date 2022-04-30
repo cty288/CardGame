@@ -11,11 +11,12 @@ using TMPro;
 using UnityEditor;
 #endif
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace MainGame
 {
-    public class CardDisplay : PoolableGameObject, ICanGetModel {
+    public class CardDisplay : PoolableGameObject, ICanGetModel, IPointerClickHandler {
        // public CardType CardType;
         [HideInInspector]
         public BindableProperty<CardInfo> CardInfo;
@@ -44,6 +45,8 @@ namespace MainGame
         public Image CardBG;
         public Sprite CharacterCardSprite;
         public Sprite NormalCardSprite;
+
+        public Action<CardDisplay> OnClicked;
         private void Awake() {
             CardInfo = new BindableProperty<CardInfo>();
             CardNameText = transform.Find("CardName").GetComponent<TMP_Text>();
@@ -54,9 +57,10 @@ namespace MainGame
             CardTypeText = transform.Find("CardTypeName").GetComponent<TMP_Text>();
             CardBG = transform.Find("CardBG").GetComponent<Image>();
             CardInfo.RegisterOnValueChaned(OnCardInfoChange).UnRegisterWhenGameObjectDestroyed(gameObject);
-            
+          
         }
 
+     
         private void OnCardInfoChange(CardInfo prevCardInfo, CardInfo curCardInfo) {
             RefreshCardDisplay();
         }
@@ -110,9 +114,31 @@ namespace MainGame
                     Debug.Log(CardInfo.Value.NameKey);
                     Debug.Log(CardInfo.Value.CostProperty.CurrentValue);
                     CostText.text = CardInfo.Value.CostProperty.CurrentValue.Value.ToString();
-                    CardTypeText.text = CardInfo.Value.CardType.ToString();
+                    CardTypeText.text = GetCardTypeLocalized(CardInfo.Value.CardType);
                     break;
             }
+        }
+
+        public static string GetCardTypeLocalized(CardType type) {
+            switch (type) {
+                case CardType.Character:
+                    return Localization.Get("cardtype_character");
+                    break;
+                case CardType.Skill:
+                    return Localization.Get("cardtype_skill");
+                    break;
+                case CardType.Armor:
+                    return Localization.Get("cardtype_armor");
+                    break;
+                case CardType.Attack:
+                    return Localization.Get("cardtype_attack");
+                    break;
+                case CardType.Area:
+                    return Localization.Get("cardtype_area");
+                    break;
+            }
+
+            return "";
         }
         public override void OnInit() {
             
@@ -124,6 +150,11 @@ namespace MainGame
 
         public IArchitecture GetArchitecture() {
             return CardGame.Interface;
+        }
+
+        public void OnPointerClick(PointerEventData eventData) {
+            OnClicked?.Invoke(this);
+            Debug.Log("Pointer clicked");
         }
     }
 }

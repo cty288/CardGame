@@ -84,7 +84,7 @@ MonoBehaviour:
   - ID: 4
     CardType: 3
     NameKey: thorns
-    Cost: 3
+    Cost: 2
     rarity: 0
     CardDisplayInfo:
       CardIllustration: {fileID: 0}

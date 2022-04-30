@@ -114,7 +114,7 @@ public class LevelObject : AbstractMikroController<CardGame> {
             foreach (Collider c in Physics.OverlapSphere(spawnPoint, 1))
             {
                 if (c.gameObject.layer == LayerMask.NameToLayer("Obstacles")) {
-                    Debug.Log(c.gameObject.name);
+                    //Debug.Log(c.gameObject.name);
                     Destroy(c.transform.parent. gameObject);
                 }
               
