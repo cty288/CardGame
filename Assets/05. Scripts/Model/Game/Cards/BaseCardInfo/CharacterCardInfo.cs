@@ -32,9 +32,9 @@ namespace MainGame
         public CharacterCardInfo(CardProperties attributes) : base(attributes) {
             
             this.CharacterType = attributes.CharacterProperties.CharacterType;
-            this.Strength = new CardAlterableProperty<int>(attributes.CharacterProperties.Strength);
-            this.Health = new CardAlterableProperty<int>(attributes.CharacterProperties.Health);
-            this.Attack = new CardAlterableProperty<int>(attributes.CharacterProperties.Attack);
+            this.Strength = new CardAlterableProperty<int>(attributes.CharacterProperties.Strength, i => i );
+            this.Health = new CardAlterableProperty<int>(attributes.CharacterProperties.Health, i => i);
+            this.Attack = new CardAlterableProperty<int>(attributes.CharacterProperties.Attack, i => i);
 
         }
 

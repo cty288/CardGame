@@ -12,7 +12,8 @@ namespace MainGame
 
         }
 
-       
+
+        public override bool IsBuffEffect { get; set; } = false;
 
         public override EffectCommand OnCloned() {
             return EffectCommand.AllocateEffect<NextCharResurrectionEffect>();

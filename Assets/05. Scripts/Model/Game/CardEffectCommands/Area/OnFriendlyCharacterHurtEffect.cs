@@ -8,6 +8,7 @@ namespace MainGame
     [ES3Serializable]
     public class OnFriendlyCharacterHurtEffect : AbstractConcatableEffectTriggerdByEventWhenDealt
     {
+        public override bool IsBuffEffect { get; set; } = false;
         public OnFriendlyCharacterHurtEffect() : base() {
 
         }
@@ -41,6 +42,6 @@ namespace MainGame
             return Localization("eff_conditional_on_friendly_hurt");
         }
 
-        public override float ConditionBaseCost { get; protected set; } = 1;
+        public override float ConditionBaseCost { get; protected set; } = 2;
     }
 }

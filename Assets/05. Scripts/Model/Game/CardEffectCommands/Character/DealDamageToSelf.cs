@@ -12,7 +12,7 @@ namespace MainGame
     [ES3Serializable]
     public class DealDamageToSelf : EffectCommand, ITriggeredWhenDealt, IConcatableEffect {
         [ES3Serializable] public int DamageCount;
-
+        public override bool IsBuffEffect { get; set; } = false;
         public DealDamageToSelf() : base() {
             
         }

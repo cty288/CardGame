@@ -8,7 +8,7 @@ using Random = System.Random;
 namespace MainGame
 {
     [ES3Serializable]
-    public class AddPropertyValueEffect : EffectCommand, ITriggeredWhenDealt, IConcatableEffect {
+    public class AddPropertyValueEffect : EffectCommand, ITriggeredWhenDealt, IConcatableEffect, IPointable {
         [ES3Serializable] public Vector2Int AddedValues;
         public AddPropertyValueEffect() : base()
         {
@@ -18,6 +18,8 @@ namespace MainGame
         public AddPropertyValueEffect(Vector2Int addedValues) : base() {
             this.AddedValues = addedValues;
         }
+
+        public override bool IsBuffEffect { get; set; } = false;
 
         public override EffectCommand OnCloned() {
             AddPropertyValueEffect cmd = EffectCommand.AllocateEffect<AddPropertyValueEffect>();

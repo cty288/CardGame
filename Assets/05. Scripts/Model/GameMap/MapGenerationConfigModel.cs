@@ -18,9 +18,9 @@ namespace MainGame
         public int PathWidth { get; } = 20;
         public Dictionary<LevelType, float> NormalLevelPossibilities { get; } = new Dictionary<LevelType, float>() {
             {LevelType.Unknown, 19},
-            {LevelType.Nothing, 54},
+            {LevelType.Nothing, 41},
             {LevelType.Rest, 3},
-            {LevelType.Enemy, 20},
+            {LevelType.Enemy, 35},
             {LevelType.Elite, 3}
         };
 

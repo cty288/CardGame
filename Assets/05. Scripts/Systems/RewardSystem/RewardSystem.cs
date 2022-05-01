@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Dreamteck;
 using MikroFramework.Architecture;
 using MikroFramework.BindableProperty;
 using UnityEngine;
@@ -100,8 +101,124 @@ namespace MainGame
 
                        
                     }
-                    else {//proc gened cards
+                    else {
+                        //proc gened cards
+                        //1: get all effect belongs to that card type
+                        //2: select one effect corresponding to the generated rarity
+                        //3: generate the number of remaining effects (0-2)
+                        //4: For the remaining effects, randomly select effects belongs to that card type, without repetition. But 
+                        //    their rarity must be lower (or equal) to the generated rarity.
+                        //5: SPECIAL for Attack cards: Attack cards can only have one Attack Effect. The remaining effects will be chosen
+                        //    from Skill Effects
+                        //6: Note: Some cards are "Pointable", meaning they need to specify a target; the proc card generator
+                        //    will make sure a card does not contain more than 2 pointable effects
+                        bool hasPointable = false;
 
+                        List<EffectCommand> alreadyGeneratedEffects = new List<EffectCommand>();
+
+                        //setp 1
+                        EffectTable allEffectsOfType = this.GetModel<IEffectClassificationModel>().ConcatableEffectsByCardType[type];
+                        List<EffectCommand> allEffectsOfTypeWithSelectedRarity = allEffectsOfType.ConcatableRarityIndex.Get((rar => 
+                                    rar == rarity || rar == Rarity.Multi))
+                            .Select(effect => effect as EffectCommand).ToList();
+                        if (allEffectsOfTypeWithSelectedRarity.Any()) {
+                            //step2
+                            EffectCommand cmd =
+                                allEffectsOfTypeWithSelectedRarity[
+                                    ran.Next(0, allEffectsOfTypeWithSelectedRarity.Count)];
+                          
+                            Debug.Log($"Card Type {type} Count: " + allEffectsOfTypeWithSelectedRarity.Count+ " " +
+                                      $"Primary Pick: {cmd.GetType().Name}");
+                            
+                            hasPointable = cmd is IPointable;
+                            alreadyGeneratedEffects.Add(cmd);
+                        }
+
+                        //step3
+                        int remainingEffectsCount = ran.Next(1, 3);
+                        List<EffectCommand> allRemainingEffects;
+
+                        //step4&5
+                        if (type != CardType.Attack) {
+                            allRemainingEffects = allEffectsOfType.ConcatableRarityIndex
+                                .Get(r => ((int) rarity >= (int) r) || r== Rarity.Multi).Select(effect => effect as EffectCommand).ToList();
+
+                            if (type == CardType.Armor) { //add skills for armors
+                                allRemainingEffects.AddRange(this.GetModel<IEffectClassificationModel>().ConcatableEffectsByCardType[CardType.Skill]
+                                    .ConcatableRarityIndex.Get(r => ((int)rarity >= (int)r) || r == Rarity.Multi).Select(effect => effect as EffectCommand).ToList());
+                            }
+                        }else {
+
+                            allRemainingEffects = this.GetModel<IEffectClassificationModel>().ConcatableEffectsByCardType[CardType.Skill]
+                                .ConcatableRarityIndex.Get(r => ((int)rarity >= (int)r) || r == Rarity.Multi).Select(effect => effect as EffectCommand).ToList(); ;
+                        }
+
+                        remainingEffectsCount = Mathf.Min(remainingEffectsCount, allRemainingEffects.Count);
+                        Shuffle(allRemainingEffects);
+
+                        for (int j = 0; j < remainingEffectsCount; j++) {
+                            bool conditionSatisfy = false;
+                            while (!conditionSatisfy) {
+                                if (!alreadyGeneratedEffects.Contains(allRemainingEffects[0])) {
+                                    if (allRemainingEffects[0] is IPointable) {
+                                        if (!hasPointable) {
+                                            alreadyGeneratedEffects.Add(allRemainingEffects[0]);
+                                            hasPointable = true;
+                                            conditionSatisfy = true;
+                                        }
+                                    }
+                                    else {
+                                        alreadyGeneratedEffects.Add(allRemainingEffects[0]);
+                                        conditionSatisfy = true;
+                                    }
+                                }
+                                allRemainingEffects.RemoveAt(0);
+                                if (allRemainingEffects.Count == 0) {
+                                    break;
+                                }
+                            }
+                            
+
+                            
+                            if (allRemainingEffects.Count == 0) {
+                                break;
+                            }
+                        }
+
+                        //create proc genereted card instance, at effects to it
+                        //Get Cost First; and create their instance by the way
+                        int cost = 0;
+                        List<EffectCommand> effectInstances = new List<EffectCommand>();
+                        foreach (EffectCommand effect in alreadyGeneratedEffects) {
+                            
+                            IConcatableEffect effectInstance = effect.Clone() as IConcatableEffect;
+                            if (effectInstance.Rarity == Rarity.Multi) {
+                                Rarity randomRarityForMulti = (Rarity) ran.Next(0, (int) rarity + 1);
+                                effectInstance.Rarity = randomRarityForMulti;
+                            }
+                            effectInstance.OnGenerationPrep();
+                            int cardCost = effectInstance.CostValue;
+
+                            if (cost + cardCost >= 10) {
+                                effectInstance.RecycleToCache();
+                                continue;
+                            }
+
+                            cost += effectInstance.CostValue;
+                            effectInstances.Add(effectInstance as EffectCommand);
+                        }
+                        //add some offsets
+                        cost += ran.Next(-1, 2);
+                        cost = Mathf.Clamp(cost, 0,10);
+
+
+                        ProceduralNormalCard procCard = new ProceduralNormalCard(cost, rarity, type,
+                            "proc_card_name_general",
+                            effectInstances);
+                        procCard.ID = 10000;
+                        rewardCards.Add(procCard);
+
+                        
                     }
                 }
 
@@ -110,6 +227,18 @@ namespace MainGame
             }
            
         }
+        public void Shuffle<T>(IList<T> list)
+        {
+            Random ran = this.GetSystem<ISeedSystem>().RandomGeneratorRandom;
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = ran.Next(0, n + 1);
+                list.Swap(k, n);
+            }
+        }
+
         private CardType GetRewardCardType()
         {
             int random = this.GetSystem<ISeedSystem>().RandomGeneratorRandom.Next(0, 101);

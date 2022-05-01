@@ -65,11 +65,14 @@ namespace MainGame
         public override EffectCommand OnCloned() {
             ITriggeredByEventsWhenDealt cmd = OnClone();
             cmd.TriggeredEffects = new List<EffectCommand>();
-            foreach (EffectCommand triggeredEffect in TriggeredEffects)
+            if (TriggeredEffects != null) {
+                  foreach (EffectCommand triggeredEffect in TriggeredEffects)
             {
                 cmd.TriggeredEffects.Add(triggeredEffect.Clone());
             }
 
+            }
+          
             (cmd as IConcatableEffect).Rarity = Rarity;
             return cmd as EffectCommand;
         }
@@ -83,8 +86,8 @@ namespace MainGame
             IEffectClassificationModel model = this.GetModel<IEffectClassificationModel>();
             allEffects.AddRange(model.ConcatableEffectsByCardType[CardType.Skill].ConcatableRarityIndex.Get(Rarity));
 
-            allEffects.AddRange(model.ConcatableEffectsByCardType[CardType.Character].ConcatableRarityIndex
-                .Get(Rarity));
+            //allEffects.AddRange(model.ConcatableEffectsByCardType[CardType.Character].ConcatableRarityIndex
+               // .Get(Rarity));
 
             IConcatableEffect pickedEffect =
                 allEffects[this.GetSystem<ISeedSystem>().RandomGeneratorRandom.Next(0, allEffects.Count)];
@@ -98,7 +101,7 @@ namespace MainGame
                 Debug.LogError($"{eff} is not a concatable effect!");
             }
 
-            TriggeredEffects.Add(pickedEffect as EffectCommand);
+            TriggeredEffects.Add(eff);
         }
     }
 }

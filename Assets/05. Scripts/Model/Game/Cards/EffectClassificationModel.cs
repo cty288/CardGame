@@ -52,7 +52,7 @@ namespace MainGame
         private void RegisterAllConcatableEffects() {
             RegisterConcatableEffectToTable<DealDamageToSelf>(CardType.Character);
             RegisterConcatableEffectToTable<NormalAttackCommand>(CardType.Attack);
-            RegisterConcatableEffectToTable<AddPropertyValueEffect>(CardType.Area);
+            RegisterConcatableEffectToTable<AddPropertyValueEffect>(CardType.Skill);
             RegisterConcatableEffectToTable<NextCharResurrectionEffect>();
             RegisterConcatableEffectToTable<DrawCardsEffect>(CardType.Skill);
             RegisterConcatableEffectToTable<OnFriendlyCharacterHurtEffect>(CardType.Area);
@@ -78,7 +78,7 @@ namespace MainGame
         /// </summary>
         /// <typeparam name="T"></typeparam>
         private void RegisterConcatableEffectToTable<T>() where T:  EffectCommand, IConcatableEffect, new(){
-            RegisterEffectToTable<T>(AllConcatableEffects);
+            //RegisterEffectToTable<T>(AllConcatableEffects);
             foreach (KeyValuePair<CardType, EffectTable> keyValuePair in ConcatableEffectsByCardType) {
                 if (keyValuePair.Key != CardType.Character) {
                     RegisterConcatableEffectToTable<T>(keyValuePair.Key);

@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using MikroFramework.ActionKit;
+using MikroFramework.Architecture;
 using UnityEngine;
 
 namespace MainGame
 {
     [ES3Serializable]
     public class DrawCardsEffect : EffectCommand, ITriggeredWhenDealt, IConcatableEffect {
+        public override bool IsBuffEffect { get; set; } = false;
         [ES3Serializable]
         public int numCardsDraw = 1; 
         public DrawCardsEffect() : base() {
@@ -52,7 +54,16 @@ namespace MainGame
         }
 
         public void OnGenerationPrep() {
-          
+            int chance = this.GetSystem<ISeedSystem>().RandomGeneratorRandom.Next(0, 100);
+            if (chance <= 50) {
+                numCardsDraw = this.GetSystem<ISeedSystem>().RandomGeneratorRandom.Next(1, 4);
+            }else if (chance <= 70) {
+                numCardsDraw = this.GetSystem<ISeedSystem>().RandomGeneratorRandom.Next(1, 5);
+            }else
+            {
+                numCardsDraw = this.GetSystem<ISeedSystem>().RandomGeneratorRandom.Next(1, 6);
+            }
+            
         }
     }
 }

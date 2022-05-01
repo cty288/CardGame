@@ -9,6 +9,7 @@ namespace MainGame
     [ES3Serializable]
     public class DealDamage2RandomEnemy : EffectCommand, IConcatableEffect{
         [ES3Serializable] public int Damage;
+        public override bool IsBuffEffect { get; set; } = false;
         public DealDamage2RandomEnemy() : base()
         {
 

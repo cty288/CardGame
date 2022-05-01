@@ -33,7 +33,7 @@ namespace MainGame
         public RawImage CardIllustraion;
         [HideInInspector]
         public Image CardRarityTagImage;
-        public Sprite[] CardRarityTagSprites;
+        public Color[] CardRarityTagColors;
         [HideInInspector]
         public TMP_Text CardDescriptionText;
         public TMP_Text CardAttackText;
@@ -76,8 +76,8 @@ namespace MainGame
             CardIllustraion.GetComponent<RectTransform>().localPosition = CardDisplayInfo.IllustrationPos;
             CardIllustraion.GetComponent<RectTransform>().sizeDelta = CardDisplayInfo.IllustrationSize;
 
-            if (CardRarityTagSprites.Length > 0) {
-                CardRarityTagImage.sprite = CardRarityTagSprites[(int)CardInfo.Value.CardRarity];
+            if (CardRarityTagColors.Length > 0) {
+                CardRarityTagImage.color = CardRarityTagColors[(int)CardInfo.Value.CardRarity];
             }
             
             switch (CardInfo.Value.CardType) {

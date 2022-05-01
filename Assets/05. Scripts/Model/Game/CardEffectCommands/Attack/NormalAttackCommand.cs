@@ -6,9 +6,9 @@ using UnityEngine;
 namespace MainGame
 {
     [ES3Serializable]
-    public class NormalAttackCommand : EffectCommand, ITriggeredWhenDealt, IConcatableEffect
+    public class NormalAttackCommand : EffectCommand, ITriggeredWhenDealt, IConcatableEffect, IPointable
     {
-      
+        public override bool IsBuffEffect { get; set; } = true;
         public NormalAttackCommand() : base()
         {
 

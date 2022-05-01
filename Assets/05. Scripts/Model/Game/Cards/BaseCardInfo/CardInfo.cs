@@ -40,9 +40,9 @@ namespace MainGame
         [ES3Serializable]
         public BindableProperty<T> CurrentValue = new BindableProperty<T>();
         public CardAlterableProperty() { }
-        public CardAlterableProperty(T initialValue) {
+        public CardAlterableProperty(T initialValue, Func<T,T> cloneMethod) {
             this.PrimitiveValue = initialValue;
-            this.CurrentValue.Value = initialValue;
+            this.CurrentValue.Value = cloneMethod(initialValue);
         }
 
         public void ResetToPrimitive() {
@@ -86,7 +86,7 @@ namespace MainGame
         }
 
         public CardInfo(CardProperties attributes) {
-            CostProperty = new CardAlterableProperty<int>(attributes.Cost);
+            CostProperty = new CardAlterableProperty<int>(attributes.Cost, i => i );
             CardRarity = attributes.rarity;
             CardType = attributes.CardType;
             NameKey = attributes.NameKey;
@@ -95,9 +95,26 @@ namespace MainGame
             // this.RegisterEvent<OnEnterBattleScene>(OnEnterBattleScene);
             // this.RegisterEvent<OnLeaveBattleScene>(OnLeaveBattleScene);
 
-            EffectsProperty = new CardAlterableProperty<List<EffectCommand>>(SetInitialEffects());
+            EffectsProperty = new CardAlterableProperty<List<EffectCommand>>(SetInitialEffects(), list => {
+                List<EffectCommand> newEffect = new List<EffectCommand>();
+                foreach (EffectCommand effectCommand in list) {
+                    newEffect.Add(effectCommand.Clone());
+                    //effectCommand.RecycleToCache();
+                }
 
-            BuffEffectProperty = new CardAlterableProperty<List<EffectCommand>>(SetInitialPrimitiveBuffEffects());
+                return newEffect;
+            });
+
+            BuffEffectProperty = new CardAlterableProperty<List<EffectCommand>>(SetInitialPrimitiveBuffEffects(),
+                list => {
+                    List<EffectCommand> newEffect = new List<EffectCommand>();
+                    foreach (EffectCommand effectCommand in list) {
+                        newEffect.Add(effectCommand.Clone());
+                       // effectCommand.RecycleToCache();
+                    }
+
+                    return newEffect;
+                });
 
             SetEffectsToPrimitive();
         }
@@ -115,7 +132,7 @@ namespace MainGame
            
         }
 
-        private void OnLeaveBattleScene(IBattleEvent e) {
+        protected void OnLeaveBattleScene(IBattleEvent e) {
             if (e is OnLeaveBattleScene) {
                 ResetToPrimitive();
             }

@@ -9,7 +9,7 @@ namespace MainGame
     /// <summary>
     /// Add to game card deck model, not the battle system's deck
     /// </summary>
-    public class AddCardToPermantDeck : AbstractCommand<AddCardToPermantDeck> {
+    public class AddCardToPermantDeck : AbstractCommand<AddCardToPermantDeck>, ICanSaveGame {
         private CardInfo cardInfo;
 
         public static AddCardToPermantDeck Allocate(CardInfo card) {
@@ -23,6 +23,7 @@ namespace MainGame
             }else {
                 this.GetModel<IGameCardDeckModel>().CardsInDeck.Value.Add(cardInfo);
             }
+            this.SaveGame();
         }
     }
 }

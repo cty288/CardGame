@@ -641,7 +641,12 @@ MonoBehaviour:
   CardNameText: {fileID: 0}
   CardIllustraion: {fileID: 0}
   CardRarityTagImage: {fileID: 0}
-  CardRarityTagSprites: []
+  CardRarityTagColors:
+  - {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 1}
+  - {r: 0, g: 0.42352942, b: 0.62352943, a: 1}
+  - {r: 0, g: 0.42352942, b: 0.62352943, a: 1}
+  - {r: 0.34509805, g: 0, b: 0.62352943, a: 1}
+  - {r: 1, g: 0.6, b: 0, a: 1}
   CardDescriptionText: {fileID: 0}
   CardAttackText: {fileID: 9181905239046739112}
   CardHealthText: {fileID: 9181905237948894812}
@@ -1720,7 +1725,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.6015167, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

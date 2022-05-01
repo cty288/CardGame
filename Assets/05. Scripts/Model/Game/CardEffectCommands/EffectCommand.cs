@@ -46,6 +46,7 @@ namespace MainGame
     [ES3Serializable]
     public abstract class EffectCommand :  ICommand, ICanRegisterEvent {
         [ES3Serializable] public int SerializeCode = UnityEngine.Random.Range(-10000000, 1000000);
+        [ES3Serializable] public abstract bool IsBuffEffect { get; set; }
         public static T AllocateEffect<T>() where T : EffectCommand, new() {
             return SafeObjectPool<T>.Singleton.Allocate();
         }
@@ -61,6 +62,7 @@ namespace MainGame
 
         [ES3NonSerializable]
         protected MikroAction executeAnimationEffect;
+
 
         public CardDisplay GetCardDisplayBelongTo() {
             return CardBelongTo.CardDisplayBelongTo;
@@ -221,18 +223,4 @@ namespace MainGame
 
     
 
-    [ES3Serializable]
-    public abstract class BuffEffect : EffectCommand {
-        [ES3Serializable]
-        public BuffType BuffType;
-
-        public override EffectCommand Clone() {
-            EffectCommand cloned =  base.Clone();
-          
-            ((BuffEffect) cloned).BuffType = BuffType;
-            return cloned;
-        }
-
-       
-    }
 }

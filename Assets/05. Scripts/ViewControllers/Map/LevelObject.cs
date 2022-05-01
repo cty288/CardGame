@@ -197,13 +197,18 @@ public class LevelObject : AbstractMikroController<CardGame> {
                 OnPlayerSelect();
                 this.GetSystem<ITimeSystem>().AddDelayTask(0.05f, () => {
                     Node.Neighbours.ForEach(node => {
-                        if (!Node.TemporaryBrokenConnections.Contains(node.Value)) {
-                            //Debug.Log($"Select:{gameObject.name}, Meet:{node.LevelObject.gameObject.name}");
-                            node.Value.LevelObject.GetComponent<LevelObject>().OnPlayerMeet();
+                        if (node.Value.Depth >= 0) {
+                            if (!Node.TemporaryBrokenConnections.Contains(node.Value))
+                            {
+                                //Debug.Log($"Select:{gameObject.name}, Meet:{node.LevelObject.gameObject.name}");
+                                node.Value.LevelObject.GetComponent<LevelObject>().OnPlayerMeet();
+                            }
+                            else
+                            {
+                                node.Value.LevelObject.GetComponent<LevelObject>().OnPlayerLeave();
+                            }
                         }
-                        else {
-                            node.Value.LevelObject.GetComponent<LevelObject>().OnPlayerLeave();
-                        }
+                        
                      
                     });
                 });
