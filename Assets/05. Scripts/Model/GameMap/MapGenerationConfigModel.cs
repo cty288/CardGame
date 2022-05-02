@@ -21,7 +21,7 @@ namespace MainGame
             {LevelType.Nothing, 41},
             {LevelType.Rest, 3},
             {LevelType.Enemy, 35},
-            {LevelType.Elite, 3}
+            {LevelType.Elite, 100}
         };
 
         public int EnemyMovePossibilityPerMinutePassed { get; } = 1;

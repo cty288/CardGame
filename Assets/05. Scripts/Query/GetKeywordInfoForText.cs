@@ -24,7 +24,7 @@ namespace MainGame
             {
                 string localizedKeyword = Localization.Get(keywordInfo.LocalizationKey);
 
-                if (localizedText.Contains(localizedKeyword))
+                if (localizedText.Contains(localizedKeyword) || localizedText.Contains(localizedKeyword.ToLower()))
                 {
                     localizedText = localizedText.Replace(localizedKeyword, $"<b>{localizedKeyword}</b>");
                     results.Add(new KeywordInfo()

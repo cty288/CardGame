@@ -12,9 +12,7 @@ namespace MainGame
         public OnFriendlyCharacterHurtEffect() : base() {
 
         }
-        public OnFriendlyCharacterHurtEffect(params EffectCommand[] effectTriggered) : base() {
-            TriggeredEffects = new List<EffectCommand>();
-            TriggeredEffects.AddRange(effectTriggered);
+        public OnFriendlyCharacterHurtEffect(params EffectCommand[] effectTriggered) : base(effectTriggered) {
         }
 
         public override MikroAction GetExecuteAnimationEffect() {
@@ -41,7 +39,7 @@ namespace MainGame
         public override string GetConditionLocalizedPrefixTextWithoutBold() {
             return Localization("eff_conditional_on_friendly_hurt");
         }
-
-        public override float ConditionBaseCost { get; protected set; } = 2;
+        
+        public override float ConditionBaseCost { get; protected set; } = 3;
     }
 }

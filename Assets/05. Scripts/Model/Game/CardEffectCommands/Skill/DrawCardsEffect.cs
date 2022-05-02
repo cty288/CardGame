@@ -49,7 +49,7 @@ namespace MainGame
 
         public int CostValue {
             get {
-                return Mathf.FloorToInt(numCardsDraw * 1.5f);
+                return Mathf.CeilToInt(numCardsDraw * 1.5f);
             }
         }
 

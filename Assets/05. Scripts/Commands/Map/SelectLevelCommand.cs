@@ -35,9 +35,13 @@ namespace MainGame
                    // this.GetModel<IGameStateModel>().GameState.Value = GameState.Battle;
                    //kill enemy for now
                    //temporary code
+                   LevelType levelType = LevelObject.Node.Value.LevelType;
                    this.SendEvent<OnMapEnemyKilled>(new OnMapEnemyKilled(){EnemyVertex = LevelObject.Node});
                    this.GetModel<IGameStateModel>().TotalEnemyPassed.Value++;
-                   this.SendEvent<IBattleEvent>(new OnEnemyLevelPassed() {LevelVertex = LevelObject.Node});
+                   this.SendEvent<IBattleEvent>(new OnEnemyLevelPassed() {
+                       LevelVertex = LevelObject.Node,
+                       PreviousLevelType = levelType
+                   });
 
                     
                 }

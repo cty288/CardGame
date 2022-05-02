@@ -45,7 +45,7 @@ namespace MainGame
             {CardType.Character, 0},
             {CardType.Skill, 25},
             {CardType.Area, 25},
-            {CardType.Armor, 0},
+            {CardType.Armor, 25},
             {CardType.Attack, 25}
         };
 
@@ -67,7 +67,8 @@ namespace MainGame
                 int totalEnemyPassed = this.GetModel<IGameStateModel>().TotalEnemyPassed;
                // Debug.Log($"Total enemy passed: {totalEnemyPassed}");
                 UpdateCurrentRarityPossibility(totalEnemyPassed);
-                LevelType levelType = ev.LevelVertex.Value.LevelType;
+                LevelType levelType = ev.PreviousLevelType;
+                
                 //generate a couple of cards
 
 
@@ -76,7 +77,7 @@ namespace MainGame
                 for (int i = 0; i < CardsPerReward; i++) {
                     Rarity rarity = GetRewardCardRarity(levelType);
                     CardType type = GetRewardCardType();
-
+                    Debug.Log($"Passed enemy level Rarity: {rarity}");
                     if (ran.Next(0, 100) <= 50) { //designed cards
                         IList<CardProperties> properties = configModel.GetCardProperties(cardProperties =>
                             cardProperties.rarity == rarity &&
@@ -109,10 +110,12 @@ namespace MainGame
                         //4: For the remaining effects, randomly select effects belongs to that card type, without repetition. But 
                         //    their rarity must be lower (or equal) to the generated rarity.
                         //5: SPECIAL for Attack cards: Attack cards can only have one Attack Effect. The remaining effects will be chosen
-                        //    from Skill Effects
+                        //    from Skill and Armor Effects; 
+                        //    Attack and Skill can Use Armor Effects
                         //6: Note: Some cards are "Pointable", meaning they need to specify a target; the proc card generator
                         //    will make sure a card does not contain more than 2 pointable effects
                         bool hasPointable = false;
+                        bool hasMulti = false;
 
                         List<EffectCommand> alreadyGeneratedEffects = new List<EffectCommand>();
 
@@ -127,11 +130,14 @@ namespace MainGame
                                 allEffectsOfTypeWithSelectedRarity[
                                     ran.Next(0, allEffectsOfTypeWithSelectedRarity.Count)];
                           
-                            Debug.Log($"Card Type {type} Count: " + allEffectsOfTypeWithSelectedRarity.Count+ " " +
-                                      $"Primary Pick: {cmd.GetType().Name}");
+                           
                             
                             hasPointable = cmd is IPointable;
+                            hasMulti = cmd is IEffectContainer;
                             alreadyGeneratedEffects.Add(cmd);
+
+                            Debug.Log($"Card Type {type} Count: " + allEffectsOfTypeWithSelectedRarity.Count + " " +
+                                      $"Primary Pick: {cmd.GetType().Name}. Already Generated Generated Effects Count: {alreadyGeneratedEffects.Count}");
                         }
 
                         //step3
@@ -153,24 +159,47 @@ namespace MainGame
                                 .ConcatableRarityIndex.Get(r => ((int)rarity >= (int)r) || r == Rarity.Multi).Select(effect => effect as EffectCommand).ToList(); ;
                         }
 
+                        if (type == CardType.Attack || type == CardType.Skill) {
+                            allRemainingEffects = this.GetModel<IEffectClassificationModel>().ConcatableEffectsByCardType[CardType.Armor]
+                                .ConcatableRarityIndex.Get(r => ((int)rarity >= (int)r) || r == Rarity.Multi).Select(effect => effect as EffectCommand).ToList(); ;
+                        }
+
                         remainingEffectsCount = Mathf.Min(remainingEffectsCount, allRemainingEffects.Count);
                         Shuffle(allRemainingEffects);
 
                         for (int j = 0; j < remainingEffectsCount; j++) {
                             bool conditionSatisfy = false;
+
+
                             while (!conditionSatisfy) {
+                                conditionSatisfy = true;
+
+
                                 if (!alreadyGeneratedEffects.Contains(allRemainingEffects[0])) {
                                     if (allRemainingEffects[0] is IPointable) {
-                                        if (!hasPointable) {
-                                            alreadyGeneratedEffects.Add(allRemainingEffects[0]);
-                                            hasPointable = true;
-                                            conditionSatisfy = true;
+                                        if (hasPointable) {
+                                            conditionSatisfy = false;
                                         }
                                     }
-                                    else {
-                                        alreadyGeneratedEffects.Add(allRemainingEffects[0]);
-                                        conditionSatisfy = true;
+
+                                    if (allRemainingEffects[0] is IEffectContainer) {
+                                        if (hasMulti) {
+                                            conditionSatisfy = false;
+                                        }
                                     }
+
+                                    if (conditionSatisfy) {
+                                        alreadyGeneratedEffects.Add(allRemainingEffects[0]);
+                                        if (allRemainingEffects[0] is IPointable) {
+                                            hasPointable = true;
+                                        }
+                                        if (allRemainingEffects[0] is IEffectContainer) {
+                                            hasMulti = true;
+                                        }
+                                    }
+                                }
+                                else {
+                                    conditionSatisfy = false;
                                 }
                                 allRemainingEffects.RemoveAt(0);
                                 if (allRemainingEffects.Count == 0) {
@@ -193,19 +222,19 @@ namespace MainGame
                             
                             IConcatableEffect effectInstance = effect.Clone() as IConcatableEffect;
                             if (effectInstance.Rarity == Rarity.Multi) {
-                                Rarity randomRarityForMulti = (Rarity) ran.Next(0, (int) rarity + 1);
-                                effectInstance.Rarity = randomRarityForMulti;
+                                effectInstance.Rarity = rarity;
                             }
                             effectInstance.OnGenerationPrep();
                             int cardCost = effectInstance.CostValue;
-
-                            if (cost + cardCost >= 10) {
+                            Debug.Log($"Effect Instance {effectInstance.GetType()} Cost Value: {cardCost}");
+                            if (cost + cardCost > 10) {
                                 effectInstance.RecycleToCache();
                                 continue;
                             }
 
                             cost += effectInstance.CostValue;
                             effectInstances.Add(effectInstance as EffectCommand);
+                            Debug.Log($"Effect instances added: {effectInstance.GetType().Name}");
                         }
                         //add some offsets
                         cost += ran.Next(-1, 2);

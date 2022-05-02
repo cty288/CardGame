@@ -52,11 +52,22 @@ namespace MainGame
         private void RegisterAllConcatableEffects() {
             RegisterConcatableEffectToTable<DealDamageToSelf>(CardType.Character);
             RegisterConcatableEffectToTable<NormalAttackCommand>(CardType.Attack);
-            RegisterConcatableEffectToTable<AddPropertyValueEffect>(CardType.Skill);
+            RegisterConcatableEffectToTable<AddPropertyValueEffect>(CardType.Armor);
             RegisterConcatableEffectToTable<NextCharResurrectionEffect>();
             RegisterConcatableEffectToTable<DrawCardsEffect>(CardType.Skill);
             RegisterConcatableEffectToTable<OnFriendlyCharacterHurtEffect>(CardType.Area);
             RegisterConcatableEffectToTable<DealDamage2RandomEnemy>(CardType.Skill);
+            RegisterConcatableEffectToTable<OnUseTypeCardEffect>(CardType.Area);
+            RegisterConcatableEffectToTable<AddTypeCardToHandEffect>(CardType.Skill);
+            RegisterConcatableEffectToTable<OnFriendlyCharacterReceiveCertainDamage>(CardType.Area);
+            RegisterConcatableEffectToTable<ReduceCostInHandsEffect>(CardType.Skill);
+            RegisterConcatableEffectToTable<AddPropertyValueToRandomFriendlyCharactersEffects>(CardType.Armor);
+            RegisterConcatableEffectToTable<DealDamageToAllEnemiesWhenAttackEffect>(CardType.Armor);
+            RegisterConcatableEffectToTable<ImmuneToAllFutureNegativeEffects>(CardType.Armor);
+            RegisterConcatableEffectToTable<AttackMultipleTimesEffect>(CardType.Attack);
+            RegisterConcatableEffectToTable<LetRandomFriendlyCharactersAttackRandomlyEffect>(CardType.Attack);
+            RegisterConcatableEffectToTable<AttackMultipleTimesAndKillRandomEnemyEffect>(CardType.Attack);
+            RegisterConcatableEffectToTable<AllTypeCardsWillTriggerXTimesEffect>(CardType.Skill);
         }
 
 

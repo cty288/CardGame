@@ -17,12 +17,15 @@ namespace MainGame
 
     }
 
-    public interface IAlwaysTriggeredByOtherEvents {
-        public List<IBattleEvent> TriggeredBy { get; set; }
+    public interface IEffectContainer {
         public List<EffectCommand> TriggeredEffects { get; set; }
     }
+    public interface IAlwaysTriggeredByOtherEvents: IEffectContainer {
+        public List<IBattleEvent> TriggeredBy { get; set; }
+       
+    }
 
-    public interface ITriggeredByEventsWhenDealt {
+    public interface ITriggeredByEventsWhenDealt: IEffectContainer {
         public List<IBattleEvent> TriggeredBy { get; set; }
         public List<EffectCommand> TriggeredEffects { get; set; }
     }

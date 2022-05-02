@@ -62,6 +62,11 @@ namespace MainGame
             }
         }
 
+        public AbstractConcatableEffectTriggerdByEventWhenDealt(params EffectCommand[] effectTriggered) : base() {
+            TriggeredEffects = new List<EffectCommand>();
+            TriggeredEffects.AddRange(effectTriggered);
+        }
+
         public override EffectCommand OnCloned() {
             ITriggeredByEventsWhenDealt cmd = OnClone();
             cmd.TriggeredEffects = new List<EffectCommand>();
@@ -78,7 +83,7 @@ namespace MainGame
         }
 
         public abstract float ConditionBaseCost { get; protected set; }
-        public void OnGenerationPrep() {
+        public virtual void OnGenerationPrep() {
             //add random effects
             //rarity changed by the reward system
             TriggeredEffects = new List<EffectCommand>();
@@ -86,7 +91,7 @@ namespace MainGame
             IEffectClassificationModel model = this.GetModel<IEffectClassificationModel>();
             allEffects.AddRange(model.ConcatableEffectsByCardType[CardType.Skill].ConcatableRarityIndex.Get(Rarity));
 
-            //allEffects.AddRange(model.ConcatableEffectsByCardType[CardType.Character].ConcatableRarityIndex
+            //allEffects.AddRange(model.ConcatableEffectsByCardType[AttackAdded.Character].ConcatableRarityIndex
                // .Get(Rarity));
 
             IConcatableEffect pickedEffect =

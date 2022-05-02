@@ -6,11 +6,24 @@ LANGUAGE_DIRECTION,ltr or rtl (text direction used by game code),ltr,ltr,ltr,ltr
 Polyglot,100,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 CONTEXT_CHARACTER_CLASS,[Noun] Character class,Class,Classe,Clase,Klasse,Classe,Classe,Classe,Класс,Κλάση,Sınıf,Klasse,Klasse,Klass,Klasse,Klasa,Luokka,クラス,角色种类,角色類,직업,Třída,Osztály,Clasă,คลาส,Клас,טיפוס,فئة,Klasa
 TestKeyword1,,Battlecry,,,,,,,,,,,,,,,,,战吼,,,,,,,,,,
-eff_deal_self_damage,,Roar: Deal {0} damage to self,,,,,,,,,,,,,,,,,咆哮：对自身造成 {0} 点伤害,咆哮：對自身造成 {0} 點傷害,,,,,,,,,
+eff_deal_self_damage,,Roar: Deal {0} damage.,,,,,,,,,,,,,,,,,咆哮：造成 {0} 点伤害,咆哮：造成 {0} 點傷害,,,,,,,,,
 eff_attack,,Attack,,,,,,,,,,,,,,,,,攻击,攻擊,,,,,,,,,
 eff_add_property,,Give a character {0}{1}/{2}{3},,,,,,,,,,,,,,,,,使一个角色获得{0}{1}/{2}{3},"
 使一個角色獲得{0}{1}/{2}{3}",,,,,,,,,
 eff_resurrection,,Revive your next dead character,,,,,,,,,,,,,,,,,复活你下一个死亡的角色,復活你下一個死亡的角色,,,,,,,,,
 eff_draw_cards,,Draw {0} card{1},,,,,,,,,,,,,,,,,抽{0}张牌,抽{0}張牌,,,,,,,,,
-eff_conditional_on_friendly_hurt,,"For the rest of the game, when your characters take damages",,,,,,,,,,,,,,,,,"在本局游戏的剩余时间内, 当你的角色受到伤害后","在本局遊戲的剩餘時間內, 當你的角色受到傷害後",,,,,,,,,
+eff_conditional_on_friendly_hurt,,"For the rest of the battle, when your characters take damages",,,,,,,,,,,,,,,,,"在本局游戏的剩余时间内, 当你的角色受到伤害后","在本局遊戲的剩餘時間內, 當你的角色受到傷害後",,,,,,,,,
 eff_deal_damage_to_random_enemy,,Deal {0} damages to a random enemy,,,,,,,,,,,,,,,,,对随机敌人造成{0}点伤害,對隨機敵人造成{0}點傷害,,,,,,,,,
+effect_conditional_on_use_type_card,,"For the rest of the battle, whenever you use a {0} card",,,,,,,,,,,,,,,,,在本局游戏的剩余时间内，当你使用一张{0}牌后,在本局遊戲的剩餘時間內，當你使用一張{0}牌後,,,,,,,,,
+effect_add_type_cards_to_hand,,Add {0} {1} cards to your hand,,,,,,,,,,,,,,,,,将{0}张{1}牌置入你的手牌,將{0}張{1}牌置入你的手牌,,,,,,,,,
+effect_conditional_on_friendly_receive_certain_damage,,"For the rest of the battle, for every {0} damage your characters take",,,,,,,,,,,,,,,,,在本局对战的剩余时间内，你的角色每受到{0}点伤害,"
+在本局對戰的剩餘時間內，你的角色每受到{0}點傷害",,,,,,,,,
+effect_hand_card_cost_decrease,,Reduce the cost of all your hand cards by {0} ,,,,,,,,,,,,,,,,,使你手牌中的所有牌的费用减少{0}点,使你手牌中的所有牌的費用減少{0}點,,,,,,,,,
+effect_add_properties_to_random_characters,,Give {0} random friendly characters +{1}/+{2},,,,,,,,,,,,,,,,,使{0}个随机友方角色获得+{1}/+{2},"
+使{0}個隨機友方角色獲得+{1}/+{2}",,,,,,,,,
+effect_deal_damage_to_all_enemies_when_attack,,"Choose a friendly character, after it attacks, deal {0} damages to all enemies",,,,,,,,,,,,,,,,,使一个友方角色在攻击后，对所有敌人造成{0}点伤害,使一個友方角色在攻擊後，對所有敵人造成{0}點傷害,,,,,,,,,
+effect_immune_to_all_future_negative_effects,,Give all your characters immunity to all negative effects in the rest of the battle,,,,,,,,,,,,,,,,,使你的所有角色免疫本场战斗中接下来的所有负面效果,使你的所有角色免疫本場戰鬥中接下來的所有負面效果,,,,,,,,,
+effect_attack_multiple,,Attack {0} times,,,,,,,,,,,,,,,,,攻击{0}次,攻擊{0}次,,,,,,,,,
+random_char_attack_random_enemies,,Let {0} of your random characters attack random enemy,,,,,,,,,,,,,,,,,使你的{0}个随机角色随机攻击敌人,使你的{0}個隨機角色隨機攻擊敵人,,,,,,,,,
+attack_multiple_time_and_kill_random_enemy,,"Attack {0} times, and kill a random enemy",,,,,,,,,,,,,,,,,攻击{0}次，然后随机消灭一个敌人,攻擊{0}次，然後隨機消滅一個敵人,,,,,,,,,
+all_type_card_in_deck_trigger_X_times,,Make all {0} cards trigger {1} times when dealt,,,,,,,,,,,,,,,,,使你牌库中所有{0}牌在打出时会触发{1}次效果,使你牌庫中所有{0}牌在打出時會觸發{1}次效果,,,,,,,,,

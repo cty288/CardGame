@@ -85,11 +85,11 @@ namespace MainGame
         }
 
         public IEnumerable<CardProperties> GetCardProperties(Func<CardProperties, bool> contition) {
-            return AllCardInfos.Get(contition);
+            return AllCardInfos.Get(properties => contition(properties) && properties.ID != "10000");
         }
 
         public CardDisplayInfo GetCardDisplayInfo(int id) {
-            return AllCharacterCardInfos.GetByID(id).CardDisplayInfo;
+            return AllCardInfos.GetByID(id).CardDisplayInfo;
         }
 
         public CardInfo GetNewCardInfoFromID(int id) {

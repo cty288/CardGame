@@ -27,8 +27,6 @@ namespace MainGame
 
             CharactersInDeck.Value = this.RegisterAndLoadFromSavedData("characters_alive", new List<CharacterCardInfo>() {
                 cardConfigModel.GetNewCardInfoFromID(0) as CharacterCardInfo,
-                cardConfigModel.GetNewCardInfoFromID(0) as CharacterCardInfo,
-                cardConfigModel.GetNewCardInfoFromID(0) as CharacterCardInfo,
                 cardConfigModel.GetNewCardInfoFromID(0) as CharacterCardInfo
             });
             DeadCharacters.Value = this.RegisterAndLoadFromSavedData("characters_dead", new List<CharacterCardInfo>() {

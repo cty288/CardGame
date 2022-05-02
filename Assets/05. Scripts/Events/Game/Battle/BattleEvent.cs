@@ -18,6 +18,7 @@ namespace MainGame {
 
     public struct OnEnemyLevelPassed : IBattleEvent {
         public GraphVertex LevelVertex;
+        public LevelType PreviousLevelType;
     }
 
     public class OnCardTryDealt : IBattleEvent {

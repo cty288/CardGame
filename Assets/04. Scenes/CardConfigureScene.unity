@@ -862,13 +862,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4625d5f46b410a34780adbff373aa472, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CardID: 4
-  NameKey: thorns
-  CodeGenerationRootPath: D:/Unity Projects/CardGame/Assets/05. Scripts/Model/Game/Cards/SkillCards/
+  CardID: 7
+  NameKey: blessing_ring
+  CodeGenerationRootPath: D:/Unity Projects/CardGame/Assets/05. Scripts/ViewControllers/GameUI/
   Cost: 3
   rarity: 0
-  CardScriptType: Thorns
-  CardType: 3
+  CardScriptType: BlessingRingArmor
+  CardType: 1
   CharacterProperties:
     CharacterType: 0
     Strength: 4
@@ -877,7 +877,7 @@ MonoBehaviour:
   CardIllustration: {fileID: 0}
   IllustrationPos: {x: 21, y: 41, z: 0}
   IllustrationSize: {x: 800, y: 800}
-  scriptType: {fileID: 11500000, guid: 520df8f145f95e14f9b0675239f46085, type: 3}
+  scriptType: {fileID: 11500000, guid: 5a15e55ee9f3be245a1377adb246e9a6, type: 3}
   characterIdentityPrefab: {fileID: 0}
   CardProperties: {fileID: 11400000, guid: 79ac8c6f03ea75e44b2fe544a19dccac, type: 2}
 --- !u!1 &1107298300
@@ -937,10 +937,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Thorns
+  m_text: "\u795D\u798F\u4E4B\u6212"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 97f291b6fd4e050479569ebbf120aeb9, type: 2}
+  m_sharedMaterial: {fileID: 6700943688103016386, guid: 97f291b6fd4e050479569ebbf120aeb9, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -964,7 +964,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 11
+  m_fontSize: 10.25
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

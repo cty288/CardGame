@@ -58,7 +58,7 @@ namespace MainGame
 
         public void OnGenerationPrep() {
             Random ran = this.GetSystem<ISeedSystem>().RandomGeneratorRandom;
-            AddedValues = new Vector2Int(ran.Next(0, 11), ran.Next(0, 11));
+            AddedValues = new Vector2Int(ran.Next(1, 11), ran.Next(0, 11));
         }
     }
 }

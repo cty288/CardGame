@@ -285,8 +285,8 @@ MonoBehaviour:
   CardRarityTagColors:
   - {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 1}
   - {r: 0, g: 0.42352942, b: 0.62352943, a: 1}
-  - {r: 0, g: 0.42352942, b: 0.62352943, a: 1}
   - {r: 0.34509805, g: 0, b: 0.62352943, a: 1}
+  - {r: 1, g: 0.6, b: 0, a: 1}
   - {r: 1, g: 0.6, b: 0, a: 1}
   CardDescriptionText: {fileID: 0}
   CardAttackText: {fileID: 2211734577709022000}

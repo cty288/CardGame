@@ -17,7 +17,7 @@ using UnityEngine.UI;
 namespace MainGame
 {
     public class CardDisplay : PoolableGameObject, ICanGetModel, IPointerClickHandler {
-       // public CardType CardType;
+       // public AttackAdded AttackAdded;
         [HideInInspector]
         public BindableProperty<CardInfo> CardInfo;
 

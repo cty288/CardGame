@@ -132,3 +132,20 @@ MonoBehaviour:
     CardScriptType: BlessingRingArmor
     CardScriptObject: {fileID: 11500000, guid: 5a15e55ee9f3be245a1377adb246e9a6, type: 3}
     CharacterCardPrefab: {fileID: 0}
+  - ID: 10000
+    CardType: 1
+    NameKey: proc_card_name_general
+    Cost: 0
+    rarity: 0
+    CardDisplayInfo:
+      CardIllustration: {fileID: 0}
+      IllustrationPos: {x: 21, y: 41, z: 0}
+      IllustrationSize: {x: 800, y: 800}
+    CharacterProperties:
+      CharacterType: 0
+      Strength: 4
+      Attack: 5
+      Health: 11
+    CardScriptType: 
+    CardScriptObject: {fileID: 0}
+    CharacterCardPrefab: {fileID: 0}
