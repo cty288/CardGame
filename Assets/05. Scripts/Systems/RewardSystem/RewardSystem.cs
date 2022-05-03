@@ -142,12 +142,12 @@ namespace MainGame
 
                         //step3
                         int remainingEffectsCount = ran.Next(1, 3);
-                        List<EffectCommand> allRemainingEffects;
+                        List<EffectCommand> allRemainingEffects = new List<EffectCommand>();
 
                         //step4&5
                         if (type != CardType.Attack) {
-                            allRemainingEffects = allEffectsOfType.ConcatableRarityIndex
-                                .Get(r => ((int) rarity >= (int) r) || r== Rarity.Multi).Select(effect => effect as EffectCommand).ToList();
+                            allRemainingEffects.AddRange(allEffectsOfType.ConcatableRarityIndex
+                                .Get(r => ((int) rarity >= (int) r) || r== Rarity.Multi).Select(effect => effect as EffectCommand).ToList());
 
                             if (type == CardType.Armor) { //add skills for armors
                                 allRemainingEffects.AddRange(this.GetModel<IEffectClassificationModel>().ConcatableEffectsByCardType[CardType.Skill]
@@ -155,13 +155,13 @@ namespace MainGame
                             }
                         }else {
 
-                            allRemainingEffects = this.GetModel<IEffectClassificationModel>().ConcatableEffectsByCardType[CardType.Skill]
-                                .ConcatableRarityIndex.Get(r => ((int)rarity >= (int)r) || r == Rarity.Multi).Select(effect => effect as EffectCommand).ToList(); ;
+                            allRemainingEffects.AddRange( this.GetModel<IEffectClassificationModel>().ConcatableEffectsByCardType[CardType.Skill]
+                                .ConcatableRarityIndex.Get(r => ((int)rarity >= (int)r) || r == Rarity.Multi).Select(effect => effect as EffectCommand).ToList()) ;
                         }
 
                         if (type == CardType.Attack || type == CardType.Skill) {
-                            allRemainingEffects = this.GetModel<IEffectClassificationModel>().ConcatableEffectsByCardType[CardType.Armor]
-                                .ConcatableRarityIndex.Get(r => ((int)rarity >= (int)r) || r == Rarity.Multi).Select(effect => effect as EffectCommand).ToList(); ;
+                            allRemainingEffects.AddRange(this.GetModel<IEffectClassificationModel>().ConcatableEffectsByCardType[CardType.Armor]
+                                .ConcatableRarityIndex.Get(r => ((int)rarity >= (int)r) || r == Rarity.Multi).Select(effect => effect as EffectCommand).ToList()) ;
                         }
 
                         remainingEffectsCount = Mathf.Min(remainingEffectsCount, allRemainingEffects.Count);

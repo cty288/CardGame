@@ -132,6 +132,23 @@ MonoBehaviour:
     CardScriptType: BlessingRingArmor
     CardScriptObject: {fileID: 11500000, guid: 5a15e55ee9f3be245a1377adb246e9a6, type: 3}
     CharacterCardPrefab: {fileID: 0}
+  - ID: 7
+    CardType: 1
+    NameKey: area_armory
+    Cost: 4
+    rarity: 1
+    CardDisplayInfo:
+      CardIllustration: {fileID: 0}
+      IllustrationPos: {x: 21, y: 41, z: 0}
+      IllustrationSize: {x: 800, y: 800}
+    CharacterProperties:
+      CharacterType: 0
+      Strength: 4
+      Attack: 5
+      Health: 11
+    CardScriptType: Armory
+    CardScriptObject: {fileID: 11500000, guid: 40242f5bbc893d9469470148713e2d48, type: 3}
+    CharacterCardPrefab: {fileID: 0}
   - ID: 10000
     CardType: 1
     NameKey: proc_card_name_general
@@ -148,4 +165,55 @@ MonoBehaviour:
       Health: 11
     CardScriptType: 
     CardScriptObject: {fileID: 0}
+    CharacterCardPrefab: {fileID: 0}
+  - ID: 8
+    CardType: 2
+    NameKey: armor_reserve
+    Cost: 3
+    rarity: 1
+    CardDisplayInfo:
+      CardIllustration: {fileID: 0}
+      IllustrationPos: {x: 21, y: 41, z: 0}
+      IllustrationSize: {x: 800, y: 800}
+    CharacterProperties:
+      CharacterType: 0
+      Strength: 4
+      Attack: 5
+      Health: 11
+    CardScriptType: ArmorReserve
+    CardScriptObject: {fileID: 11500000, guid: 1f16221e0e5f3b14f88ca45c3dfb4766, type: 3}
+    CharacterCardPrefab: {fileID: 0}
+  - ID: 9
+    CardType: 3
+    NameKey: magic_talisman
+    Cost: 6
+    rarity: 2
+    CardDisplayInfo:
+      CardIllustration: {fileID: 0}
+      IllustrationPos: {x: 21, y: 41, z: 0}
+      IllustrationSize: {x: 800, y: 800}
+    CharacterProperties:
+      CharacterType: 0
+      Strength: 4
+      Attack: 5
+      Health: 11
+    CardScriptType: MagicTalisman
+    CardScriptObject: {fileID: 11500000, guid: 1e7283ad7411d92468a82b38da8e3c36, type: 3}
+    CharacterCardPrefab: {fileID: 0}
+  - ID: 10
+    CardType: 2
+    NameKey: torrent_power
+    Cost: 3
+    rarity: 2
+    CardDisplayInfo:
+      CardIllustration: {fileID: 0}
+      IllustrationPos: {x: 21, y: 41, z: 0}
+      IllustrationSize: {x: 800, y: 800}
+    CharacterProperties:
+      CharacterType: 0
+      Strength: 4
+      Attack: 5
+      Health: 11
+    CardScriptType: TorrentPower
+    CardScriptObject: {fileID: 11500000, guid: fb0ac456ac0d9f9499ce94c40d898de8, type: 3}
     CharacterCardPrefab: {fileID: 0}
