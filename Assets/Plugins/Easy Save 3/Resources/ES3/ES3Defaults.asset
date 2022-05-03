@@ -31,7 +31,7 @@ MonoBehaviour:
     assemblyNames:
     - UniRx
     - MikroFramework
-    - ES
+    - EasySave
     - MainGame
     - Dreamteck.Utilities
     - Dreamteck.Splines

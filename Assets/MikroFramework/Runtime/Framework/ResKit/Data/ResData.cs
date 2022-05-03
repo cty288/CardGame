@@ -65,6 +65,7 @@ namespace MikroFramework.ResKit {
                     .DependencyBundleNames;
             }
 
+      
             return manifest.GetDirectDependencies(bundleName);
         }
 

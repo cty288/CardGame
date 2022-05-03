@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.Callbacks;
+#endif
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using System.Collections;

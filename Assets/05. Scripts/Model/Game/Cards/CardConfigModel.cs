@@ -6,6 +6,7 @@ using System.Reflection;
 using MikroFramework.Architecture;
 using MikroFramework.DataStructures;
 using MikroFramework.ResKit;
+using UnityEditor;
 using UnityEngine;
 
 namespace MainGame
@@ -67,16 +68,17 @@ namespace MainGame
 
         protected override void OnInit() {
             resLoader = new ResLoader();
+            resLoader.ReleaseAllAssets();
             RegisterCardInfo();
         }
 
         
         public void RegisterCardInfo() {
             //RegisterCharacterCardInfo(0, "TestCharacter",0, 100, 10,50, Rarity.Normal, CharacterType.Warrior, typeof(TestCharacter));
-            CardBasicProperties cardBasicPropertiesConfig = resLoader.LoadSync<CardBasicProperties>("card_properties", "CardProperties");
-            cardPropertiesConfig = cardBasicPropertiesConfig.CardDatas;
-
-            foreach (CardProperties cardProperties in cardPropertiesConfig) {
+            // CardBasicProperties cardBasicPropertiesConfig = resLoader.LoadSync<CardBasicProperties>("card_properties", "CardProperties");
+            CardBasicProperties cardBasicPropertiesConfig = Resources.Load<CardBasicProperties>("CardProperties");
+            
+            foreach (CardProperties cardProperties in cardBasicPropertiesConfig.CardDatas) {
                 if (cardProperties.CardType == CardType.Character) {
                     RegisterCharacterCardInfo(cardProperties);
                 }

@@ -5,7 +5,6 @@ using DG.Tweening;
 using MikroFramework.Architecture;
 using MikroFramework.Event;
 using MikroFramework.TimeSystem;
-using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -44,7 +43,10 @@ namespace MainGame
         {
             this.GetModel<IMapStateModel>().CurNode.RegisterOnValueChaned(OnLevelSelected)
                 .UnRegisterWhenGameObjectDestroyed(gameObject);
-            OnLevelSelected(null,null);
+            this.GetSystem<ITimeSystem>().AddDelayTask(0.1f, () => {
+                OnLevelSelected(null, null);
+            });
+
             //Debug.Log("MapFogViewController: Start");
         }
 
@@ -109,8 +111,7 @@ namespace MainGame
             }
             else {
                 for (int i = 0; i < vertices.Length; i++) {
-                    float distance = 
-                        HandleUtility.DistancePointLine(vertices[i],
+                    float distance = DistancePointLine(vertices[i],
                         fromNode.Value. LevelObject.gameObject.transform.position,
                         toNode.Value.LevelObject.gameObject.transform.position);
 
@@ -128,6 +129,28 @@ namespace MainGame
            
             //mesh.colors = colors;
            
+        }
+
+        public static float DistancePointLine(Vector3 point, Vector3 lineStart, Vector3 lineEnd) => Vector3.Magnitude(ProjectPointLine(point, lineStart, lineEnd) - point);
+        /// <summary>
+        ///   <para>Project point onto a line.</para>
+        /// </summary>
+        /// <param name="point"></param>
+        /// <param name="lineStart"></param>
+        /// <param name="lineEnd"></param>
+        public static Vector3 ProjectPointLine(
+            Vector3 point,
+            Vector3 lineStart,
+            Vector3 lineEnd)
+        {
+            Vector3 rhs = point - lineStart;
+            Vector3 vector3 = lineEnd - lineStart;
+            float magnitude = vector3.magnitude;
+            Vector3 lhs = vector3;
+            if ((double)magnitude > 9.99999997475243E-07)
+                lhs /= magnitude;
+            float num = Mathf.Clamp(Vector3.Dot(lhs, rhs), 0.0f, magnitude);
+            return lineStart + lhs * num;
         }
     }
 }

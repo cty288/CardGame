@@ -1,0 +1,48 @@
+ManifestFileVersion: 0
+CRC: 2800624020
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 3ea2c05c65d38fd553fd8c34dc8430d8
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: dae7a8930cc17672c8d03b6616a49706
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 20
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 81
+  Script: {instanceID: 0}
+- Class: 104
+  Script: {instanceID: 0}
+- Class: 108
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+- Class: 157
+  Script: {instanceID: 0}
+- Class: 196
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/MikroFramework/Runtime/Examples/ResKit/06. LoadSceneABExample/TestABScene.unity
+Dependencies:
+- D:/Unity Projects/CardGame/Assets/StreamingAssets/AssetBundles/Windows/mftest

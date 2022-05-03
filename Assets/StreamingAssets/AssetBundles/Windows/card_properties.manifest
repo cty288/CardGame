@@ -1,0 +1,22 @@
+ManifestFileVersion: 0
+CRC: 1686104460
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 21907f37cab096bc8d4295f84fdf405a
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 99c040042d10e7d95b3067bfcdce2dda
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2ea5148c72b81444fa714ce8e94961e4, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/CardProperties.asset
+Dependencies:
+- D:/Unity Projects/CardGame/Assets/StreamingAssets/AssetBundles/Windows/mftest
